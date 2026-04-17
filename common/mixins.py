@@ -6,7 +6,7 @@ from django.db import models, connections
 from django.forms.models import model_to_dict
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.translation import gettext_lazy as _
-from rest_framework import serializers
+from rest_framework import serializers, viewsets
 from helpers.choices import now_iso, now
 
 _user = threading.local()
@@ -168,3 +168,24 @@ class GeneralAuditFieldsMixin(serializers.ModelSerializer):
         validated_data['updated_by'] = self.context['request'].user
         validated_data['updated_on'] = now_iso
         return super().update(instance, validated_data)
+
+
+class BaseEnterpriseViewSetMixin(viewsets.ModelViewSet):
+    """
+    A base ViewSet to handle shared configuration and consistent success messages.
+    """
+    pagination_class = GenericPaginator
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    ordering = ['-id'] # Solves the UnorderedObjectListWarning globally
+
+    def get_success_message(self, action_name):
+        messages = {
+            'create': "Record created successfully",
+            'update': "Record updated successfully",
+            'destroy': "Record deleted successfully"
+        }
+        return messages.get(action_name, "Action successful")
+
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        return Response({"message": self.get_success_message('create'), "data": response.data}, status=status.HTTP_201_CREATED)
