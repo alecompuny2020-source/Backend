@@ -2,7 +2,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.conf import settings
-from .exceptions import handle_mail_exception
+from common.exceptions import handle_mail_exception
 
 class EmailSenderService:
     """Handles all outgoing email notifications using templated HTML content."""
@@ -62,6 +62,25 @@ class EmailSenderService:
             high_priority=True
         )
 
+    @classmethod
+    def send_forgot_password_link_email(cls, user, reset_link):
+        """
+        Sends a high-priority HTML email with a password reset link.
+        """
+        context = {
+            "greeting": f"Habari {user.get_full_name() or 'Mteja'}",
+            "reset_link": reset_link,
+            "frontend_url": settings.FRONTEND_URL,
+        }
+        return cls._send_multipart_email(
+            subject="Reset Your Password - Daz Electronics",
+            recipient=user.email,
+            template="emails/password_reset.html",
+            context=context,
+            high_priority=True
+        )
+
+        
     @classmethod
     def send_staff_onboarding(cls, user, password, completion_link, greeting_name):
         """Sends credentials to a new staff member's email."""

@@ -3,6 +3,7 @@ import socket
 from http import HTTPStatus
 from smtplib import SMTPAuthenticationError, SMTPConnectError, SMTPException
 from typing import Any
+from requests.exceptions import RequestException, Timeout, ConnectionError
 
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db.models import ProtectedError, RestrictedError
@@ -102,7 +103,7 @@ class APIExceptionHandler:
 
 
 def general_exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
-    """The function DRF calls."""
+    """The function DRF calls for exception handling."""
     return APIExceptionHandler(exc, context).handle()
 
 
@@ -122,9 +123,44 @@ class EmailExceptionHandler:
         if isinstance(e, SMTPException):
             return False, "We couldn't deliver the email. Please double-check the address or try again."
 
-        return False, "Oops, something went wrong while sending the email. Please try again."
+        return False, "Oops, something went wrong while sending the email. Please try again later."
 
 
 def handle_mail_exception(e: Exception) -> tuple[bool, str]:
     """Legacy wrapper for Email Exception."""
     return EmailExceptionHandler.handle(e)
+
+
+
+class SMSExceptionHandler:
+    """Handles sms-specific logic separately to keep concerns clean"""
+
+    @classmethod
+    def handle(cls, e: Exception) -> tuple[bool, str]:
+        logger.error(f"SMS system error: {str(e)}")
+
+        if isinstance(e, (Timeout, socket.timeout)):
+            return False, "Request timeout. Please try again."
+
+        if isinstance(e, (ConnectionError, socket.gaierror)):
+            return False, "Network error. Please check your internet connection and try again"
+
+        if isinstance(e, RequestException):
+            return False, "Communication with the SMS service failed. Try again in a moment."
+
+        error_msg = str(e).lower()
+
+        if "unauthorized" in error_msg or "apikey" in error_msg:
+            logger.critical("SMS API Authentication failed! Check settings.AT_API_KEY.")
+            return False, "SMS service is currently not available. Contact support."
+
+        if "insufficient" in error_msg or "balance" in error_msg:
+            logger.critical("CRITICAL: Africa's Talking balance is empty!")
+            return False, "The SMS service is temporarily unavailable."
+
+        return False, "Oops, something went wrong while sending the SMS. Please try again later."
+
+
+def handle_sms_exception(e: Exception) -> tuple[bool, str]:
+    """Legacy wrapper for sms Exception."""
+    return SMSExceptionHandler.handle(e)

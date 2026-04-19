@@ -78,7 +78,7 @@ def mask_email(email: str) -> str:
 def mask_phone(phone: str) -> str:
     """
     Mask phone number
-    Example: +255692087773 -> +255******773
+    Example: +255692012343 -> +255******343
     """
     phone_str = str(phone)
     if len(phone_str) > 6:

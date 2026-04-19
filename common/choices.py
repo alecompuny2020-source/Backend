@@ -58,7 +58,7 @@ LANGUAGE_CHOICES = [
 ]
 
 
- """ USER PROFILE & HR """
+""" USER PROFILE & HR """
 
 REGISTRATION_STATUS = [
     ("PENDING", _("Pending Verification")),
@@ -126,7 +126,7 @@ EMPLOYMENT_TYPES = [
 ]
 
 
- """ LOGISTICS, SHIPPING & INVENTORY """
+""" LOGISTICS, SHIPPING & INVENTORY """
 
 ORDER_STATUS = [
     ("PENDING", _("Pending")),
@@ -185,7 +185,7 @@ ADDRESS_TYPES = [
 ]
 
 
- """ FARM PRODUCTION & HEALTH """
+""" FARM PRODUCTION & HEALTH """
 
 PRODUCT_CATEGORY_CHOICES = [
     ("EGG", _("Eggs")),
@@ -244,7 +244,7 @@ DISPOSAL_METHOD_CHOICES = [
 ]
 
 
- """ SALES, FINANCE & BOOKING """
+""" SALES, FINANCE & BOOKING """
 
 CURRENCY_CHOICES = [
     ("TZS", _("Tanzanian Shilling")),
@@ -284,7 +284,7 @@ BOOKING_STATUS = [
 
 
 
- """ ASSETS & FACILITIES """
+""" ASSETS & FACILITIES """
 
 ASSET_TYPE_CHOICES = [
     ("FARM", _("Farm/Production Site")),
@@ -302,7 +302,7 @@ UNIT_TYPES = [
 
 
 
- """ UNITS OF MEASURE & GENERAL TASK STATUS """
+""" UNITS OF MEASURE & GENERAL TASK STATUS """
 
 UOM_CHOICES = [
     ("TRAY", _("Tray")),
@@ -336,6 +336,6 @@ PRIORITY_CHOICES = [
 
 
 
- """ MISCELLANEOUS / LEGACY """
+""" MISCELLANEOUS / LEGACY """
 
 TYPE_CHOICES = [(0, "User"), (1, "Group"), (2, "Broadcast"), (3, "Agent")]

@@ -1,46 +1,45 @@
 import africastalking
-import logging
 from django.conf import settings
+from common.exceptions import handle_sms_exception
 
-logger = logging.getLogger(__name__)
 
 class SMSSenderService:
     """Handles all outgoing SMS communications via Africa's Talking API."""
 
     @staticmethod
-    def _get_client():
-        """Initializes the Africa's Talking SMS client."""
-        africastalking.initialize(settings.AT_USERNAME, settings.AT_API_KEY)
-        return africastalking.SMS
+    def _dispatch_sms(message, recipients):
+        """Internal helper to initialize client and send SMS with consistent handling."""
+        try:
+            africastalking.initialize(settings.AT_USERNAME, settings.AT_API_KEY)
+            sms = africastalking.SMS
+
+            # AT expects a list of recipients
+            response = sms.send(message, recipients)
+
+            # Check the status of the first recipient (since we usually send to one)
+            status = response['SMSMessageData']['Recipients'][0]['status']
+            if status in ['Success', 'Sent']:
+                return True, "SMS sent successfully."
+
+            return False, f"SMS Gateway returned status: {status}"
+        except Exception as e:
+            return SMSExceptionHandler.handle(e)
 
     @classmethod
     def send_otp(cls, otp_entry):
         """Sends a verification code to a user's phone number."""
-        try:
-            sms = cls._get_client()
-            message = (
-                f"Your {otp_entry.token_type} verification code is: {otp_entry.code}. "
-                f"It is valid for {settings.OTP_EXPIRATION_TIME // 60} minutes."
-            )
-            response = sms.send(message, [str(otp_entry.phone_number)])
-            logger.info(f"OTP SMS sent: {response}")
-            return True, "SMS sent successfully."
-        except Exception as e:
-            logger.error(f"SMS OTP failure: {e}")
-            return False, "Failed to send SMS code."
+        message = (
+            f"Daz Electronics: Namba yako ya siri ya {otp_entry.token_type} ni {otp_entry.code}. "
+            f"Valid for {settings.OTP_EXPIRATION_TIME // 60} minutes."
+        )
+        return cls._dispatch_sms(message, [str(otp_entry.phone_number)])
 
     @classmethod
     def send_staff_credentials(cls, phone_number, password, completion_link):
         """Sends onboarding login details to new staff members."""
-        try:
-            sms = cls._get_client()
-            message = (
-                f"Karibu! Your staff account is ready. "
-                f"Username: {phone_number} Password: {password}. "
-                f"Login here: {completion_link}"
-            )
-            sms.send(message, [str(phone_number)])
-            return True, "Staff credentials sent via SMS."
-        except Exception as e:
-            logger.error(f"Staff SMS failure: {e}")
-            return False, "Failed to send staff notification."
+        message = (
+            f"Karibu! Your staff account is ready.\n"
+            f"User: {phone_number}\nPass: {password}\n"
+            f"Login: {completion_link}"
+        )
+        return cls._dispatch_sms(message, [str(phone_number)])

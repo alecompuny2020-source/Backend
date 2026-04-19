@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 User = get_user_model()
 
-class EmailOrPhoneBackend(ModelBackend):
+class EnterpriseEmailOrPhoneAuthBackend(ModelBackend):
     """ An Enterprise authentication backend for Email or Phone."""
     def authenticate(self, request, username=None, password=None, **kwargs):
         if username is None:
@@ -21,7 +21,6 @@ class EmailOrPhoneBackend(ModelBackend):
             User().set_password(password)
             return None
         except User.MultipleObjectsReturned:
-            # if Critical error: Database uniqueness is compromised
             logger.critical(f"Duplicate user found for identifier: {username}")
             return None
 

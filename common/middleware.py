@@ -2,7 +2,7 @@ from django.utils import translation
 from django.utils.deprecation import MiddlewareMixin
 from django.conf import settings
 
-class UserPreferenceMiddleware(MiddlewareMixin):
+class EnterpriseUserPreferenceMiddleware(MiddlewareMixin):
     """
     Middleware to globally apply user-specific localization settings.
 
