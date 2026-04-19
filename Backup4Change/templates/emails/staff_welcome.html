@@ -1,0 +1,41 @@
+{% extends "emails/base_email.html" %}
+{% load i18n %}
+
+{% block content %}
+    <h2>{{ greeting }},</h2>
+
+    <p>{% blocktrans with company=company_name|default:"Daz Electronics" %}Welcome to <strong>{{ company }}</strong>. Your enterprise staff account has been successfully provisioned by the administrator.{% endblocktrans %}</p>
+
+    <p>{% trans "To get started and secure your account, please click the button below to complete your registration:" %}</p>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ setup_url }}" class="button"
+           style="background-color: #2563eb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+            {% trans "Set Up Your Account" %}
+        </a>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+
+    <p>{% trans "Alternatively, you can log in manually using these temporary credentials:" %}</p>
+
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; font-family: monospace;">
+        <p style="margin: 0;"><strong>{% trans "Email Address" %}:</strong> {{ username }}</p>
+        <p style="margin: 10px 0 0 0;"><strong>{% trans "Temporary Password" %}:</strong> <span style="color: #e11d48;">{{ password }}</span></p>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <a href="{{ login_url }}" class="button"
+           style="background-color: #2563eb; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+            {% trans "Login" %}
+        </a>
+    </div>
+
+    {% if is_default_password %}
+    <p style="color: #475569; font-size: 0.9em; margin-top: 15px;">
+        <em><strong>{% trans "Note" %}:</strong> {% trans "For security purposes, you will be required to change this password immediately upon your first successful login." %}</em>
+    </p>
+    {% endif %}
+
+    <p>{% trans "If you have any issues accessing your account, please contact your department manager or the IT support team." %}</p>
+{% endblock %}

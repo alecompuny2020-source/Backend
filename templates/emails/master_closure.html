@@ -1,0 +1,75 @@
+{% extends "emails/base_email.html" %}
+
+{% load humanize %}
+{% block content %}
+<h2 style="color: #1e293b; margin-top: 0;">Daily Sales Summary</h2>
+<p>Hello CEO,</p>
+<p>The consolidated sales report for <strong>{{ date|date:"l, d F Y" }}</strong> is ready for your review.</p>
+
+{% for report in reports %}
+<div class="card" style="margin-bottom: 20px; border: 1px solid #e2e8f0; padding: 15px; border-radius: 12px; background-color: #ffffff;">
+    <h3 style="margin-top: 0; color: #334155; border-bottom: 2px solid #f1f5f9; padding-bottom: 8px;">
+        Agent: {{ report.agent_name }}
+    </h3>
+    <table width="100%" style="border-collapse: collapse;">
+        <tr>
+            <td style="padding: 6px 0; color: #64748b;">Sales Count</td>
+            <td style="padding: 6px 0; text-align: right; font-weight: 600;">{{ report.sales_count }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 6px 0; color: #64748b;">Gross Revenue</td>
+            <td style="padding: 6px 0; text-align: right; font-weight: 600; color: #1e293b;">TSh {{ report.revenue|floatformat:2| intcomma }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 6px 0; color: #64748b;">Total Expenses</td>
+            <td style="padding: 6px 0; text-align: right; font-weight: 600; color: #1e293b;">TSh {{ report.total_expenses|floatformat:2| intcomma }}</td>
+        </tr>
+
+        <tr>
+            <td style="padding: 6px 0; color: #0ea5e9; font-size: 13px; font-weight: bold;" colspan="2">COLLECTIONS TODAY</td>
+        </tr>
+        <tr>
+            <td style="padding: 4px 0 4px 10px; color: #64748b;">Mobile Money (MOMO)</td>
+            <td style="padding: 4px 0; text-align: right; font-weight: 600;">TSh {{ report.momo_collected|floatformat:2 | intcomma }}</td>
+        </tr>
+        <tr>
+            <td style="padding: 4px 0 4px 10px; color: #64748b;">Net Cash Settlement</td>
+            <td style="padding: 4px 0; text-align: right; font-weight: 700; color: #16a34a;">TSh {{ report.cash_on_hand|floatformat:2 | intcomma }}</td>
+        </tr>
+
+        <tr>
+            <td style="padding: 10px 0 6px 0; border-top: 1px dashed #f1f5f9; color: #f43f5e; font-size: 13px; font-weight: bold;" colspan="2">UNCOLLECTED</td>
+        </tr>
+        <tr>
+            <td style="padding: 4px 0 4px 10px; color: #64748b;">New Credit Issued</td>
+            <td style="padding: 4px 0; text-align: right; font-weight: 600; color: #f97316;">TSh {{ report.new_credit|floatformat:2 | intcomma }}</td>
+        </tr>
+    </table>
+</div>
+{% endfor %}
+
+<div style="background-color: #f8fafc; padding: 20px; border: 2px solid #e2e8f0; border-radius: 12px; text-align: center; margin-top: 20px;">
+    <table width="100%">
+        <tr>
+            <td>
+                <span style="color: #64748b; display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">Total Company Revenue</span>
+                <span style="font-size: 26px; font-weight: 800; color: #1e293b;">TSh {{ total_company_revenue|floatformat:2 | intcomma }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p style="margin-top: 25px; font-size: 14px; color: #475569;">
+    <em>Note: Net Cash Settlement reflects today's cash collections minus any recorded cash expenses.</em>
+</p>
+
+<p style="margin-top: 25px; font-size: 14px; color: #475569;">
+    For a detailed breakdown of specific items sold across all branches, please visit the analytics dashboard.
+</p>
+
+<center style="margin-top: 30px;">
+    <a href="{{ frontend_url }}/analytics/closures" class="button" style="background-color: #2563eb; color: #ffffff; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; display: inline-block;">
+        View Analytics Dashboard
+    </a>
+</center>
+{% endblock %}

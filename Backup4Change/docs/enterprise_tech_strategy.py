@@ -1,0 +1,133 @@
+# tech_strategy.py
+
+TECH_STRATEGY = {
+    "core_features": [
+        {
+            "id": 1,
+            "feature": "Multi-Database",
+            "strategic_role": "Data Isolation/Tenancy",
+            "potential_bottleneck": "Router complexity & cross-DB joins",
+            "recommended_tools": ["Django Database Routers"],
+        },
+        {
+            "id": 2,
+            "feature": "JSONB + GIN",
+            "strategic_role": "Schema Flexibility",
+            "potential_bottleneck": "Slow sequential scans on high volume",
+            "recommended_tools": ["PostgreSQL GIN Indexes"],
+        },
+        {
+            "id": 3,
+            "feature": "Atomic Transactions",
+            "strategic_role": "Data Integrity",
+            "potential_bottleneck": "'Zombie' locks on long processes",
+            "recommended_tools": ["transaction.atomic", "select_for_update"],
+        },
+        {
+            "id": 4,
+            "feature": "Materialized Views",
+            "strategic_role": "Query Performance (CQRS)",
+            "potential_bottleneck": "Stale data & refresh overhead",
+            "recommended_tools": ["pg_cron", "Celery Heartbeat"],
+        },
+        {
+            "id": 5,
+            "feature": "Redis Caching",
+            "strategic_role": "Low Latency / Write-Ahead",
+            "potential_bottleneck": "Cache invalidation logic",
+            "recommended_tools": ["django-redis"],
+        },
+        {
+            "id": 6,
+            "feature": "Async Celery",
+            "strategic_role": "Non-blocking processing",
+            "potential_bottleneck": "Task queue congestion",
+            "recommended_tools": ["Celery", "Flower (Monitoring)"],
+        },
+        {
+            "id": 7,
+            "feature": "PgBouncer",
+            "strategic_role": "Connection Scaling",
+            "potential_bottleneck": "Pooled connection limits",
+            "recommended_tools": ["PgBouncer (Transaction mode)"],
+        },
+        {
+            "id": 8,
+            "feature": "Real-time Alerting",
+            "strategic_role": "Immediate Feedback",
+            "potential_bottleneck": "Socket connection overhead",
+            "recommended_tools": ["Django Channels", "Redis Pub/Sub"],
+        },
+        {
+            "id": 9,
+            "feature": "Bulk Processing",
+            "strategic_role": "High Throughput",
+            "potential_bottleneck": "Memory spikes & DB locking",
+            "recommended_tools": ["bulk_create", "bulk_update"],
+        },
+        {
+            "id": 10,
+            "feature": "Query Reduction",
+            "strategic_role": "Efficiency",
+            "potential_bottleneck": "N+1 Query errors",
+            "recommended_tools": ["select_related", "prefetch_related"],
+        },
+        {
+            "id": 11,
+            "feature": "Event-Driven",
+            "strategic_role": "System Decoupling",
+            "potential_bottleneck": "Message ordering & delivery failures",
+            "recommended_tools": ["Apache Kafka (High throughput)"],
+        },
+        {
+            "id": 12,
+            "feature": "CQRS",
+            "strategic_role": "Scalable Reads/Writes",
+            "potential_bottleneck": "Eventual consistency delay",
+            "recommended_tools": ["django-cqrs", "Materialized Views"],
+        },
+        {
+            "id": 13,
+            "feature": "ML Integration",
+            "strategic_role": "Predictions/Recs",
+            "potential_bottleneck": "Heavy CPU load on Web Workers",
+            "recommended_tools": ["Scikit-Learn", "PyTorch on Celery"],
+        },
+        {
+            "id": 14,
+            "feature": "Frontend UI",
+            "strategic_role": "User Experience",
+            "potential_bottleneck": "PrimeNG/Tailwind CSS conflicts",
+            "recommended_tools": ["PrimeNG", "tailwindcss-primeui plugin"],
+        },
+        {
+            "id": 15,
+            "feature": "Reporting",
+            "strategic_role": "Business Intelligence",
+            "potential_bottleneck": "Memory usage for large PDFs",
+            "recommended_tools": ["FPDF", "ApexCharts (Client-side)"],
+        },
+    ],
+    "critical_gotchas": {
+        "cqrs_consistency": {
+            "title": "CQRS & Eventual Consistency",
+            "warning": "Angular frontend must handle 'eventual consistency'.",
+            "remedy": "Use robust UI strategies like optimistic updates in Angular.",
+        },
+        "styling_conflicts": {
+            "title": "Tailwind + PrimeNG 19+",
+            "warning": "Modern PrimeNG uses styled/unstyled modes which can conflict with Tailwind.",
+            "remedy": "Use the tailwindcss-primeui plugin to map design tokens.",
+        },
+        "broker_selection": {
+            "title": "Kafka vs. RabbitMQ",
+            "warning": "ML requirements favor Kafka's persistence.",
+            "remedy": "Leverage Kafka to 'replay' events for training machine learning models.",
+        },
+        "report_performance": {
+            "title": "FPDF vs. ApexCharts",
+            "warning": "Generating heavy PDFs can hang web processes.",
+            "remedy": "Generate charts in-browser via DRF JSON; move FPDF generation to Celery background workers.",
+        },
+    },
+}

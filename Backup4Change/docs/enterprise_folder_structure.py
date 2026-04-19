@@ -33,7 +33,7 @@ Backend/
 │   ├── choices.py              # Centralized choice constants and enums
 │   ├── mixins.py               # Reusable class-based mixins
 │   ├── sender.py               # SMS and Email gateway integration
-│   ├── security.py             # OTP, JWT, and encryption handlers 
+│   ├── security.py             # OTP, JWT, and encryption handlers
 │   ├── utils.py                # Formatting and shared helper functions
 │   ├── services/               # Cross-domain business logic (Auth, Onboarding)
 │   └── permissions/            # RBAC and permission configurations

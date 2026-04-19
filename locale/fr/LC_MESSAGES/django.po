@@ -1,0 +1,2928 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-02 10:07+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+#: ⁨.\New folder\core\helpers\choices.py⁩:13 .\helpers\choices.py:13
+msgid "Pending Verification"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:14 .\helpers\choices.py:14
+msgid "Verified & Approved"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:15 .\helpers\choices.py:15
+msgid "Rejected/Incomplete"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:16 .\helpers\choices.py:16
+msgid "Revoked/Terminated"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:20 .\helpers\choices.py:20
+msgid "Shipping"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:21 .\helpers\choices.py:21
+msgid "Billing"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:22 .\helpers\choices.py:22
+msgid "Home"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:33 .\helpers\choices.py:49
+msgid "Full-Time Regular"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:34 .\helpers\choices.py:50
+msgid "Contractor"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:35 .\helpers\choices.py:51
+msgid "Casual Laborer"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:48 .\helpers\choices.py:64
+msgid "Email"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:49 .\helpers\choices.py:65
+msgid "Phone/SMS"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:50 .\helpers\choices.py:66
+msgid "Both"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:77 .\helpers\choices.py:93
+msgid "Shelf (Rafu)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:78 .\helpers\choices.py:94
+msgid "Cabinet (Kabati)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:79 .\helpers\choices.py:95
+msgid "Clipboard"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:80 .\helpers\choices.py:96
+msgid "Drawer (Droo)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:81 .\helpers\choices.py:97
+msgid "Cold Room Rack"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:85 .\helpers\choices.py:101
+msgid "Ready for Sale"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:86 .\helpers\choices.py:102
+msgid "Not Ready / WIP"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:87 .\helpers\choices.py:103
+msgid "Under Inspection"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:88 .\helpers\choices.py:104
+msgid "Expired / Waste"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:92 .\helpers\choices.py:108
+msgid "Retail"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:93 .\helpers\choices.py:109
+msgid "Wholesale"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:94 .\helpers\choices.py:110
+msgid "Distributor"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:98 .\helpers\choices.py:114
+msgid "Farm Fleet"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:99 .\helpers\choices.py:115
+msgid "External Courier"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:100 .\helpers\choices.py:116
+msgid "Customer Pickup"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:104 .\helpers\choices.py:120
+msgid "Pending"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:105 .\helpers\choices.py:121
+msgid "Confirmed"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:106 .\helpers\choices.py:122
+msgid "Dispatched"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:107
+#: ⁨.\New folder\core\helpers\choices.py⁩:206 .\helpers\choices.py:123
+#: .\helpers\choices.py:222
+msgid "Delivered"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:108
+#: ⁨.\New folder\core\helpers\choices.py⁩:159 .\helpers\choices.py:124
+#: .\helpers\choices.py:175 .\irms\models.py:17
+msgid "Cancelled"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:112 .\helpers\choices.py:128
+msgid "Sale"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:113 .\helpers\choices.py:129
+msgid "Return"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:114 .\helpers\choices.py:130
+msgid "Restock"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:115 .\helpers\choices.py:131
+msgid "Adjustment"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:116 .\helpers\choices.py:132
+msgid "Internal Transfer"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:121 ⁨.\New folder\main\settings.py⁩:203
+#: .\helpers\choices.py:137 .\main\settings.py:156
+msgid "English (US)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:122 ⁨.\New folder\main\settings.py⁩:204
+#: .\helpers\choices.py:138 .\main\settings.py:157
+msgid "English (British)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:123 ⁨.\New folder\main\settings.py⁩:205
+#: .\helpers\choices.py:139 .\main\settings.py:158
+msgid "Kiswahili"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:127 .\helpers\choices.py:143
+msgid "Registration"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:128 .\helpers\choices.py:144
+msgid "Login"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:129 .\helpers\choices.py:145
+msgid "Password Reset"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:130 .\helpers\choices.py:146
+msgid "Transaction Authorization"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:136 .\helpers\choices.py:152
+msgid "Tray"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:137 .\helpers\choices.py:153
+msgid "Kilogram"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:138 .\helpers\choices.py:154
+msgid "Pieces"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:139 .\helpers\choices.py:155
+msgid "Bag"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:143 .\helpers\choices.py:159
+msgid "Eggs"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:144 .\helpers\choices.py:160
+msgid "Meat/Poultry"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:145 .\helpers\choices.py:161
+msgid "By-Products (Manure/Feathers)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:146 .\helpers\choices.py:162
+msgid "Farm Equipment/Assets"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:150 .\helpers\choices.py:166
+msgid "NIDA (National ID)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:151 .\helpers\choices.py:167
+msgid "Passport"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:152 .\helpers\choices.py:168
+msgid "Voter ID"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:153 .\helpers\choices.py:169
+msgid "Driving License"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:157 .\helpers\choices.py:173
+msgid "Pending/Inquiry"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:158 .\helpers\choices.py:174
+msgid "Confirmed/Deposit Paid"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:160 .\helpers\choices.py:176
+msgid "Event Finished"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:164 .\helpers\choices.py:180
+#: .\irms\models.py:15
+msgid "Open"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:165 .\helpers\choices.py:181
+msgid "In Progress"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:166 .\helpers\choices.py:182
+msgid "Resolved"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:170 .\helpers\choices.py:186
+msgid "Low"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:171 .\helpers\choices.py:187
+msgid "Normal"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:172 .\helpers\choices.py:188
+msgid "Urgent/Safety"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:176 .\helpers\choices.py:192
+msgid "Setting"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:177 .\helpers\choices.py:193
+msgid "Candling"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:178 .\helpers\choices.py:194
+msgid "Hatched"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:179 .\helpers\choices.py:195
+msgid "Failed"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:183 .\helpers\choices.py:199
+msgid "Tanzanian Shilling"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:184 .\helpers\choices.py:200
+msgid "British Pound"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:185 .\helpers\choices.py:201
+msgid "US Dollar"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:186 .\helpers\choices.py:202
+msgid "Kenyan Shilling"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:192 .\helpers\choices.py:208
+msgid "Cash"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:193 .\helpers\choices.py:209
+msgid "Credit Card"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:194 .\helpers\choices.py:210
+msgid "Bank Transfer"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:195 .\helpers\choices.py:211
+msgid "Mobile Money (M-Pesa/Tigo Pesa)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:196 .\helpers\choices.py:212
+msgid "Online Wallet"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:200 .\helpers\choices.py:216
+msgid "Request Received"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:201 .\helpers\choices.py:217
+msgid "In Packaging"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:202 .\helpers\choices.py:218
+msgid "Collected by Carrier"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:203 .\helpers\choices.py:219
+msgid "Departed Facility"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:204 .\helpers\choices.py:220
+msgid "In Transit"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:205 .\helpers\choices.py:221
+msgid "Out for Delivery"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:207 .\helpers\choices.py:223
+msgid "Delivery Failed"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:210 .\helpers\choices.py:226
+msgid "Flat Rate"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:210 .\helpers\choices.py:226
+msgid "Cost Per KG"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:213 .\helpers\choices.py:229
+msgid "Single Room"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:214 .\helpers\choices.py:230
+msgid "Bedsitter"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:215 .\helpers\choices.py:231
+msgid "Full Apartment"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:216 .\helpers\choices.py:232
+msgid "Commercial Shop Space"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:220 .\helpers\choices.py:236
+msgid "Farm/Production Site"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:221 .\helpers\choices.py:237
+msgid "Building/Structure"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:222 .\helpers\choices.py:238
+msgid "Recreation/Common Zone"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:223 .\helpers\choices.py:239
+msgid "Specific Rental/Housing Unit"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:228 .\helpers\choices.py:244
+msgid "Broiler"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:229 .\helpers\choices.py:245
+msgid "Layer"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:230 .\helpers\choices.py:246
+msgid "Kuchi"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:231 .\helpers\choices.py:247
+msgid "Local"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:235 .\helpers\choices.py:251
+msgid "Vaccination"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:236 .\helpers\choices.py:252
+msgid "Medication/Treatment"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:237 .\helpers\choices.py:253
+msgid "General Procedure (e.g., De-beaking)"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:238 .\helpers\choices.py:254
+msgid "Laboratory Test Result"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:242 .\helpers\choices.py:258
+msgid "Incineration"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:243 .\helpers\choices.py:259
+msgid "Composting"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:244 .\helpers\choices.py:260
+msgid "Sale to Third Party"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:245 .\helpers\choices.py:261
+msgid "Landfill"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:246 .\helpers\choices.py:262
+msgid "Recycling"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:250 .\helpers\choices.py:266
+msgid "Active Outbreak"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:251 .\helpers\choices.py:267
+msgid "Contained/Under Treatment"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:252 .\helpers\choices.py:268
+msgid "Resolved/Closed"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:256
+#: ⁨.\New folder\core\models\farm_models.py⁩:143
+#: ⁨.\New folder\core\models\user_models.py⁩:65 .\core\models.py:64
+#: .\helpers\choices.py:272 .\sfap\models.py:167
+msgid "Active"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:257 .\helpers\choices.py:273
+msgid "Depleted"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:258 .\helpers\choices.py:274
+msgid "Quarantined"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:259 .\helpers\choices.py:275
+msgid "In Processing Plant"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:263
+#: ⁨.\New folder\core\models\farm_models.py⁩:25 .\helpers\choices.py:279
+#: .\sfap\models.py:32
+msgid "Farm Manager"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:264 .\helpers\choices.py:280
+msgid "Veterinary Officer"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:265 .\helpers\choices.py:281
+msgid "Processing Plant Supervisor"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:266 .\helpers\choices.py:282
+msgid "Accountant"
+msgstr ""
+
+#: ⁨.\New folder\core\helpers\choices.py⁩:267 .\helpers\choices.py:283
+msgid "General Attendant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:17
+#: ⁨.\New folder\core\models\expenses_models.py⁩:20 .\pfls\models.py:21
+#: .\pfls\models.py:213
+msgid "Category Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:19 .\pfls\models.py:23
+msgid "Account Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:22 .\pfls\models.py:26
+msgid "e.g., EXP-FEED, REV-EGGS, EXP-LABOR"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:24 .\pfls\models.py:28
+msgid "Is Expense"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:28 .\pfls\models.py:32
+msgid "Account Category"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:29 .\pfls\models.py:33
+msgid "Account Categories"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:52 .\pfls\models.py:56
+msgid "Income"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:52
+#: ⁨.\New folder\core\models\expenses_models.py⁩:154 .\pfls\models.py:56
+#: .\pfls\models.py:347
+msgid "Expense"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:55 .\pfls\models.py:59
+msgid "Transaction Reference"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:61
+#: ⁨.\New folder\core\models\inventory_models.py⁩:21 .\ipss\models.py:23
+#: .\pfls\models.py:65
+msgid "Category"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:63
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:15
+#: ⁨.\New folder\core\models\sales_models.py⁩:65 .\pfls\models.py:67
+#: .\sfap\models.py:673 .\srs\models.py:65
+msgid "Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:66 .\pfls\models.py:70
+msgid "Amount"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:73 .\pfls\models.py:77
+msgid "Transaction Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:83 .\pfls\models.py:87
+msgid "Linked Batch (Optional)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:96 .\pfls\models.py:100
+msgid "Transaction Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:99 .\pfls\models.py:103
+msgid "Stores payment method, receipt links, and vendor details."
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:105 .\pfls\models.py:109
+msgid "Financial Transaction"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:138
+#: ⁨.\New folder\core\models\farm_models.py⁩:202
+#: ⁨.\New folder\core\models\feed_models.py⁩:137
+#: ⁨.\New folder\core\models\health_models.py⁩:67 .\fns\models.py:139
+#: .\pfls\models.py:142 .\sfap\models.py:226 .\sfap\models.py:832
+msgid "Flock Batch"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:142 .\pfls\models.py:146
+msgid "Total Revenue"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:149 .\pfls\models.py:153
+msgid "Total Expenses"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:156 .\pfls\models.py:160
+msgid "Net Profit"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:172 .\pfls\models.py:176
+msgid "Detailed Cost Breakdown"
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:174 .\pfls\models.py:178
+msgid "Aggregated expense categories for instant P&L reporting."
+msgstr ""
+
+#: ⁨.\New folder\core\models\accounting_models.py⁩:181 .\pfls\models.py:185
+msgid "Batch P&L Statement"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:22
+#: ⁨.\New folder\core\models\processing_models.py⁩:86 .\sfap\models.py:351
+msgid "Source Batch"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:24 .\sfap\models.py:353
+msgid "Breed Line"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:25 .\sfap\models.py:354
+msgid "Genetic Origin"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:35 .\sfap\models.py:364
+msgid "Genetic Traits"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:38 .\sfap\models.py:367
+msgid "Stores phenotypic and performance targets for this breed line."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:43
+#: ⁨.\New folder\core\models\breeding_models.py⁩:154 .\sfap\models.py:372
+#: .\sfap\models.py:483
+msgid "Breeder Flock"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:77 .\sfap\models.py:406
+msgid "Incubator features"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:82 .\sfap\models.py:411
+msgid "Max Egg Capacity"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:83 .\sfap\models.py:412
+msgid "Total number of eggs this machine can hold."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:86 .\sfap\models.py:415
+msgid "Last Sanitization Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:89 .\sfap\models.py:418
+msgid "Tracks bio-security/cleaning dates between cycles."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:91
+#: ⁨.\New folder\core\models\farm_models.py⁩:49
+#: ⁨.\New folder\core\models\processing_models.py⁩:46
+#: ⁨.\New folder\core\models\sales_models.py⁩:81
+#: ⁨.\New folder\core\models\shipping_models.py⁩:257
+#: ⁨.\New folder\core\models\waste_models.py⁩:182 .\ppms\models.py:44
+#: .\sfap\models.py:56 .\sfap\models.py:420 .\slms\models.py:256
+#: .\srs\models.py:81 .\wces\models.py:182
+msgid "Is Active"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:95 .\sfap\models.py:424
+msgid "incubator"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:148 .\sfap\models.py:477
+msgid "Cycle ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:160 .\sfap\models.py:489
+msgid "Incubator Machine"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:162 .\sfap\models.py:491
+msgid "Total Eggs Set"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:163 .\sfap\models.py:492
+msgid "Expected Hatch Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:174 .\sfap\models.py:503
+msgid "Incubation & Candling Logs"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:178 .\sfap\models.py:507
+msgid "Dynamic logs for candling results, machine temps, and embryo health."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:183
+#: ⁨.\New folder\core\models\farm_models.py⁩:197
+#: ⁨.\New folder\core\models\housing_models.py⁩:206
+#: ⁨.\New folder\core\models\pground_models.py⁩:241
+#: ⁨.\New folder\core\models\sales_models.py⁩:146 .\htms\models.py:208
+#: .\rhms\models.py:242 .\sfap\models.py:221 .\sfap\models.py:512
+#: .\srs\models.py:146
+msgid "Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:188
+#: ⁨.\New folder\core\models\breeding_models.py⁩:245 .\sfap\models.py:517
+#: .\sfap\models.py:574
+msgid "Incubation Cycle"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:227 .\sfap\models.py:556
+#, python-format
+msgid "Not enough space! This incubator only has %(space)s slots available."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:253 .\sfap\models.py:582
+msgid "The production batch these chicks were moved to."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:256 .\sfap\models.py:585
+msgid "Total Chicks Hatched"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:257 .\sfap\models.py:586
+msgid "Grade A Chicks"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:258 .\sfap\models.py:587
+msgid "Grade B Chicks"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:259 .\sfap\models.py:588
+msgid "Grade C Chicks"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:269 .\sfap\models.py:598
+msgid "Quality Metrics"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:271 .\sfap\models.py:600
+msgid "Detailed health data, weights, and vaccination records."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:276 .\sfap\models.py:605
+msgid "Hatchability (%)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:279 .\sfap\models.py:608
+msgid "Total Cull Weight (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:283 .\sfap\models.py:612
+msgid "Tracks the weight of rejected chicks for waste management."
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:288 .\sfap\models.py:617
+msgid "Hatch Record"
+msgstr ""
+
+#: ⁨.\New folder\core\models\breeding_models.py⁩:295 .\sfap\models.py:624
+msgid "Chicks hatched cannot exceed eggs set."
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:21
+msgid "Preferred Communication"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:25
+msgid "The primary channel used for order updates and security alerts."
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:28
+msgid "Preferred Language"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:32
+msgid "Determines the language of API responses and Kiosk UI"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:35
+msgid "Preferred Currency"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:40
+msgid "User's default currency for financial reports (e.g., TZS, GBP, USD)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:44
+msgid "Preferred Region"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:49
+msgid "Used to show products and delivery rates specific to the user's area."
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:53
+msgid "Marketing Opt-in"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:55
+msgid "If True, user receives promotional offers and newsletters."
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:60 .\core\models.py:227
+msgid "User Preference"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:89 .\ecvs\models.py:22
+msgid "Search Query"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:95 .\ecvs\models.py:28
+msgid "Search History"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:107 .\ecvs\models.py:40
+msgid "Category/Tag Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:108 .\ecvs\models.py:41
+msgid "Interaction Count"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:114 .\ecvs\models.py:47
+msgid "User Interest"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:139 .\ecvs\models.py:72
+msgid "Wishlist Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:143 .\ecvs\models.py:76
+msgid "Publicly Visible"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:147 .\ecvs\models.py:80
+msgid "Wishlist"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:230 .\ecvs\models.py:163
+msgid "Comment/Insight"
+msgstr ""
+
+#: ⁨.\New folder\core\models\browsing_models.py⁩:231 .\ecvs\models.py:164
+msgid "Rating (1-5)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:13 .\cms\models.py:13
+msgid "User Identifier"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:14 .\cms\models.py:14
+msgid "Server Domain"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:15 .\cms\models.py:15
+msgid "Agent Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:16 .\cms\models.py:16
+msgid "Device ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:17 .\cms\models.py:17
+msgid "JID Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:19 .\cms\models.py:19
+msgid "Full JID String"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:24 .\cms\models.py:24
+msgid "JID Entity"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:36 .\cms\models.py:36
+msgid "Chat Subject"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:37 .\cms\models.py:37
+msgid "Created Unix TS"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:38 .\cms\models.py:38
+msgid "Unseen Count"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:39 .\cms\models.py:39
+msgid "Last Message ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:40 .\cms\models.py:40
+msgid "Is Archived"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:44 .\cms\models.py:44
+msgid "Chat Thread"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:56 .\cms\models.py:56
+msgid "Direction"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:58 .\cms\models.py:58
+msgid "Unique Message Key"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:64 .\cms\models.py:64
+msgid "Delivery Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:66 .\cms\models.py:66
+msgid "Timestamp (ms)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:69 .\cms\models.py:69
+msgid "Message Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:70 .\cms\models.py:70
+msgid "Text Content"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:71 .\cms\models.py:71
+msgid "Is Starred"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:74 .\cms\models.py:74
+msgid "Quoted Message ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:95 .\cms\models.py:95
+msgid "File Storage"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:96 .\cms\models.py:96
+msgid "File Size (Bytes)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:97 .\cms\models.py:97
+msgid "MIME Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:98 .\cms\models.py:98
+msgid "Encryption Key"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:99 .\cms\models.py:99
+msgid "File Hash (SHA256)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:102 .\cms\models.py:102
+msgid "Duration (sec)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:103 .\cms\models.py:103
+msgid "Width"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:104 .\cms\models.py:104
+msgid "Height"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:121 .\cms\models.py:121
+msgid "Permission Rank"
+msgstr ""
+
+#: ⁨.\New folder\core\models\charting_models.py⁩:122 .\cms\models.py:122
+msgid "Pending Invite"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:21
+#: ⁨.\New folder\core\models\user_models.py⁩:120
+#: ⁨.\New folder\core\models\user_models.py⁩:170 .\core\models.py:119
+#: .\hrms\models.py:43
+msgid "User"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:30 .\hrms\models.py:52
+msgid "Reports To"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:34 .\hrms\models.py:64
+msgid "Employee Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:37 .\hrms\models.py:72
+msgid "Employment Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:42 .\hrms\models.py:77
+msgid ""
+"Determines benefits eligibility; e.g., Casuals usually don't get housing."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:52 .\hrms\models.py:87
+msgid "Assigned Shed"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:61 .\hrms\models.py:96
+msgid "Assigned Processing Plant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:64 .\hrms\models.py:99
+msgid "Health Clearance Expiry"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:67 .\hrms\models.py:102
+msgid "Required for Processing Plant staff. Must be renewed annually."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:70 .\hrms\models.py:108
+msgid "Hire Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:75
+#: ⁨.\New folder\core\models\employee_models.py⁩:312 .\hrms\models.py:113
+msgid "Base Salary"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:78 .\hrms\models.py:116
+msgid "Employment Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:80 .\hrms\models.py:118
+msgid "Uncheck this instead of deleting the employee for audit history."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:97 .\hrms\models.py:135
+msgid "HR Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:101 .\hrms\models.py:139
+msgid ""
+"Stores emergency contacts, ID numbers, skills, and payroll configurations."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:107
+#: ⁨.\New folder\core\models\employee_models.py⁩:211
+#: ⁨.\New folder\core\models\employee_models.py⁩:298 .\hrms\models.py:145
+msgid "Employee"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:108 .\hrms\models.py:146
+msgid "Employees"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:161
+msgid "user"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:162
+msgid "The user this next of kin belongs to"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:164
+msgid "first name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:165
+msgid "middle name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:166
+msgid "last name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:168
+msgid "phone number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:169
+msgid "Enter phone number in international format (e.g. +255...)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:171
+msgid "email address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:173
+msgid "physical address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:177
+#: ⁨.\New folder\core\models\employee_models.py⁩:178
+msgid "Next of Kin"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:193
+#, python-format
+msgid "%(first)s %(last)s - Kin of %(user)s"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:214
+msgid "Clock In"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:215
+msgid "Clock Out"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:230
+msgid "Task Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:233
+msgid "List of completed tasks with duration and location for cost accounting."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:246
+msgid "Performance Metrics"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:249
+msgid "Stores incident reports, ratings, and kiosk verification data."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:254
+msgid "Work Shift"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:255
+msgid "Work Shifts"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:301
+msgid "Pay Period Start"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:302
+msgid "Pay Period End"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:304
+msgid "Days in Period"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:307
+msgid "Number of days worked in this cycle. Used for pro-rating salaries."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:318
+msgid "Bonuses"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:325
+msgid "Deductions"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:332
+msgid "Housing Deduction"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:337
+msgid "Amount deducted for staff quarters, linked to Housing Module."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:350
+msgid "Benefits & Deductions Breakdown"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:353
+msgid "Detailed JSON map of allowances, taxes (NSSF/PAYE), and insurance."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:358
+msgid "Payment Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:359
+msgid "Payment Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:372
+#: ⁨.\New folder\core\models\housing_models.py⁩:290 .\htms\models.py:292
+msgid "Payment Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:375
+msgid "Audit trail for bank references and authorization IDs."
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:380
+msgid "Payroll Record"
+msgstr ""
+
+#: ⁨.\New folder\core\models\employee_models.py⁩:381
+msgid "Payroll Records"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:22 .\pfls\models.py:215
+msgid "Description"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:27
+#: ⁨.\New folder\core\models\expenses_models.py⁩:120 .\pfls\models.py:220
+#: .\pfls\models.py:313
+msgid "Expense Category"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:28 .\pfls\models.py:221
+msgid "Expense Categories"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:52 .\pfls\models.py:245
+msgid "Payee/Vendor Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:54 .\pfls\models.py:247
+msgid "Contact Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:58 .\pfls\models.py:251
+msgid "Business Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:69 .\pfls\models.py:262
+msgid "Vendor Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:72 .\pfls\models.py:265
+msgid "Stores Tax IDs (TIN/VRN) and banking details."
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:77 .\pfls\models.py:270
+msgid "Payee/Vendor"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:78 .\pfls\models.py:271
+msgid "Payees/Vendors"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:112 .\pfls\models.py:305
+msgid "Amount Spent"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:127 .\pfls\models.py:320
+msgid "Paid To"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:130 .\pfls\models.py:323
+msgid "Details/Notes"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:132 .\pfls\models.py:325
+msgid "Payment Method"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:146 .\pfls\models.py:339
+msgid "Expense Audit Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:149 .\pfls\models.py:342
+msgid "Stores tax details, digital receipts, and batch links."
+msgstr ""
+
+#: ⁨.\New folder\core\models\expenses_models.py⁩:155 .\pfls\models.py:348
+msgid "Expenses"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:16 .\sfap\models.py:23
+msgid "Farm Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:17 .\sfap\models.py:24
+msgid "Region"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:18 .\sfap\models.py:25
+msgid "GPS Coordinates"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:37 .\sfap\models.py:44
+msgid "Site Configuration"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:40 .\sfap\models.py:47
+msgid "Stores utility types, acreage, and regional site settings."
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:43 .\sfap\models.py:50
+msgid "Quarantine Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:46 .\sfap\models.py:53
+msgid ""
+"If True, all batch movements and processing sessions are blocked for bio-"
+"security."
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:53 .\sfap\models.py:60
+msgid "Farm"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:54 .\sfap\models.py:61
+msgid "Farms"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:87 .\sfap\models.py:113
+msgid "Start Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:88 .\sfap\models.py:114
+msgid "End Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:96 .\sfap\models.py:122
+msgid "Tenure Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:97 .\sfap\models.py:123
+msgid "Current Manager"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:101 .\sfap\models.py:127
+msgid "Manager History"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:123 .\sfap\models.py:147
+msgid "Shed Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:125 .\sfap\models.py:149
+msgid "Max Capacity (Birds)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:134 .\sfap\models.py:158
+msgid "Shed Specifications"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:136 .\sfap\models.py:160
+msgid "Last Date Empty"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:140 .\sfap\models.py:164
+msgid ""
+"Date the previous batch was cleared. Used to ensure a 14-day bio-security "
+"break."
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:148 .\sfap\models.py:172
+msgid "Farm Shed"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:175 .\sfap\models.py:199
+msgid "Batch ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:179 .\sfap\models.py:203
+msgid "Bird Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:181 .\sfap\models.py:205
+msgid "Initial Bird Count"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:182 .\sfap\models.py:206
+msgid "Current Bird Count"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:184 .\sfap\models.py:208
+msgid "Expected Depletion"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:195 .\sfap\models.py:219
+msgid "Batch Details"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:203 .\sfap\models.py:227
+msgid "Flock Batches"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:242 .\sfap\models.py:266
+msgid "Minimum 14 days required."
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:266 .\sfap\models.py:290
+msgid "Mortality"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:267 .\sfap\models.py:291
+msgid "Culls"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:283 .\sfap\models.py:307
+msgid "Environmental & Feeding Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_models.py⁩:310 .\sfap\models.py:334
+msgid "Mortality cannot exceed current bird count."
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:13 .\sfap\models.py:671
+msgid "Plate Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:17 .\sfap\models.py:675
+msgid "Max Payload (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:27 .\sfap\models.py:685
+msgid "Vehicle Specifications"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:53
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:120 .\ims\models.py:121
+msgid "Staff ID Ref"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:69 .\sfap\models.py:725
+msgid "Transit Audit Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\farm_vehicles.py⁩:111 .\sfap\models.py:767
+msgid "Arrival time cannot be before departure time."
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:16 .\fns\models.py:18
+msgid "Feed Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:17 .\fns\models.py:19
+msgid "Brand/Manufacturer"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:28 .\fns\models.py:30
+msgid "Nutritional Composition"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:31 .\fns\models.py:33
+msgid "Stores vitamins, proteins, and mineral percentages."
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:34 .\fns\models.py:36
+msgid "Unit Price (per KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:42
+#: ⁨.\New folder\core\models\feed_models.py⁩:73
+#: ⁨.\New folder\core\models\feed_models.py⁩:140 .\fns\models.py:44
+#: .\fns\models.py:75 .\fns\models.py:142
+msgid "Feed Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:43 .\fns\models.py:45
+msgid "Feed Types"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:76 .\fns\models.py:78
+msgid "Total Stock (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:79 .\fns\models.py:81
+msgid "Reorder Level (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:83 .\fns\models.py:85
+msgid "Triggers an alert when stock falls below this amount."
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:97 .\fns\models.py:99
+msgid "Stock Logs"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:99 .\fns\models.py:101
+msgid "Audit trail of feed arrivals and batch-specific metadata."
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:104 .\fns\models.py:106
+msgid "Feed Inventory"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:105 .\fns\models.py:107
+msgid "Feed Inventories"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:143 .\fns\models.py:145
+msgid "Quantity Used (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:154 .\fns\models.py:156
+msgid "Consumption Notes"
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:157 .\fns\models.py:159
+msgid "Stores waste data, feeder status, and behavioral observations."
+msgstr ""
+
+#: ⁨.\New folder\core\models\feed_models.py⁩:165 .\fns\models.py:167
+msgid "Feed Consumption Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:18 .\sfap\models.py:783
+msgid "Protocol Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:20 .\sfap\models.py:785
+msgid "Target Bird Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:29 .\sfap\models.py:794
+msgid "Protocol Steps"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:31 .\sfap\models.py:796
+msgid "JSON array of scheduled health tasks by bird age (days)."
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:33 .\sfap\models.py:798
+msgid "Detailed Description"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:37 .\sfap\models.py:802
+msgid "Health Protocol"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:38 .\sfap\models.py:803
+msgid "Health Protocols"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:69 .\sfap\models.py:834
+msgid "Date of Administration"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:71 .\sfap\models.py:836
+msgid "Record Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:83 .\sfap\models.py:848
+msgid "Event Details"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:85 .\sfap\models.py:850
+msgid "Stores item names, batch numbers, and administration methods."
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:88 .\sfap\models.py:853
+msgid "Total Cost"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:94 .\sfap\models.py:859
+msgid "Clinical Notes"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:100 .\sfap\models.py:865
+msgid "Medical Record"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:145 .\sfap\models.py:910
+msgid "Impacted Batch"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:148 .\sfap\models.py:913
+msgid "Suspected Disease/Condition"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:150 .\sfap\models.py:915
+msgid "Resolution Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:161 .\sfap\models.py:926
+msgid "Diagnostic & Quarantine Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:163 .\sfap\models.py:928
+msgid "Detailed symptoms, lab results, and containment measures."
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:166 .\sfap\models.py:931
+msgid "Incident Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\health_models.py⁩:175 .\sfap\models.py:940
+msgid "Disease Outbreak"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:16 .\htms\models.py:18
+msgid "Building Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:17
+#: ⁨.\New folder\core\models\processing_models.py⁩:17 .\htms\models.py:19
+#: .\ppms\models.py:15
+msgid "Location Details"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:28 .\htms\models.py:30
+msgid "Building Specifications"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:31 .\htms\models.py:33
+msgid "Stores utility availability, unit counts, and construction data."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:36 .\htms\models.py:38
+msgid "Building"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:65 .\htms\models.py:67
+msgid "Unit Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:66 .\htms\models.py:68
+msgid "Unit Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:70 .\htms\models.py:72
+msgid "Monthly Rent"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:81 .\htms\models.py:83
+msgid "Unit Features"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:84 .\htms\models.py:86
+msgid "Stores square footage, furnishing status, and utility meters."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:89 .\htms\models.py:91
+msgid "Rental Unit"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:135 .\htms\models.py:137
+msgid "Tenant Profile Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:139 .\htms\models.py:141
+msgid "Stores emergency contacts, occupant counts, and employment status."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:143 .\htms\models.py:145
+msgid "Is Staff Tenant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:145 .\htms\models.py:147
+msgid "If True, this tenant is eligible for payroll deductions."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:148 .\htms\models.py:150
+msgid "Is Active Tenant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:152 .\htms\models.py:154
+msgid "Tenant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:181 .\htms\models.py:183
+msgid "Agreement Start"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:182 .\htms\models.py:184
+msgid "Agreement End"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:184 .\htms\models.py:186
+msgid "Security Deposit"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:189 .\htms\models.py:191
+msgid "Refundable deposit held against damages or unpaid rent."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:191 .\htms\models.py:193
+msgid "Deposit Received"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:201 .\htms\models.py:203
+msgid "Billing Terms"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:203 .\htms\models.py:205
+msgid "Sets due dates, late fees, and payroll deduction logic."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:210 .\htms\models.py:212
+msgid "Lease Agreement"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:235 .\htms\models.py:237
+msgid "This unit is already occupied by an active lease."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:245 .\htms\models.py:247
+msgid "Casual workers are not eligible for long-term staff housing."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:265 .\htms\models.py:267
+msgid "Billing Month"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:267 .\htms\models.py:269
+msgid "Rent Amount"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:270 .\htms\models.py:272
+msgid "Utility Charges"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:284 .\htms\models.py:286
+msgid "Invoice Breakdown"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:286 .\htms\models.py:288
+msgid "Is Paid"
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:293 .\htms\models.py:295
+msgid "Stores receipt numbers and payment confirmation details."
+msgstr ""
+
+#: ⁨.\New folder\core\models\housing_models.py⁩:298 .\htms\models.py:300
+msgid "Rent Invoice"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:19 .\ipss\models.py:21
+msgid "Product Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:33 .\ipss\models.py:43
+msgid "Product Specifications"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:37 .\ipss\models.py:47
+msgid "Product Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:60 .\ipss\models.py:70
+msgid "Location Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:61 .\ipss\models.py:71
+msgid "Warehouse Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:63 .\ipss\models.py:73
+msgid "Warehouse Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:89
+#: ⁨.\New folder\core\models\pground_models.py⁩:25 .\ipss\models.py:99
+#: .\rhms\models.py:26
+msgid "Zone Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:90 .\ipss\models.py:100
+msgid "Zone Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:113 .\ipss\models.py:123
+msgid "Unit Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:115 .\ipss\models.py:125
+msgid "Storage Mean"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:117
+#: ⁨.\New folder\core\models\pground_models.py⁩:27 .\ipss\models.py:127
+#: .\rhms\models.py:28
+msgid "Max Capacity"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:150 .\ipss\models.py:160
+msgid "Quantity on Hand"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:153 .\ipss\models.py:163
+msgid "Minimum Stock Level"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:155 .\ipss\models.py:165
+msgid "The threshold that triggers a 'Low Stock' alert for procurement."
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:158 .\ipss\models.py:168
+msgid "Target Storage Temp (°C)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:164 .\ipss\models.py:174
+msgid ""
+"Specific temperature requirement for this stock (e.g., -18.00 for frozen)."
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:167 .\ipss\models.py:177
+msgid "UOM"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:169 .\ipss\models.py:179
+msgid "Readiness"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:172 .\ipss\models.py:182
+msgid "Batch Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:191 .\ipss\models.py:194
+msgid "Stock Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:252 .\ipss\models.py:255
+msgid "Is Reversible"
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:255 .\ipss\models.py:258
+msgid ""
+"If True, this movement can be rolled back (e.g., for order cancellations)."
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:289 .\ipss\models.py:292
+msgid "This movement type cannot be reversed."
+msgstr ""
+
+#: ⁨.\New folder\core\models\inventory_models.py⁩:310 .\ipss\models.py:313
+msgid "Insufficient stock for this movement."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:16 .\ims\models.py:17
+msgid "Unit ID Ref"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:17 .\ims\models.py:18
+msgid "Zone ID Ref"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:19 .\ims\models.py:20
+msgid "Tenant/Staff ID Ref"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:22 .\ims\models.py:23
+msgid "Initial Issue Description"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:24 .\ims\models.py:25
+msgid "Priority"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:27 .\ims\models.py:28
+msgid "Repair Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:41 .\ims\models.py:42
+msgid "Inspection & Assignment"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:45 .\ims\models.py:46
+msgid "Tracks who is assigned and what they found during the initial survey."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:63 .\ims\models.py:64
+msgid "Post-Maintenance Data"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:66 .\ims\models.py:67
+msgid "Detailed breakdown of parts, labor, and final resolution."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:71 .\ims\models.py:72
+msgid "Maintenance Request"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:110 .\ims\models.py:111
+msgid "Asset Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:113 .\ims\models.py:114
+msgid "Asset ID Reference"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:115 .\ims\models.py:116
+msgid "The ID of the Farm, Building, Zone, or Unit being inspected."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:119 .\ims\models.py:120
+msgid "Inspection Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:128 .\ims\models.py:129
+msgid "Inspection Report"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:130 .\ims\models.py:131
+msgid "Asset-specific safety findings and health scores."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:137 .\ims\models.py:138
+msgid "Maintenance Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:140 .\ims\models.py:141
+msgid "Records of parts replaced, labor, and costs incurred."
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:143 .\ims\models.py:144
+msgid "Total Maintenance Cost"
+msgstr ""
+
+#: ⁨.\New folder\core\models\maintainance_models.py⁩:152 .\ims\models.py:153
+msgid "Maintenance Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:23 .\rhms\models.py:24
+msgid "Parent Farm Site"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:27 .\rhms\models.py:28
+msgid "Maximum visitors allowed at once for safety."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:38 .\rhms\models.py:39
+msgid "Zone Features"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:41 .\rhms\models.py:42
+msgid "Stores amenities, safety specs, and connectivity details."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:44 .\rhms\models.py:45
+msgid "Hourly Rate"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:54 .\rhms\models.py:55
+msgid "Peak Pricing Configuration"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:58 .\rhms\models.py:59
+msgid ""
+"JSON mapping of days or holidays to price multipliers. Example: {'Saturday': "
+"1.5, 'Sunday': 1.5, 'PublicHoliday': 2.0}"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:61 .\rhms\models.py:62
+msgid "Is Available"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:65 .\rhms\models.py:66
+msgid "Recreation Zone"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:66 .\rhms\models.py:67
+msgid "Recreation Zones"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:127 .\rhms\models.py:128
+msgid "Ticket Serial Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:129 .\rhms\models.py:130
+msgid "Visit Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:130 .\rhms\models.py:131
+msgid "Number of Visitors"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:142 .\rhms\models.py:143
+msgid "Ticket Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:144 .\rhms\models.py:145
+msgid "Stores package inclusions, group details, and payment modes."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:147 .\rhms\models.py:148
+msgid "Total Amount Paid"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:154 .\rhms\models.py:155
+msgid "Visitor Ticket"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:207 .\rhms\models.py:208
+msgid "Customer/Org Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:208
+#: ⁨.\New folder\core\models\sales_models.py⁩:67 .\rhms\models.py:209
+#: .\srs\models.py:67
+msgid "Contact Phone"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:210 .\rhms\models.py:211
+msgid "Start Date & Time"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:211 .\rhms\models.py:212
+msgid "End Date & Time"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:221 .\rhms\models.py:222
+msgid "Booking Details"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:224 .\rhms\models.py:225
+msgid "Detailed event setup, catering requirements, and guest lists."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:228 .\rhms\models.py:229
+msgid "Total Quote"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:231 .\rhms\models.py:232
+msgid "Deposit Paid"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:234 .\rhms\models.py:235
+msgid "Full Payment Deadline"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:237 .\rhms\models.py:238
+msgid "Date by which the balance must be cleared to avoid cancellation."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:246 .\rhms\models.py:247
+msgid "Facility Booking"
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:273 .\rhms\models.py:274
+msgid "End time must be after start time."
+msgstr ""
+
+#: ⁨.\New folder\core\models\pground_models.py⁩:285 .\rhms\models.py:286
+msgid "This zone is already booked for the selected time slot."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:16 .\ppms\models.py:14
+msgid "Plant Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:23 .\ppms\models.py:21
+msgid "Plant Manager"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:32 .\ppms\models.py:30
+msgid "Plant Configuration"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:42 .\ppms\models.py:40
+msgid "Certification & Permits"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:44 .\ppms\models.py:42
+msgid "Stores Halal status, health permits, and inspection records."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:50 .\ppms\models.py:48
+msgid "Processing Plant"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:92
+msgid "Assigned Staff"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:95
+msgid "Birds Processed"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:96
+msgid "Live Birds Input"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:98
+msgid "Live Weight (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:101
+msgid "Dressed Weight (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:110
+msgid "Slaughter Metrics"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:121
+msgid "Processing Parameters"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:124
+msgid "Audit trail for water temperature, voltage, and safety metrics."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:127
+msgid "Session Start"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:128
+msgid "Session End"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:131
+msgid "Yield Percentage (%)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:133
+msgid "Temperature Recorded"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:135
+msgid "Rejects/Condemned"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:137
+msgid "Birds rejected during inspection for health/quality reasons."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:142
+msgid "Processing Session"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:161
+msgid "Dressed weight cannot be greater than or equal to Live weight."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:170
+msgid "Worker health clearance expired or missing."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:225
+msgid "Inventory Catalog Reference"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:228
+msgid "Production Line"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:232
+msgid "QR/Barcode"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:234
+msgid "Unit Weight (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:244
+msgid "Packaging Specs"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:246
+msgid "Stores material types, seal checks, and storage conditions."
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:249
+#: ⁨.\New folder\core\models\user_models.py⁩:178
+msgid "Expiry Date"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:253
+msgid "Packaged Product"
+msgstr ""
+
+#: ⁨.\New folder\core\models\processing_models.py⁩:282
+msgid "Traceability Error: Total packaged weight exceeds the "
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:22 .\lrh\models.py:22
+msgid "Registration Remarks"
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:24 .\lrh\models.py:24
+msgid "Notes regarding background checks or verification details."
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:30 .\lrh\models.py:30
+msgid "Upload the signed employment contract (PDF/JPG)."
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:35 .\lrh\models.py:35
+msgid "Employee Registration History"
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:62 .\lrh\models.py:62
+msgid "Contract Ref"
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:66 .\lrh\models.py:66
+msgid "Tenant Registration History"
+msgstr ""
+
+#: ⁨.\New folder\core\models\registration_models.py⁩:73 .\lrh\models.py:73
+msgid "Cannot verify tenant without a Contract Reference number."
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:63 .\srs\models.py:63
+msgid "Customer Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:68
+#: ⁨.\New folder\core\models\user_models.py⁩:58 .\core\models.py:57
+#: .\irms\models.py:66 .\srs\models.py:68
+msgid "Email Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:77 .\srs\models.py:77
+msgid "Profile Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:79 .\srs\models.py:79
+msgid "Credit Limit"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:85 .\srs\models.py:85
+msgid "Customer"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:117 .\srs\models.py:117
+msgid "Order ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:126 .\srs\models.py:126
+msgid "Subtotal"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:132 .\srs\models.py:132
+msgid "Discount"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:139 .\srs\models.py:139
+msgid "Total Payable"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:151 .\srs\models.py:151
+msgid "Order History Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:155 .\srs\models.py:155
+msgid "Sales Order"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:177 .\srs\models.py:177
+msgid "Order must be associated with either an offline or online customer."
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:182 .\srs\models.py:182
+msgid ""
+"Order cannot be associated with both offline and online customers "
+"simultaneously."
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:193 .\srs\models.py:193
+msgid "Unknown Customer"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:214 .\srs\models.py:214
+msgid "Quantity Sold"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:227 .\srs\models.py:227
+msgid "Pricing Snapshot"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:231 .\srs\models.py:231
+msgid "Order Item"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:280 .\srs\models.py:280
+msgid "Sale Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:352 .\srs\models.py:352
+msgid "Product Attributes at Sale"
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:544 .\srs\models.py:544
+msgid ""
+"Fraud Prevention: Total returned units would exceed original purchase count."
+msgstr ""
+
+#: ⁨.\New folder\core\models\sales_models.py⁩:580 .\srs\models.py:580
+msgid "Financial Breakdown"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:30 .\slms\models.py:29
+msgid "Shipment Request"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:60 .\slms\models.py:59
+msgid "Vehicle ID"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:76 .\slms\models.py:75
+msgid "Calculated Cost"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:100 .\slms\models.py:99
+msgid "Shipment Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:105 .\slms\models.py:104
+msgid "Shipment"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:133 .\slms\models.py:132
+msgid "Shipment cannot be marked DELIVERED until the OTP is cleared/verified."
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:237 .\slms\models.py:236
+msgid "Method Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:239 .\slms\models.py:238
+msgid "Carrier Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:243 .\slms\models.py:242
+msgid "Base Cost"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:251 .\slms\models.py:250
+msgid "Estimated Delivery Time"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:254 .\slms\models.py:253
+msgid "e.g., 2-4 hours, Next Day"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:266 .\slms\models.py:265
+msgid "Technical Configuration"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:271 .\slms\models.py:270
+msgid "Shipping Method"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:272 .\slms\models.py:271
+msgid "Shipping Methods"
+msgstr ""
+
+#: ⁨.\New folder\core\models\shipping_models.py⁩:334 .\slms\models.py:333
+msgid "Min weight must be less than max weight."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:23 .\lfms\models.py:22
+msgid "Ride, Delivery, Tractor, etc."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:44 .\lfms\models.py:43
+msgid "Vehicle year cannot be in the future."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:127 .\lfms\models.py:126
+msgid "Cannot set driver to available; license has expired."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:205 .\lfms\models.py:204
+msgid "An 'ASSIGNED' booking must have both a driver and a vehicle."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:209 .\lfms\models.py:208
+msgid "Assigned driver has an expired license."
+msgstr ""
+
+#: ⁨.\New folder\core\models\transport_models.py⁩:214 .\lfms\models.py:213
+msgid "Assigned vehicle is currently marked as inactive/under maintenance."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:60 .\core\models.py:59
+#: .\irms\models.py:67
+msgid "Phone Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:62 .\core\models.py:61
+#: .\irms\models.py:64
+msgid "First Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:63 .\core\models.py:62
+msgid "Middle Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:64 .\core\models.py:63
+#: .\irms\models.py:65
+msgid "Last Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:66 .\core\models.py:65
+msgid "Staff Status"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:68 .\core\models.py:67
+msgid "Using Default Password"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:70 .\core\models.py:69
+msgid "Flag for staff; forced password change required if True."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:73 .\core\models.py:72
+msgid "Identity Verified"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:76 .\core\models.py:75
+msgid "Designates whether the user has verified their email/phone via OTP."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:80 .\core\models.py:79
+msgid "Profile Complete"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:82 .\core\models.py:81
+msgid "True if the user has filled in all required HR/KYC metadata."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:85 .\core\models.py:84
+msgid "Profile Picture"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:90 .\core\models.py:89
+msgid "User's photo for visual identification on Kiosks and reports."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:102 .\core\models.py:101
+msgid "Status Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:106 .\core\models.py:105
+msgid "Detailed audit data for verification and profile completion stages."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:111 .\core\models.py:110
+msgid "Date Joined"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:121 .\core\models.py:120
+msgid "System Users"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:136 .\core\models.py:135
+msgid "Names cannot be empty or whitespace only."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:173
+msgid "Identity Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:176
+msgid "Identity Number"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:181
+msgid "ID Scan/Photo"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:190
+msgid "User Identity"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:191
+msgid "User Identities"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:197
+msgid "This identity document has already expired."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:222 .\core\models.py:172
+msgid "Address Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:224 .\core\models.py:174
+msgid "Default Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:226
+msgid "Recipient Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:227 .\core\models.py:175
+msgid "Street Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:228 .\core\models.py:176
+msgid "City"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:229 .\core\models.py:177
+msgid "State/Province"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:230 .\core\models.py:178
+msgid "Postal Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:231 .\core\models.py:179
+msgid "Country"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:235 .\core\models.py:183
+msgid "User Address"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:236 .\core\models.py:184
+msgid "User Addresses"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:262 .\core\models.py:258
+msgid "OTP Code"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:263 .\core\models.py:259
+msgid "Is Used"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:264 .\core\models.py:260
+msgid "Expires At"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:265 .\core\models.py:261
+msgid "Created At"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:267 .\core\models.py:263
+msgid "Token Type"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:278 .\core\models.py:274
+msgid "OTP Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:282 .\core\models.py:278
+msgid "Stores security audit data like attempt counts and delivery logs."
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:288 .\core\models.py:284
+msgid "OTP Token"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:289 .\core\models.py:285
+msgid "OTP Tokens"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:342
+msgid "User Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\user_models.py⁩:343
+msgid "User Logs"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:16 .\wces\models.py:16
+msgid "Waste Type Name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:18 .\wces\models.py:18
+msgid "Primary Disposal Method"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:29 .\wces\models.py:29
+msgid "Financial Logic"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:31 .\wces\models.py:31
+msgid "Stores pricing for sales or costs for disposal per unit."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:35 .\wces\models.py:35
+msgid "Hazardous / Special Handling"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:37 .\wces\models.py:37
+msgid "If true, requires specific safety protocols for collection."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:42
+#: ⁨.\New folder\core\models\waste_models.py⁩:83 .\wces\models.py:42
+#: .\wces\models.py:83
+msgid "Waste Category"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:43 .\wces\models.py:43
+msgid "Waste Categories"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:80 .\wces\models.py:80
+msgid "Farm Location"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:103 .\wces\models.py:103
+msgid "Quantity (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:114 .\wces\models.py:114
+msgid "Collection Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:118 .\wces\models.py:118
+msgid "Stores physical properties and audit data from the point of collection."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:124 .\wces\models.py:124
+msgid "Waste Collection Log"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:149 .\wces\models.py:149
+msgid "Waste must be linked to a source (Batch or Rental Unit)."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:154 .\wces\models.py:154
+msgid ""
+"Waste cannot be linked to both a Batch and a Rental Unit simultaneously."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:159 .\wces\models.py:159
+msgid "Quantity must be greater than zero."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:169 .\wces\models.py:169
+msgid "Location name"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:179 .\wces\models.py:179
+msgid "Disposal Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:186 .\wces\models.py:186
+msgid "Disposal Area"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:187 .\wces\models.py:187
+msgid "Disposal Areas"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:213 .\wces\models.py:213
+msgid "Linked Collections"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:218 .\wces\models.py:218
+msgid "Total Outflow Weight (KG)"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:231 .\wces\models.py:231
+msgid "Exit Audit Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:233 .\wces\models.py:233
+msgid "Tracks transport costs, sale revenue, and buyer/logistics info."
+msgstr ""
+
+#: ⁨.\New folder\core\models\waste_models.py⁩:238 .\wces\models.py:238
+msgid "Waste Outflow Audit"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:35 .\utils\audit_track.py:33
+msgid "Created On"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:39 .\utils\audit_track.py:37
+msgid "Updated On"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:58 .\utils\audit_track.py:56
+msgid "Initiated At"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:68 .\utils\audit_track.py:66
+msgid "Verified At"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:77 .\utils\audit_track.py:75
+msgid "Registered At"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:90 .\utils\audit_track.py:88
+msgid "Is Deleted"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:93 .\utils\audit_track.py:91
+msgid "Toggle to move this record to the Trash UI."
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:95 .\utils\audit_track.py:93
+msgid "Deleted At"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:106 .\utils\audit_track.py:104
+msgid "Trash Metadata"
+msgstr ""
+
+#: ⁨.\New folder\core\utils\audit_track.py⁩:109 .\utils\audit_track.py:107
+msgid "Audit data regarding who deleted the record and why."
+msgstr ""
+
+#: .\core\models.py:220
+msgid "Preferences"
+msgstr ""
+
+#: .\core\models.py:222
+msgid "Flexible JSON object storing user preferences."
+msgstr ""
+
+#: .\core\models.py:228
+msgid "User Preferences"
+msgstr ""
+
+#: .\helpers\choices.py:23
+msgid "Work"
+msgstr ""
+
+#: .\helpers\choices.py:27
+msgid "Single"
+msgstr ""
+
+#: .\helpers\choices.py:28
+msgid "Maried"
+msgstr ""
+
+#: .\helpers\choices.py:29
+msgid "Devoced"
+msgstr ""
+
+#: .\helpers\choices.py:33
+msgid "Mr"
+msgstr ""
+
+#: .\helpers\choices.py:34
+msgid "Ms"
+msgstr ""
+
+#: .\helpers\choices.py:35
+msgid "Mrs"
+msgstr ""
+
+#: .\helpers\choices.py:36
+msgid "Doctor"
+msgstr ""
+
+#: .\helpers\choices.py:37
+msgid "Professor"
+msgstr ""
+
+#: .\helpers\choices.py:38
+msgid "Engineer"
+msgstr ""
+
+#: .\hrms\models.py:18
+msgid "Department name"
+msgstr ""
+
+#: .\hrms\models.py:19
+msgid "Department Description"
+msgstr ""
+
+#: .\hrms\models.py:21
+msgid "Minor department"
+msgstr ""
+
+#: .\hrms\models.py:31 .\irms\models.py:28
+msgid "Department"
+msgstr ""
+
+#: .\hrms\models.py:32
+msgid "Departments"
+msgstr ""
+
+#: .\hrms\models.py:60
+msgid "Employee Department"
+msgstr ""
+
+#: .\hrms\models.py:68
+msgid "Marital Status"
+msgstr ""
+
+#: .\hrms\models.py:105
+msgid "Employee Title"
+msgstr ""
+
+#: .\irms\models.py:14
+msgid "Draft"
+msgstr ""
+
+#: .\irms\models.py:16
+msgid "Closed"
+msgstr ""
+
+#: .\irms\models.py:21
+msgid "Job Title"
+msgstr ""
+
+#: .\irms\models.py:22
+msgid "Job Description"
+msgstr ""
+
+#: .\irms\models.py:34
+msgid "Current state of the job opening."
+msgstr ""
+
+#: .\irms\models.py:45
+msgid "Recruitment Manager"
+msgstr ""
+
+#: .\irms\models.py:53
+msgid "Job Opening"
+msgstr ""
+
+#: .\irms\models.py:54
+msgid "Job Openings"
+msgstr ""
+
+#: .\irms\models.py:70
+msgid "Resume/CV"
+msgstr ""
+
+#: .\irms\models.py:74
+msgid "PDF, DOCX format recommended."
+msgstr ""
+
+#: .\irms\models.py:76
+msgid "LinkedIn Profile"
+msgstr ""
+
+#: .\irms\models.py:77
+msgid "Recruitment Manager Notes"
+msgstr ""
+
+#: .\irms\models.py:84
+msgid "Applicant Profile"
+msgstr ""
+
+#: .\irms\models.py:85
+msgid "Applicant Profiles"
+msgstr ""
+
+#: .\irms\models.py:94
+msgid "Applied"
+msgstr ""
+
+#: .\irms\models.py:95
+msgid "Under Review"
+msgstr ""
+
+#: .\irms\models.py:96
+msgid "Interviewing"
+msgstr ""
+
+#: .\irms\models.py:97
+msgid "Offer Extended"
+msgstr ""
+
+#: .\irms\models.py:98
+msgid "Offer Accepted"
+msgstr ""
+
+#: .\irms\models.py:99
+msgid "Onboarding"
+msgstr ""
+
+#: .\irms\models.py:100
+msgid "Hired"
+msgstr ""
+
+#: .\irms\models.py:101
+msgid "Rejected"
+msgstr ""
+
+#: .\irms\models.py:124
+msgid "Job Application"
+msgstr ""
+
+#: .\irms\models.py:125
+msgid "Job Applications"
+msgstr ""
+
+#: .\irms\models.py:138
+msgid "Phone Screen"
+msgstr ""
+
+#: .\irms\models.py:139
+msgid "Video Call"
+msgstr ""
+
+#: .\irms\models.py:140
+msgid "In-Person"
+msgstr ""
+
+#: .\irms\models.py:141
+msgid "Technical Assessment"
+msgstr ""
+
+#: .\irms\models.py:151
+msgid "Scheduled Time"
+msgstr ""
+
+#: .\irms\models.py:158
+msgid "Location / Video Link"
+msgstr ""
+
+#: .\irms\models.py:161
+msgid "Physical address or Teams/Zoom link."
+msgstr ""
+
+#: .\irms\models.py:168
+msgid "Interview Panel"
+msgstr ""
+
+#: .\irms\models.py:171
+msgid "Post-Interview Feedback"
+msgstr ""
+
+#: .\irms\models.py:178
+msgid "Interview"
+msgstr ""
+
+#: .\irms\models.py:179
+msgid "Interviews"
+msgstr ""
+
+#: .\main\settings.py:159
+msgid "French"
+msgstr ""
+
+#: .\main\settings.py:160
+msgid "Simplified Chinese"
+msgstr ""

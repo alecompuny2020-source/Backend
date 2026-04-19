@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        .container { font-family: sans-serif; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .header { background-color: #3b82f6; color: white; padding: 20px; text-align: center; }
+        .content { padding: 30px; color: #334155; line-height: 1.6; }
+        .summary-card { background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 6px; padding: 20px; margin: 20px 0; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: bold; color: #1e293b; margin-top: 15px; }
+        .footer { font-size: 0.8rem; color: #64748b; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Daily Sales Closure</h1>
+            <p>{{ date|date:"D, d M Y" }}</p>
+        </div>
+        <div class="content">
+            <p>Dear CEO,</p>
+            <p>The daily sales records have been finalized by <strong>{{ agent_name }}</strong>.</p>
+
+            <div class="summary-card">
+                <div class="row">
+                    <span>Sales Count:</span>
+                    <strong>{{ summary.total_sales_count }}</strong>
+                </div>
+                <div class="row">
+                    <span>Total Revenue:</span>
+                    <strong>TSh {{ summary.total_revenue|floatformat:2 }}</strong>
+                </div>
+                <div class="row">
+                    <span>Cash Expenses:</span>
+                    <strong style="color: #ef4444;">TSh {{ summary.total_cash_expenses|floatformat:2 }}</strong>
+                </div>
+                <div class="total-row">
+                    <span>Net Cash Settlement:</span>
+                    <span style="color: #22c55e;">TSh {{ summary.net_cash_settlement|floatformat:2 }}</span>
+                </div>
+            </div>
+
+            <p>You can view the full details in the administrative dashboard.</p>
+        </div>
+        <div class="footer">
+            Ahsante,<br>
+            Daz Electronics Administrative Informations Management System
+        </div>
+    </div>
+</body>
+</html>
