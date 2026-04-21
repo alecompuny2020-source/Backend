@@ -63,7 +63,7 @@ class EmailSenderService:
         )
 
     @classmethod
-    def send_forgot_password_link_email(cls, user, reset_link):
+    def send_forgot_password_link(cls, user, reset_link):
         """
         Sends a high-priority HTML email with a password reset link.
         """
@@ -80,7 +80,7 @@ class EmailSenderService:
             high_priority=True
         )
 
-        
+
     @classmethod
     def send_staff_onboarding(cls, user, password, completion_link, greeting_name):
         """Sends credentials to a new staff member's email."""

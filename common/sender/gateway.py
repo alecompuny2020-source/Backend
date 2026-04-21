@@ -100,16 +100,19 @@ class NotificationSenderGateway:
     @classmethod
     def _execute_reset(cls, user, method):
         """Internal helper to trigger the specific Service for password forgot."""
+
+        from common.managers import EnterpriseOTPandLinkManager as OTPManager
+        from core.models import Otp, User
+
         if method == "email":
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
             link = f"{settings.FRONTEND_URL}/confirm-forgot-password/{uid}/{token}/"
             return EmailSenderService.send_forgot_password_link(user, link)
 
-        otp_entry = OTPManager.generate_for_user(
+        otp_entry = OTPManager.generate_and_send(
             identifier=str(user.phone_number),
-            token_type=Otp.TOKEN_TYPE_PASSWORD_RESET,
-            model_user=User, model_otp=Otp
+            token_type=Otp.TOKEN_TYPE_PASSWORD_RESET
         )
         return SMSSenderService.send_otp(otp_entry)
 
