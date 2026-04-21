@@ -8,6 +8,7 @@ from common.choices import (TOKEN_TYPE_REGISTRATION)
 from common.utils import (enforce_password, validate_user_identifier)
 from common.managers import EnterpriseOTPandLinkManager as OTPManager
 from core.models import User, Otp
+from django.db.models import Q
 import base64
 import json
 
@@ -207,11 +208,11 @@ class BaseIdentifierSerializer(serializers.Serializer):
         value = validate_user_identifier(value)
         phone = to_python(value) if "@" not in value else None
 
-        user_exists = User.objects.filter(
+        user = User.objects.filter(
             Q(email__iexact=value) | Q(phone_number=phone)
         ).exists()
 
-        if not user_exists:
+        if not user:
             raise serializers.ValidationError(
                 _("No active account found with the given credentials.")
             )
