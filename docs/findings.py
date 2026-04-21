@@ -1,72 +1,106 @@
 
-class BaseEnterpriseSerializer(serializers.ModelSerializer):
-    created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)
-    updated_by_name = serializers.CharField(source='updated_by.get_full_name', read_only=True)
+from rest_framework import viewsets, status, permissions
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
-    def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
-        return super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        validated_data['updated_by'] = self.context['request'].user
-        validated_data['updated_on'] = now_iso # Note: Ensure your model supports updated_on
-        return super().update(instance, validated_data)
-
-
-# MORE GRANULAR
-
-from rest_framework import serializers
-from helpers.choices import now_iso
-
-class AuditFieldsMixin(serializers.ModelSerializer):
+class UserProfileViewSet(viewsets.GenericViewSet):
     """
-    Enterprise mixin to handle ownership and YES/NO formatting.
+    Unified ViewSet for granular user profile management.
+    Uses a centralized dispatcher to handle CRUD operations across different entities.
     """
-    created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)
-    updated_by_name = serializers.CharField(source='updated_by.get_full_name', read_only=True)
+    permission_classes = [permissions.IsAuthenticated]
 
-    def to_representation(self, instance):
-        """Automatically converts booleans to YES/NO for any field starting with 'is_'"""
-        data = super().to_representation(instance)
-        for field, value in data.items():
-            if field.startswith('is_') and isinstance(value, bool):
-                data[field] = "YES" if value else "NO"
-        return data
+    # --- THE DRY ENGINE ---
 
-    def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
-        return super().create(validated_data)
+    def _handle_action(self, instance_or_queryset, serializer_class, request,
+                       many=False, success_msg="Operation successful"):
+        """
+        Generic action dispatcher to handle GET, POST, PUT, PATCH, DELETE
+        for granular profile sections.
+        """
+        method = request.method.lower()
 
-    def update(self, instance, validated_data):
-        validated_data['updated_by'] = self.context['request'].user
-        validated_data['updated_on'] = now_iso
-        return super().update(instance, validated_data)
+        # 1. RETRIEVE (GET)
+        if method == "get":
+            serializer = serializer_class(instance_or_queryset, many=many)
+            return Response(serializer.data)
 
+        # 2. CREATE (POST)
+        if method == "post":
+            # If it's a 1-to-1 relationship and exists, block POST
+            if instance_or_queryset and not many:
+                return Response({"error": "Resource already exists."}, status=status.HTTP_400_BAD_REQUEST)
 
-from rest_framework import serializers
-from .models import * # Import your models
-from core.mixins import AuditFieldsMixin
+            serializer = serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(user=request.user)
+            return Response({"detail": success_msg}, status=status.HTTP_201_CREATED)
 
-class FarmSerializer(AuditFieldsMixin):
-    farm_manager = serializers.CharField(source='manager.user.get_full_name', read_only=True)
+        # 3. UPDATE (PUT/PATCH)
+        if method in ["put", "patch"]:
+            # For collections (Addresses), find specific item from request data
+            obj = instance_or_queryset
+            if many:
+                obj_id = request.data.get("id")
+                obj = instance_or_queryset.filter(id=obj_id).first()
+                if not obj:
+                    return Response({"error": "Item not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    class Meta:
-        model = Farm
-        fields = [
-            "id", "name", "region", "gps_coordinates", "site_config", "farm_manager",
-            "is_quarantined", "is_active", "created_by_name", "created_on",
-            "updated_by_name", "updated_on"
-        ]
-        read_only_fields = ["id", "created_on", "updated_on"]
+            if not obj:
+                 return Response({"error": "Resource not found."}, status=status.HTTP_404_NOT_FOUND)
 
-class FarmShedSerializer(AuditFieldsMixin):
-    farm_details = serializers.CharField(source='farm.get_farm_details', read_only=True)
+            serializer = serializer_class(obj, data=request.data, partial=(method == "patch"))
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response({"detail": success_msg})
 
-    class Meta:
-        model = FarmShed
-        fields = "__all__" # Use __all__ or specific list to keep it tight
+        # 4. DELETE
+        if method == "delete":
+            obj = instance_or_queryset
+            if many:
+                obj_id = request.data.get("id")
+                obj = instance_or_queryset.filter(id=obj_id).first()
 
+            if not obj:
+                return Response({"error": "Nothing to delete."}, status=status.HTTP_404_NOT_FOUND)
 
+            # Special case for Profile Picture file cleanup
+            if hasattr(obj, 'profile_picture') and hasattr(obj.profile_picture, 'delete'):
+                obj.profile_picture.delete(save=False)
+                obj.profile_picture = None
+                obj.save()
+            else:
+                obj.delete()
+
+            return Response({"detail": "Deleted successfully."})
+
+    # --- DEDICATED ACTIONS ---
+
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    def personal_info(self, request):
+        """Manage core personal details."""
+        return self._handle_action(request.user, UserPersonalInfoSerializer, request)
+
+    @action(detail=False, methods=["get", "put", "patch"])
+    def contact_info(self, request):
+        """Manage email and phone."""
+        return self._handle_action(request.user, UserContactInfoSerializer, request)
+
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    def profile_picture(self, request):
+        """Manage profile picture file."""
+        return self._handle_action(request.user, ProfilePictureSerializer, request)
+
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    def addresses(self, request):
+        """Manage user addresses (Collection)."""
+        return self._handle_action(request.user.addresses.all(), UserAddressSerializer, request, many=True)
+
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    def preferences(self, request):
+        """Manage user system preferences."""
+        pref = getattr(request.user, 'preferences', None)
+        return self._handle_action(pref, UserPreferenceSerializer, request)
 
 from rest_framework import viewsets, status, filters
 from rest_framework.response import Response
