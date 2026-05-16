@@ -19,6 +19,7 @@ from django.utils import timezone
 
 now = timezone.now
 now_iso = timezone.now().isoformat()
+current_time = timezone.now()
 
 OTP_CODE_LENGTH = getattr(settings, "OTP_CODE_LENGTH", 6)
 OTP_EXPIRATION_TIME_MINUTES = getattr(settings, "OTP_EXPIRATION_TIME_MINUTES", 5)
