@@ -92,6 +92,6 @@ class UserProfileViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
     def preferences(self, request):
-        """Manage user system preferences."""
+        """ Manage user system preferences."""
         pref = getattr(request.user, 'preferences', None)
         return self._handle_action(pref, UserPreferenceSerializer, request)

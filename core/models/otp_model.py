@@ -1,5 +1,5 @@
 from django.db import models
-from common.mixins import EnterpriseBaseModelMixin
+from common.mixins import BaseEnterpriseModelMixin
 import secrets
 import string
 from django.utils import timezone
@@ -10,7 +10,7 @@ from common.choices import (OTP_CODE_LENGTH, TOKEN_TYPE_CHOICES, OTP_EXPIRATION_
 
 
 
-class Otp(EnterpriseBaseModelMixin):
+class Otp(BaseEnterpriseModelMixin):
     """Secure Token Logic: Prevents brute-force and validates expiry."""
 
     TOKEN_TYPE_REGISTRATION = "registration"
