@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 
     # Enterprise Apps
     "core",
-    # "hrms",
+    "hrms",
     # "lrh",
     # "sfap",
     # "ppms",
@@ -59,10 +59,10 @@ INSTALLED_APPS = [
     "guardian",
     "drf_spectacular",
     "django.contrib.humanize",
-    "corsheaders",
     "mptt",
     "djmoney",
     "djmoney.contrib.exchange",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
