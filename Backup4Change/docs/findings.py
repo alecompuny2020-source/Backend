@@ -132,6 +132,7 @@ class EnterpriseObjectPermission(permissions.DjangoObjectPermissions):
         # but filter the results using ObjectPermissionsFilter in the ViewSet.
         return request.user and request.user.is_authenticated
 
+
 class CustomFarmPermissions(EnterpriseObjectPermission):
     """
     Specific to Farm logic. We define the map as a class attribute
@@ -154,3 +155,45 @@ class CustomFarmPermissions(EnterpriseObjectPermission):
         'PATCH': ['%(app_label)s.change_%(model_name)s'],
         'DELETE': ['%(app_label)s.delete_%(model_name)s'],
     }
+
+
+class TanzaniaAddress(models.Model):
+    # Administrative Hierarchy
+    region = models.CharField(max_length=100)  # e.g., Mwanza
+    district = models.CharField(max_length=100) # e.g., Nyamagana
+    ward = models.CharField(max_length=100)     # e.g., Pamba
+    postcode = models.CharField(max_length=5)   # e.g., 33101
+
+    # Specific Location Data
+    street_name = models.CharField(max_length=255, blank=True)
+    plot_no = models.CharField(max_length=50, blank=True)
+    block_no = models.CharField(max_length=50, blank=True)
+    house_no = models.CharField(max_length=50, blank=True)
+
+    # Rural / Unstructured Data
+    village = models.CharField(max_length=100, blank=True)
+    hamlet = models.CharField(max_length=100, blank=True)
+    landmark = models.TextField(blank=True, help_text="Nearby features for delivery")
+
+    # The "Formal" Line (for labels/invoices)
+    def __str__(self):
+        return f"Plot {self.plot_no}, {self.street_name}, {self.ward}, {self.postcode} {self.region}"
+
+from django.db import models
+
+class TanzaniaAddress(models.Model):
+    # FIXED FIELDS (For Fast Querying & Indexing)
+    region = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    ward = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=5, db_index=True)
+
+    # DYNAMIC FIELD (For Granularity)
+    # Stores: street_name, plot_no, block_no, house_no, village, hamlet, landmark, etc.
+    metadata = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        # Indexing the JSON keys if using PostgreSQL
+        indexes = [
+            models.Index(fields=['region', 'district']),
+        ]

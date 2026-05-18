@@ -19,12 +19,12 @@ from ppms.models import ProcessingPlant
 
 
 class Farm(FarmAuditBaseModelMixin):
-    """ The parent container for every site (e.g., Ihumwa, Nyamhongolo) """
+    """ The parent container for every farm or site (e.g., Ihumwa, Nyamhongolo, Nyamori and etc) """
 
     id = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False, db_index = True)
     name = models.CharField(_("Farm Name"), max_length=255, unique=True)
     region = models.CharField(_("Region"), max_length=100)
-    gps_coordinates = models.CharField(_("GPS Coordinates"), max_length=255, blank=True)
+    gps_coordinates = coordinates.PointField(_("GPS Coordinates"), geography = True, null = True, blank = True, srdi = 4326)
 
     manager = models.ForeignKey(
         "hrms.Employee",
