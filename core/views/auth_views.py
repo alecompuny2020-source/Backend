@@ -42,7 +42,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         identifier = serializer.validated_data["identifier"]
         return OTPManager.generate_and_send(identifier, token_type )
 
-    @action(detail=False, methods=["post"], serializer_class=RegistrationSerializer)
+    @action(detail=False, methods=["post"], serializer_class=RegistrationSerializer, url_path = 'initiate-registration')
     def initiate_registration(self, request):
         """Attains self user registration"""
         serializer = self.get_serializer(data=request.data)
@@ -56,7 +56,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         return Response(_("Registration success. OTP sent for verification."))
 
-    @action(detail = False, methods=['post'], serializer_class = ConfirmRegistrationSerializer)
+    @action(detail = False, methods=['post'], serializer_class = ConfirmRegistrationSerializer, url_path = 'confirm-registration')
     def confirm_registration(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -67,7 +67,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         token_type = Otp.TOKEN_TYPE_REGISTRATION
         return OTPManager.verify(identifier, code, token_type)
 
-    @action(detail = False, methods=['post'], serializer_class = RequestLoginOTPSerializer)
+    @action(detail = False, methods=['post'], serializer_class = RequestLoginOTPSerializer, url_path = 'initiate-login')
     def initiate_login(self, request):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -79,7 +79,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         token_type = Otp.TOKEN_TYPE_LOGIN
         return OTPManager.generate_and_send(identifier, token_type )
 
-    @action(detail = False, methods=['post'], serializer_class = LoginConfirmOTPSerializer)
+    @action(detail = False, methods=['post'], serializer_class = LoginConfirmOTPSerializer, url_path = 'confirm-login')
     def confirm_login(self, request):
         serializer = self.get_serializer(data = request.data)
         serializer.is_valid(raise_exception = True)
@@ -97,21 +97,21 @@ class AuthViewSet(viewsets.GenericViewSet):
             return self._get_auth_response(user, otp_response.data.get("message"))
         return otp_response
 
-    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer)
+    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer, url_path = 'request-registration-otp')
     def request_registration_otp(self, request):
         return self._handle_otp_request(request, Otp.TOKEN_TYPE_REGISTRATION)
 
-    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer)
+    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer, url_path = 'request-login-otp')
     def request_login_otp(self, request):
         return self._handle_otp_request(request, Otp.TOKEN_TYPE_LOGIN)
 
-    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer,
+    @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer, url_path = 'request-password-reset-otp',
             permission_classes=[permissions.IsAuthenticated])
     def request_password_reset_otp(self, request):
         return self._handle_otp_request(request, Otp.TOKEN_TYPE_PASSWORD_RESET)
 
     @action(detail=False, methods=["post"], serializer_class=ConfirmPasswordResetSerializer,
-            permission_classes=[permissions.IsAuthenticated])
+            permission_classes=[permissions.IsAuthenticated], url_path = 'confirm-password-reset')
     def confirm_password_reset(self, request):
         """Password reset method that verify OTP for password reset and set a new Password"""
         serializer = self.get_serializer(data=request.data)
@@ -120,11 +120,11 @@ class AuthViewSet(viewsets.GenericViewSet):
         return Response(_("Password reset successful."))
 
     @action(detail=False, methods=["post"], serializer_class=RequestOTPSerializer,
-            permission_classes=[permissions.AllowAny])
+            permission_classes=[permissions.AllowAny], url_path = 'initiate-forgot-password')
     def initiate_forgot_password(self, request):
         return self._handle_otp_request(request, Otp.TOKEN_TYPE_PASSWORD_RESET)
 
-    @action(detail = False, serializer_class = ConfirmForgotPasswordSerializer, methods = ['post'])
+    @action(detail = False, serializer_class = ConfirmForgotPasswordSerializer, methods = ['post'], url_path = 'confirm-forgot-password')
     def confirm_forgot_password(self, request):
         serializer = self.get_serializer(data = request.data)
         serializer.is_valid(raise_exception = True)
