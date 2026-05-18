@@ -200,6 +200,7 @@ BIRD_TYPE_CHOICES = [
     ("LAYER", _("Layer")),
     ("KUCHI", _("Kuchi")),
     ("LOCAL", _("Local")),
+    ("KUROILER", _("Kuroiler")),
 ]
 
 BATCH_STATUS_CHOICES = [
@@ -207,6 +208,12 @@ BATCH_STATUS_CHOICES = [
     ("DEPLETED", _("Depleted")),
     ("QUARANTINED", _("Quarantined")),
     ("PROCESSING", _("In Processing Plant")),
+]
+
+MACHINE_TYPE_CHOICES = [
+    ("SETTER", _("Setter")),
+    ("HATCHER", _("Hatcher")),
+    ("COMBINED", _("Combined (Setter & Hatcher)")),
 ]
 
 CYCLE_STATUS = [

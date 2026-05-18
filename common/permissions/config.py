@@ -942,14 +942,4 @@ PERM_CONFIG = {
         'General Farm Manager': ['view_employee', 'change_employee', 'can_change_employee_department', 'can_assign_shed', 'can_change_shed', 'can_assign_plant', 'can_change_plant'],
         'Farm Manager': ['view_employee', 'change_employee', 'can_change_employee_department', 'can_assign_shed', 'can_change_shed', 'can_assign_plant', 'can_change_plant'],
     },
-    'Employee': {
-        'Chief Executive Officer': ['add_employee', 'change_employee', 'delete_employee', 'view_employee'],
-        'Human Resource Manager': ['add_employee', 'change_employee', 'view_employee'],
-        'Human Resource Officer': ['view_employee', 'change_employee'],
-        'Recruitment Manager': ['view_employee', 'change_employee'],
-    },
-    'Farm': {
-        'Chief Executive Officer': ['add_farm', 'change_farm', 'delete_farm', 'view_farm'],
-        'Farm Manager': ['view_farm', 'change_farm'],
-    }
 }

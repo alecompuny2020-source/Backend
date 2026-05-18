@@ -140,7 +140,6 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
     """
     created_by = serializers.CharField(source='created_by.get_full_name', read_only=True)
     updated_by = serializers.CharField(source='updated_by.get_full_name', read_only=True)
-
     created_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
     updated_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
 
@@ -170,7 +169,7 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
 
 
 
-class BaseAddressModelMixin(models.Model):
+class BaseAddressModelMixin(BaseEnterpriseModelMixin):
     """Reusable Base Address Model throughout the Enterprise"""
     region = models.CharField(max_length=100, db_index=True)
     district = models.CharField(max_length=100, db_index=True)
@@ -182,7 +181,7 @@ class BaseAddressModelMixin(models.Model):
     # Stores: street_name, plot_no, block_no, house_no, village, hamlet, landmark, etc.
     address_metadata = models.JSONField(default=dict, blank=True)
 
-    class Meta:
+    class Meta(BaseEnterpriseModelMixin.Meta):
         abstract = True
 
 
