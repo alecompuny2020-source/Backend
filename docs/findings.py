@@ -470,3 +470,65 @@ def auto_assign_permissions(sender, instance, created, **kwargs):
         for perm_code in perms:
             full_perm = f"{app_label}.{perm_code}"
             assign_perm(full_perm, group, instance)
+
+
+def _generate_cycle_number(self):
+        """
+        Constructs cycle number: [SITE]-[TYPE]-CYC-[YYYYMMDD]-[SEQ]
+        Example: HOM-BRO-CYC-20260517-0001
+        """
+        # 1. Get Site Code (from the Incubator's Farm)
+        farm = self.hatcher.farm
+        site_code = getattr(farm, 'code', farm.name[:3]).upper()
+
+        # 2. Get Bird Type Code (from the Breeder Flock)
+        # Assuming BreederFlock has a 'bird_type' field
+        bird_type = getattr(self.breeder_flock, 'bird_type', 'GEN')
+        type_code = bird_type[:3].upper()
+
+        # 3. Get Date String
+        date_str = current_time().strftime('%Y%m%d')
+
+        # 4. Construct Daily Prefix
+        # Adding '-CYC-' distinguishes this from a Flock Batch ID
+        prefix = f"{site_code}-{type_code}-CYC-{date_str}-"
+
+        # 5. Sequence Logic
+        last_cycle = IncubationCycle.objects.filter(
+            cycle_id__startswith=prefix
+        ).order_by('-cycle_id').first()
+
+        if not last_cycle:
+            new_seq = "0001"
+        else:
+            try:
+                # Extract the number from the end (e.g., ...-0001 -> 1)
+                last_number_str = last_cycle.cycle_id.split('-')[-1]
+                new_seq = f"{int(last_number_str) + 1:04d}"
+            except (ValueError, IndexError):
+                new_seq = "0001"
+
+        return f"{prefix}{new_seq}"
+
+    def clean(self):
+        # 1. Machine Capacity Check
+        # Uses the 'available_space' property we added to the Incubator model
+        if self.hatcher and self.eggs_set_count > self.hatcher.available_space:
+            raise ValidationError(
+                _("Not enough space! This incubator only has %(space)s slots available."),
+                params={"space": self.hatcher.available_space},
+            )
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        # Auto-generate Cycle ID for new records
+        if not self.cycle_id:
+            self.cycle_id = self._generate_cycle_number()
+
+        # Run validations (Capacity check)
+        self.full_clean()
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.cycle_id} ({self.eggs_set_count} eggs)"
