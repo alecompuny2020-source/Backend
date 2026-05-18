@@ -317,6 +317,7 @@ class HatchRecord(BaseEnterpriseAuditModelMixin):
     class Meta:
         db_table = "hatch_record"
         verbose_name = _("Hatch Record")
+        verbose_name_plural = _("Hatch Records")
         indexes = [
             GinIndex(fields=["quality_metrics"], name="hatch_quality_gin_idx"),
         ]
