@@ -5,10 +5,15 @@ from . import views as v
 
 router = DefaultRouter()
 #
-# router.register(r'', v.AuthViewSet, basename='auth')
-# router.register(r'profile', v.UserProfileViewSet, basename = 'user_profile')
+router.register(r'farms', v.FarmViewSet)
+router.register(r'manager-history', v.FarmManagerHistoryViewSet, basename = 'manager')
+router.register(r'farm-sheds', v.FarmShedViewSet, basename = 'shed')
+router.register(r'farm-batches', v.FarmBatchViewSet, basename = 'batch')
+router.register(r'flock-observations', v.DailyObservationViewSet, basename = 'observation')
+router.register(r'farm-flocks', v.BreederFlockViewSet, basename = 'flocks')
+router.register(r'incubators', v.IncubatorViewSet, basename = 'incubator')
+router.register(r'incubation-cycle', v.IncubationCycleViewSet, basename = 'cycle')
 
 urlpatterns = [
-    # path("", include(router.urls)),
-    # path('token/refresh/', TokenRefreshView.as_view()),
+    path("", include(router.urls)),
 ]
