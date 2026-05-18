@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     "core",
     "hrms",
     # "lrh",
-    # "sfap",
-    # "ppms",
+    "sfap",
+    "ppms",
     # "fns",
     # "ipms",
 
