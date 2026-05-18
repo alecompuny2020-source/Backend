@@ -70,17 +70,17 @@ class UserProfileViewSet(viewsets.GenericViewSet):
             return Response({"detail": "Deleted successfully."})
 
 
-    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"], url_path = 'personal-info')
     def personal_info(self, request):
         """Manage core personal details."""
         return self._handle_action(request.user, UserPersonalInfoSerializer, request)
 
-    @action(detail=False, methods=["get", "put", "patch"])
+    @action(detail=False, methods=["get", "put", "patch"], url_path = 'contact-info')
     def contact_info(self, request):
         """Manage email and phone."""
         return self._handle_action(request.user, UserContactInfoSerializer, request)
 
-    @action(detail=False, methods=["get", "post", "put", "patch", "delete"])
+    @action(detail=False, methods=["get", "post", "put", "patch", "delete"], url_path = 'profile-picture')
     def profile_picture(self, request):
         """Manage profile picture file."""
         return self._handle_action(request.user, ProfilePictureSerializer, request)
