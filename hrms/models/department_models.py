@@ -10,16 +10,35 @@ class Department(BaseEnterpriseAuditModelMixin):
     description = models.TextField(verbose_name=_("Department Description"))
     sub_department = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = True, related_name="subordinates",
     verbose_name=_("Minor department"))
+    code = models.CharField(
+        max_length=10,
+        unique=True,
+        db_index=True,
+        verbose_name=_("Department Code"),
+        help_text=_("Unique short code for ID generation (e.g., HR, MFG, SLS, MKT)")
+    )
     is_active = models.BooleanField(default = True)
-
-    def __str__(self):
-        return f"{self.name} by {self.created_by}"
 
     class Meta:
         db_table = "department"
         verbose_name = _("Department")
         verbose_name_plural = _("Departments")
-        ordering = ["created_by"]
+        ordering = ["-id"]
+
+    def clean(self):
+        """ Force consistency at the model validation layer """
+        super().clean()
+        if self.code:
+            # Strip spaces and make uppercase (e.g., "  hr " -> "HR")
+            self.code = self.code.strip().upper()
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} ({self.code})"
+
 
 
 class EmployeeIDSequence(models.Model):
