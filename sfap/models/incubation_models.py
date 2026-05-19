@@ -160,7 +160,7 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
         ]
 
     @property
-    def total_loss(self):
+    def total_loss(self) -> int:
         """
         Calculates eggs that failed to produce a chick.
         Formula: eggs_set_count - total_chicks_hatched

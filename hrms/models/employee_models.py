@@ -64,6 +64,15 @@ class Employee(BaseEnterpriseModelMixin):
         verbose_name=_("Assigned Shed"),
     )
 
+    assigned_block = models.ForeignKey(
+        'sfap.FarmBlock',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_block",
+        verbose_name=_("Assigned Block"),
+    )
+
     assigned_plant = models.ForeignKey(
         'ppms.ProcessingPlant',
         on_delete=models.SET_NULL,

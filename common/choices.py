@@ -216,6 +216,12 @@ MACHINE_TYPE_CHOICES = [
     ("COMBINED", _("Combined (Setter & Hatcher)")),
 ]
 
+BLOCK_STATUS_CHOICES = [
+    ("RESTING", _("Inapumzika")),
+    ("GRAZING", _("Kuku wapo hapa")),
+    ("CROPPING", _("Kuna Mazao")),
+]
+
 CYCLE_STATUS = [
     ("SETTING", _("Setting")),
     ("CANDLING", _("Candling")),
