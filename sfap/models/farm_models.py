@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from common.choices import (
     BATCH_STATUS_CHOICES, BIRD_TYPE_CHOICES, CYCLE_STATUS,
-    BIRD_TYPE_CHOICES, CURRENCY_CHOICES, HEALTH_RECORD_TYPE, OUTBREAK_STATUS,
+    BIRD_TYPE_CHOICES, CURRENCY_CHOICES, HEALTH_RECORD_TYPE, BLOCK_STATUS_CHOICES, OUTBREAK_STATUS,
     now, current_time
     )
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
@@ -203,6 +203,31 @@ class FarmShed(BaseEnterpriseAuditModelMixin):
         return f"{self.farm.name} - {self.name}"
 
 
+
+class FarmBlock(BaseEnterpriseAuditModelMixin):
+    """
+    Vitalu vya Kilimo Ikolojia ndani ya Shamba.
+    Hivi hutumika kwa mzunguko wa kuku (Rotational Grazing).
+    """
+    farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="blocks")
+    name = models.CharField(max_length=100)
+    size_acres = models.DecimalField(max_digits=5, decimal_places=2)
+    status = models.CharField(
+        _("Hali ya Kitalu"),
+        max_length=20,
+        choices=BLOCK_STATUS_CHOICES,
+        default='RESTING',
+        help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao.")
+    )
+
+    # Data ya IoT
+    soil_data = models.JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return f"{self.farm.name} - {self.name}"
+
+
+
 class Batch(BaseEnterpriseAuditModelMixin):
     """ A specific flock. Tracks lifecycle from day-old-chicks to depletion."""
 
@@ -210,6 +235,7 @@ class Batch(BaseEnterpriseAuditModelMixin):
         _("Batch ID"), max_length=50, unique=True, db_index=True
     )
     shed = models.ForeignKey(FarmShed, on_delete=models.PROTECT, related_name="batches")
+    current_block = models.ForeignKey(FarmBlock, on_delete=models.SET_NULL, null=True, blank=True)
     bird_type = models.CharField(
         _("Bird Type"), max_length=20, choices=BIRD_TYPE_CHOICES
     )
@@ -331,6 +357,8 @@ class DailyObservation(BaseEnterpriseAuditModelMixin):
     )
     mortality_count = models.PositiveIntegerField(_("Mortality"), default=0)
     culls = models.PositiveIntegerField(_("Culls"), default=0)
+    eggs_collected = models.IntegerField(_("Eggs Collected"), default=0)
+    manure_volume_kg = models.DecimalField(max_digits=6, decimal_places=2, default=0.0)
 
     # Blueprint for environmental_data:
     # {
@@ -348,6 +376,7 @@ class DailyObservation(BaseEnterpriseAuditModelMixin):
     environmental_data = models.JSONField(
         _("Environmental & Feeding Data"), default=dict
     )
+
 
     class Meta:
         db_table = "daily_observation"
@@ -420,7 +449,7 @@ class BreederFlock(BaseEnterpriseAuditModelMixin):
         ]
 
     @property
-    def lifetime_hatchability(self):
+    def lifetime_hatchability(self) -> int:
         """Calculates the average hatchability across all cycles for this flock."""
         return (
             self.incubation_cycles.filter(hatch_record__isnull=False).aggregate(
