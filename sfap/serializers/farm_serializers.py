@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sfap.models import (Farm, ManagerHistory, FarmShed, Batch, DailyObservation, BreederFlock)
+from sfap.models import (Farm, ManagerHistory, FarmShed, FarmBlock, Batch, DailyObservation, BreederFlock)
 from common.mixins import BaseEnterpriseAuditSerializer
 
 
@@ -32,6 +32,15 @@ class FarmShedSerializer(BaseEnterpriseAuditSerializer):
             'id', 'name', 'farm', 'capacity', 'shed_metadata', 'last_empty_date',
             'is_active', 'rest_days', 'created_by', 'updated_by', 'created_on',
             'updated_on'
+        ]
+
+
+class FarmBlockSerializer(BaseEnterpriseAuditSerializer):
+    class Meta:
+        model = FarmBlock
+        fields = [
+            'id', 'farm', 'name', 'size_acres', 'status', 'soil_data', 'created_by',
+            'updated_by', 'created_on', 'updated_on'
         ]
 
 

@@ -213,3 +213,17 @@ class FeedConsumption(FarmAuditBaseModel):
 
     def __str__(self):
         return f"{self.batch.batch_id}: {self.quantity_used_kg}kg"
+
+
+
+class FeedIngredientStock(BaseEnterpriseAuditModelMixin):
+    """
+    Inafuatilia stoki ya malighafi za chakula cha kuku zilizopo ghalani.
+    """
+    ingredient_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
+    available_qty_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
+    unit_cost_per_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0) # Kwa TZS
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.ingredient_name} - {self.available_qty_kg} KG"

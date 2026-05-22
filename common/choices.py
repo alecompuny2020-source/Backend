@@ -11,6 +11,7 @@ Responsibility:
 """
 
 from django.conf import settings
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -24,332 +25,317 @@ current_time = timezone.now()
 OTP_CODE_LENGTH = getattr(settings, "OTP_CODE_LENGTH", 6)
 OTP_EXPIRATION_TIME_MINUTES = getattr(settings, "OTP_EXPIRATION_TIME_MINUTES", 5)
 
-TOKEN_TYPE_REGISTRATION = "registration"
-TOKEN_TYPE_LOGIN = "login"
-TOKEN_TYPE_PASSWORD_RESET = "password_reset"
-TOKEN_TYPE_TRANSACTION_AUTH = "transaction_auth"
-TOKEN_TYPE_EMAIL_CHANGE = "email_change"
-TOKEN_TYPE_PHONE_VERIFICATION = "phone_verification"
-TOKEN_TYPE_2FA_ENABLE = "2fa_enable"
-TOKEN_TYPE_ACCOUNT_DELETION = "account_deletion"
-TOKEN_TYPE_STAFF_INVITATION = "staff_invitation"
+class TokenType(models.TextChoices):
+    REGISTRATION = "REGISTRATION", _("Registration")
+    LOGIN = "LOGIN", _("Login")
+    PASSWORD_RESET = "PASSWORD_RESET", _("Password Reset")
+    TRANSACTION_AUTH = "TRANSACTION_AUTH", _("Transaction Authorization")
+    EMAIL_CHANGE = "EMAIL_CHANGE", _("Email Change Verification")
+    PHONE_VERIFICATION = "PHONE_VERIFICATION", _("Phone Number Verification")
+    2FA_ENABLE = "2FA_ENABLE", _("Two-Factor Auth Enablement")
+    ACCOUNT_DELETION = "ACCOUNT_DELETION", _("Account Deletion Confirmation")
+    STAFF_INVITATION = "STAFF_INVITATION", _("Staff Onboarding Invitation")
 
-TOKEN_TYPE_CHOICES = [
-    (TOKEN_TYPE_REGISTRATION, _("Registration")),
-    (TOKEN_TYPE_LOGIN, _("Login")),
-    (TOKEN_TYPE_PASSWORD_RESET, _("Password Reset")),
-    (TOKEN_TYPE_TRANSACTION_AUTH, _("Transaction Authorization")),
-    (TOKEN_TYPE_EMAIL_CHANGE, _("Email Change Verification")),
-    (TOKEN_TYPE_PHONE_VERIFICATION, _("Phone Number Verification")),
-    (TOKEN_TYPE_2FA_ENABLE, _("Two-Factor Auth Enablement")),
-    (TOKEN_TYPE_ACCOUNT_DELETION, _("Account Deletion Confirmation")),
-    (TOKEN_TYPE_STAFF_INVITATION, _("Staff Onboarding Invitation")),
-]
+class CommunicationMethod(models.TextChoices):
+    EMAIL = "email", _("Email")
+    PHONE = "phone", _("Phone")
+    BOTH = "both", _("Both")
 
-COMMUNICATION_CHOICES = [
-    ("email", _("Email")),
-    ("phone", _("Phone/SMS")),
-    ("both", _("Both")),
-]
-
-LANGUAGE_CHOICES = [
-    ("en-us", _("English (US)")),
-    ("en-gb", _("English (British)")),
-    ("sw", _("Kiswahili")),
-]
+class LanguageChoice(models.TextChoices):
+    EN-US = "en-us", _("English (US)")
+    EN-GB = "en-gb", _("English (British)")
+    SW = "sw", _("Kiswahili")
 
 
 """ USER PROFILE & HR """
 
-REGISTRATION_STATUS = [
-    ("PENDING", _("Pending Verification")),
-    ("VERIFIED", _("Verified & Approved")),
-    ("REJECTED", _("Rejected/Incomplete")),
-    ("REVOKED", _("Revoked/Terminated")),
-]
+class RegistrationStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending Verification")
+    VERIFIED = "VERIFIED", _("Verified & Approved")
+    REJECTED = "REJECTED", _("Rejected/Incomplete")
+    REVOKED = "REVOKED", _("Revoked/Terminated")
 
-TITLE_CHOICES = [
+class UserTitle(models.TextChoices):
     # Standard Social Titles
-    ("mr", _("Mr.")),
-    ("mrs", _("Mrs.")),
-    ("ms", _("Ms.")),
-    ("miss", _("Miss")),
+    MR = "MR", _("Mr.")
+    MRS = "MRS", _("Mrs.")
+    MS = "MS", _("Ms.")
+    MISS = "MISS", _("Miss")
 
     # Professional & Academic Titles
-    ("dr", _("Dr.")),
-    ("prof", _("Prof.")),
-    ("eng", _("Eng.")),
-    ("arch", _("Arch.")),
-    ("adv", _("Adv.")),
-    ("cpa", _("CPA")),
+    DR = "DR", _("Dr.")
+    PROF = "PROF", _("Prof.")
+    ENG = "ENG", _("Eng.")
+    ARCH = "ARCH", _("Arch.")
+    ADV = "ADV", _("Adv.")
+    CPA = "CPA", _("CPA")
 
-    # Specialized/Medical (Useful for Vet Officers)
-    ("vet", _("Vet.")),
-    ("pharm", _("Pharm.")),
+    # Specialized/Medical (Perfect for your Vet Officers)
+    VET = "VET", _("Vet.")
+    PHARM = "PHARM", _("Pharm.")
 
-    # Religious/Honorable (Optional based on your region)
-    ("rev", _("Rev.")),
-    ("hon", _("Hon.")),
-]
+    # Religious/Honorable
+    REV = "REV", _("Rev.")
+    HON = "HON", _("Hon.")
 
-GENDER_CHOICES = [
-    ("male", _("Male")),
-    ("female", _("Female")),
-    ("other", _("Other")),
-    ("prefer_not_to_say", _("Prefer Not to Say")),
-]
 
-MARITAL_STATUSES = [
-    ("single", _("Single")),
-    ("married", _("Married")),
-    ("divorced", _("Divorced")),
-]
+class Gender(models.TextChoices):
+    MALE = "MALE", _("Male")
+    FEMALE = "FEMALE", _("Female")
+    OTHER = "OTHER", _("Other")
+    PREFER_NOT_TO_SAY = "PREFER_NOT_TO_SAY", _("Prefer Not to Say")
 
-ID_TYPES = [
-    ("NIDA", _("NIDA (National ID)")),
-    ("PASSPORT", _("Passport")),
-    ("VOTER_ID", _("Voter ID")),
-    ("DRIVING_LICENSE", _("Driving License")),
-]
 
-EMPLOYEE_ROLE_CHOICES = [
-    ("FARM_MANAGER", _("Farm Manager")),
-    ("VET_OFFICER", _("Veterinary Officer")),
-    ("PLANT_SUPERVISOR", _("Processing Plant Supervisor")),
-    ("ACCOUNTANT", _("Accountant")),
-    ("ATTENDANT", _("General Attendant")),
-]
+class MaritalStatus(models.TextChoices):
+    SINGLE = "SINGLE", _("Single")
+    MARRIED = "MARRIED", _("Married")
+    DIVORCED = "DIVORCED", _("Divorced")
 
-EMPLOYMENT_TYPES = [
-    ("FULL_TIME", _("Full-Time Regular")),
-    ("CONTRACT", _("Contractor")),
-    ("CASUAL", _("Casual Laborer")),
-]
+
+class IdentityType(models.TextChoices):
+    NIDA = "NIDA", _("NIDA (National ID)")
+    PASSPORT = "PASSPORT", _("Passport")
+    VOTER_ID = "VOTER_ID", _("Voter ID")
+    DRIVING_LICENSE = "DRIVING_LICENSE", _("Driving License")
+
+
+class EmploymentType(models.TextChoices):
+    FULL_TIME = "FULL_TIME", _("Full-Time Regular")
+    CONTRACT = "CONTRACT", _("Contractor")
+    CASUAL = "CASUAL", _("Casual Laborer")
 
 
 """ LOGISTICS, SHIPPING & INVENTORY """
 
-ORDER_STATUS = [
-    ("PENDING", _("Pending")),
-    ("CONFIRMED", _("Confirmed")),
-    ("DISPATCHED", _("Dispatched")),
-    ("DELIVERED", _("Delivered")),
-    ("CANCELLED", _("Cancelled")),
-]
+class OrderStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending")
+    CONFIRMED = "CONFIRMED", _("Confirmed")
+    DISPATCHED = "DISPATCHED", _("Dispatched")
+    DELIVERED = "DELIVERED", _("Delivered")
+    CANCELLED = "CANCELLED", _("Cancelled")
 
-SHIPPING_CHOICES = [
-    ("REQUESTED", _("Request Received")),
-    ("PACKING", _("In Packaging")),
-    ("COLLECTED", _("Collected by Carrier")),
-    ("DEPARTED", _("Departed Facility")),
-    ("IN_TRANSIT", _("In Transit")),
-    ("OUT_FOR_DELIVERY", _("Out for Delivery")),
-    ("DELIVERED", _("Delivered")),
-    ("FAILED", _("Delivery Failed")),
-]
 
-CARRIER_TYPES = [
-    ("INTERNAL", _("Farm Fleet")),
-    ("THIRD_PARTY", _("External Courier")),
-    ("PICKUP", _("Customer Pickup")),
-]
+class ShippingStatus(models.TextChoices):
+    REQUESTED = "REQUESTED", _("Request Received")
+    PACKING = "PACKING", _("In Packaging")
+    COLLECTED = "COLLECTED", _("Collected by Carrier")
+    DEPARTED = "DEPARTED", _("Departed Facility")
+    IN_TRANSIT = "IN_TRANSIT", _("In Transit")
+    OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY", _("Out for Delivery")
+    DELIVERED = "DELIVERED", _("Delivered")
+    FAILED = "FAILED", _("Delivery Failed")
 
-STOCK_MOVEMENT_TYPES = [
-    ("SALE", _("Sale")),
-    ("RETURN", _("Return")),
-    ("RESTOCK", _("Restock")),
-    ("ADJUST", _("Adjustment")),
-    ("TRANSFER", _("Internal Transfer")),
-]
 
-STORAGE_UNIT_TYPES = [
-    ("SHELF", _("Shelf (Rafu)")),
-    ("KABATI", _("Cabinet (Kabati)")),
-    ("CLIPBOARD", _("Clipboard")),
-    ("DRAWER", _("Drawer (Droo)")),
-    ("COLD_ROOM", _("Cold Room Rack")),
-]
+class CarrierType(models.TextChoices):
+    INTERNAL = "INTERNAL", _("Farm Fleet")
+    THIRD_PARTY = "THIRD_PARTY", _("External Courier")
+    PICKUP = "PICKUP", _("Customer Pickup")
 
-ITEM_DISPOSITION_CHOICES = [
-    ("SOLD", _("Successfully Sold")),
-    ("RETURNED", _("Returned by Customer")),
-    ("CHANGED", _("Exchanged for Different Product")),
-    ("DAMAGED", _("Damaged/Defective (Pre-delivery)")),
-    ("REFUND_ISSUED", _("Item Refunded")),
-]
 
-ADDRESS_TYPES = [
-    ("shipping", _("Shipping")),
-    ("billing", _("Billing")),
-    ("home", _("Home")),
-    ("work", _("Work")),
-]
+class StockMovementType(models.TextChoices):
+    SALE = "SALE", _("Sale")
+    RETURN = "RETURN", _("Return")
+    RESTOCK = "RESTOCK", _("Restock")
+    ADJUST = "ADJUST", _("Adjustment")
+    TRANSFER = "TRANSFER", _("Internal Transfer")
+
+
+class StorageUnitType(models.TextChoices):
+    SHELF = "SHELF", _("Shelf (Rafu)")
+    KABATI = "KABATI", _("Cabinet (Kabati)")
+    CLIPBOARD = "CLIPBOARD", _("Clipboard")
+    DRAWER = "DRAWER", _("Drawer (Droo)")
+    COLD_ROOM = "COLD_ROOM", _("Cold Room Rack")
+
+
+class ItemDisposition(models.TextChoices):
+    SOLD = "SOLD", _("Successfully Sold")
+    RETURNED = "RETURNED", _("Returned by Customer")
+    CHANGED = "CHANGED", _("Exchanged for Different Product")
+    DAMAGED = "DAMAGED", _("Damaged/Defective (Pre-delivery)")
+    REFUND_ISSUED = "REFUND_ISSUED", _("Item Refunded")
+
+
+class AddressType(models.TextChoices):
+    SHIPPING = "SHIPPING", _("Shipping")
+    BILLING = "BILLING", _("Billing")
+    HOME = "HOME", _("Home")
+    WORK = "WORK", _("Work")
 
 
 """ FARM PRODUCTION & HEALTH """
 
-PRODUCT_CATEGORY_CHOICES = [
-    ("EGG", _("Eggs")),
-    ("MEAT", _("Meat/Poultry")),
-    ("BY_PRODUCT", _("By-Products (Manure/Feathers)")),
-    ("EQUIPMENT", _("Farm Equipment/Assets")),
-]
+class ProductCategory(models.TextChoices):
+    EGG = "EGG", _("Eggs")
+    MEAT = "MEAT", _("Meat/Poultry")
+    BY_PRODUCT = "BY_PRODUCT", _("By-Products (Manure/Feathers)")
+    EQUIPMENT = "EQUIPMENT", _("Farm Equipment/Assets")
 
-BIRD_TYPE_CHOICES = [
-    ("BROILER", _("Broiler")),
-    ("LAYER", _("Layer")),
-    ("KUCHI", _("Kuchi")),
-    ("LOCAL", _("Local")),
-    ("KUROILER", _("Kuroiler")),
-]
 
-BATCH_STATUS_CHOICES = [
-    ("ACTIVE", _("Active")),
-    ("DEPLETED", _("Depleted")),
-    ("QUARANTINED", _("Quarantined")),
-    ("PROCESSING", _("In Processing Plant")),
-]
+class BirdType(models.TextChoices):
+    BROILER = "BROILER", _("Broiler")
+    LAYER = "LAYER", _("Layer")
+    KUCHI = "KUCHI", _("Kuchi")
+    LOCAL = "LOCAL", _("Local")
+    KUROILER = "KUROILER", _("Kuroiler")
 
-MACHINE_TYPE_CHOICES = [
-    ("SETTER", _("Setter")),
-    ("HATCHER", _("Hatcher")),
-    ("COMBINED", _("Combined (Setter & Hatcher)")),
-]
 
-BLOCK_STATUS_CHOICES = [
-    ("RESTING", _("Inapumzika")),
-    ("GRAZING", _("Kuku wapo hapa")),
-    ("CROPPING", _("Kuna Mazao")),
-]
+class FlockBatchStatus(models.TextChoices):
+    ACTIVE = "ACTIVE", _("Active")
+    DEPLETED = "DEPLETED", _("Depleted")
+    QUARANTINED = "QUARANTINED", _("Quarantined")
+    PROCESSING = "PROCESSING", _("In Processing Plant")
 
-CYCLE_STATUS = [
-    ("SETTING", _("Setting")),
-    ("CANDLING", _("Candling")),
-    ("HATCHED", _("Hatched")),
-    ("FAILED", _("Failed")),
-]
 
-READINESS_CHOICES = [
-    ("READY", _("Ready for Sale")),
-    ("NOT_READY", _("Not Ready / WIP")),
-    ("QUARANTINE", _("Under Inspection")),
-    ("EXPIRED", _("Expired / Waste")),
-]
+class IncubatorMachineType(models.TextChoices):
+    SETTER = "SETTER", _("Setter")
+    HATCHER = "HATCHER", _("Hatcher")
+    COMBINED = "COMBINED", _("Combined (Setter & Hatcher)")
 
-HEALTH_RECORD_TYPE = [
-    ("VACCINATION", _("Vaccination")),
-    ("MEDICATION", _("Medication/Treatment")),
-    ("PROCEDURE", _("General Procedure (e.g., De-beaking)")),
-    ("LAB_RESULT", _("Laboratory Test Result")),
-]
 
-OUTBREAK_STATUS = [
-    ("ACTIVE", _("Active Outbreak")),
-    ("CONTAINED", _("Contained/Under Treatment")),
-    ("RESOLVED", _("Resolved/Closed")),
-]
+class FarmBlockStatus(models.TextChoices):
+    RESTING = "RESTING", _("Inapumzika")
+    GRAZING = "GRAZING", _("Kuku wapo hapa")
+    CROPPING = "CROPPING", _("Kuna Mazao")
 
-DISPOSAL_METHOD_CHOICES = [
-    ("INCINERATION", _("Incineration")),
-    ("COMPOSTING", _("Composting")),
-    ("SALE", _("Sale to Third Party")),
-    ("LANDFILL", _("Landfill")),
-    ("RECYCLE", _("Recycling")),
-]
+
+class IncubationCycleStatus(models.TextChoices):
+    SETTING = "SETTING", _("Setting")
+    CANDLING = "CANDLING", _("Candling")
+    HATCHED = "HATCHED", _("Hatched")
+    FAILED = "FAILED", _("Failed")
+
+
+class StockReadinessStatus(models.TextChoices):
+    READY = "READY", _("Ready for Sale")
+    NOT_READY = "NOT_READY", _("Not Ready / WIP")
+    QUARANTINE = "QUARANTINE", _("Under Inspection")
+    EXPIRED = "EXPIRED", _("Expired / Waste")
+
+
+class HealthRecordType(models.TextChoices):
+    VACCINATION = "VACCINATION", _("Vaccination")
+    MEDICATION = "MEDICATION", _("Medication/Treatment")
+    PROCEDURE = "PROCEDURE", _("General Procedure (e.g., De-beaking)")
+    LAB_RESULT = "LAB_RESULT", _("Laboratory Test Result")
+
+
+class DiseaseOutbreakStatus(models.TextChoices):
+    ACTIVE = "ACTIVE", _("Active Outbreak")
+    CONTAINED = "CONTAINED", _("Contained/Under Treatment")
+    RESOLVED = "RESOLVED", _("Resolved/Closed")
+
+
+class WasteDisposalMethod(models.TextChoices):
+    INCINERATION = "INCINERATION", _("Incineration")
+    COMPOSTING = "COMPOSTING", _("Composting")
+    SALE = "SALE", _("Sale to Third Party")
+    LANDFILL = "LANDFILL", _("Landfill")
+    RECYCLE = "RECYCLE", _("Recycling")
+
+
+class StorageUnitType(models.TextChoices):
+    SHELF = "SHELF", _("Shelf (Rafu)")
+    KABATI = "KABATI", _("Cabinet (Kabati)")
+    CLIPBOARD = "CLIPBOARD", _("Clipboard")
+    DRAWER = "DRAWER", _("Drawer (Droo)")
+    COLD_ROOM = "COLD_ROOM", _("Cold Room Rack")
+
+
+class ProductionStatus(models.TextChoices):
+    PLANTED = 'PLANTED', _('Imepandwa')
+    GROWING = 'GROWING', _('Inakua')
+    HARVESTED = 'HARVESTED', _('Imevunwa')
+    FAILED = 'FAILED', _('Imeharibika')
 
 
 """ SALES, FINANCE & BOOKING """
 
-CURRENCY_CHOICES = [
-    ("TZS", _("Tanzanian Shilling")),
-    ("GBP", _("British Pound")),
-    ("USD", _("US Dollar")),
-    ("KES", _("Kenyan Shilling")),
-]
+class CurrencyCode(models.TextChoices):
+    TZS = "TZS", _("Tanzanian Shilling")
+    GBP = "GBP", _("British Pound")
+    USD = "USD", _("US Dollar")
+    KES = "KES", _("Kenyan Shilling")
 
-PAYMENT_METHOD_CHOICES = [
-    ("CASH", _("Cash")),
-    ("CREDIT_CARD", _("Credit Card")),
-    ("BANK_TRANSFER", _("Bank Transfer")),
-    ("MOBILE_MONEY", _("Mobile Money (M-Pesa/Tigo Pesa)")),
-    ("ONLINE_WALLET", _("Online Wallet")),
-]
 
-SALE_STATUS_CHOICES = [
-    ("PENDING", _("Pending")),
-    ("PARTIAL", _("Partial")),
-    ("PAID", _("Paid")),
-    ("FAILED", _("Failed")),
-    ("REFUNDED", _("Refunded")),
-]
+class PaymentMethod(models.TextChoices):
+    CASH = "CASH", _("Cash")
+    CREDIT_CARD = "CREDIT_CARD", _("Credit Card")
+    BANK_TRANSFER = "BANK_TRANSFER", _("Bank Transfer")
+    MOBILE_MONEY = "MOBILE_MONEY", _("Mobile Money (M-Pesa/Tigo Pesa/Airtel Money)")
+    ONLINE_WALLET = "ONLINE_WALLET", _("Online Wallet")
 
-CUSTOMER_TYPE = [
-    ("RETAIL", _("Retail")),
-    ("WHOLESALE", _("Wholesale")),
-    ("DISTRIBUTOR", _("Distributor")),
-]
 
-BOOKING_STATUS = [
-    ("PENDING", _("Pending/Inquiry")),
-    ("CONFIRMED", _("Confirmed/Deposit Paid")),
-    ("CANCELLED", _("Cancelled")),
-    ("COMPLETED", _("Event Finished")),
-]
+class SaleInvoiceStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending")
+    PARTIAL = "PARTIAL", _("Partial")
+    PAID = "PAID", _("Paid")
+    FAILED = "FAILED", _("Failed")
+    REFUNDED = "REFUNDED", _("Refunded")
 
+
+class CustomerType(models.TextChoices):
+    RETAIL = "RETAIL", _("Retail")
+    WHOLESALE = "WHOLESALE", _("Wholesale")
+    DISTRIBUTOR = "DISTRIBUTOR", _("Distributor")
+
+
+class EventBookingStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending/Inquiry")
+    CONFIRMED = "CONFIRMED", _("Confirmed/Deposit Paid")
+    CANCELLED = "CANCELLED", _("Cancelled")
+    COMPLETED = "COMPLETED", _("Event Finished")
 
 
 """ ASSETS & FACILITIES """
 
-ASSET_TYPE_CHOICES = [
-    ("FARM", _("Farm/Production Site")),
-    ("BUILDING", _("Building/Structure")),
-    ("ZONE", _("Recreation/Common Zone")),
-    ("UNIT", _("Specific Rental/Housing Unit")),
-]
+class AssetType(models.TextChoices):
+    FARM = "FARM", _("Farm/Production Site")
+    BUILDING = "BUILDING", _("Building/Structure")
+    ZONE = "ZONE", _("Recreation/Common Zone")
+    UNIT = "UNIT", _("Specific Rental/Housing Unit")
 
-UNIT_TYPES = [
-    ("SINGLE", _("Single Room")),
-    ("BEDSITTER", _("Bedsitter")),
-    ("APARTMENT", _("Full Apartment")),
-    ("SHOP", _("Commercial Shop Space")),
-]
 
+class RentalUnitType(models.TextChoices):
+    SINGLE = "SINGLE", _("Single Room")
+    BEDSITTER = "BEDSITTER", _("Bedsitter")
+    APARTMENT = "APARTMENT", _("Full Apartment")
+    SHOP = "SHOP", _("Commercial Shop Space")
 
 
 """ UNITS OF MEASURE & GENERAL TASK STATUS """
 
-UOM_CHOICES = [
-    ("TRAY", _("Tray")),
-    ("KG", _("Kilogram")),
-    ("PCS", _("Pieces")),
-    ("BAG", _("Bag")),
-]
+class UnitOfMeasure(models.TextChoices):
+    # Hapa tumeziunganisha zote kuwa kitu kimoja safi na chenye maana
+    TRAY = "TRAY", _("Tray (Treya)")
+    KG = "KG", _("Kilogram (Kilogramu)")
+    LITER = "LITER", _("Liter (Lita)")
+    PCS = "PCS", _("Pieces (Idadi/Vipande)")
+    BAG = "BAG", _("Bag (Mfuko)")
+    BOX = "BOX", _("Box (Boxi)")
 
-UNIT_CHOICES = [
-    ("pc", _("Piece")),
-    ("box", _("Box")),
-    ("kg", _("Kilogram")),
-]
 
-RATE_TYPES = [
-    ("FLAT", _("Flat Rate")),
-    ("PER_KG", _("Cost Per KG"))
-]
+class RateType(models.TextChoices):
+    FLAT = "FLAT", _("Flat Rate")
+    PER_KG = "PER_KG", _("Cost Per KG")
 
-STATUS_CHOICES = [
-    ("OPEN", _("Open")),
-    ("IN_PROGRESS", _("In Progress")),
-    ("CLOSED", _("Resolved")),
-]
 
-PRIORITY_CHOICES = [
-    ("LOW", _("Low")),
-    ("NORMAL", _("Normal")),
-    ("URGENT", _("Urgent/Safety")),
-]
+class TicketStatus(models.TextChoices):  # Nimeipa jina la 'TicketStatus' au 'TaskStatus' ili iwe bayana kuliko 'STATUS_CHOICES' ya jumla
+    OPEN = "OPEN", _("Open")
+    IN_PROGRESS = "IN_PROGRESS", _("In Progress")
+    CLOSED = "CLOSED", _("Resolved")
 
+
+class TaskPriority(models.TextChoices):  # Nimeipa jina la 'TaskPriority' kuleta maana halisi ya kiutendaji shambani
+    LOW = "LOW", _("Low")
+    NORMAL = "NORMAL", _("Normal")
+    URGENT = "URGENT", _("Urgent/Safety")
 
 
 """ MISCELLANEOUS / LEGACY """
 
-TYPE_CHOICES = [(0, "User"), (1, "Group"), (2, "Broadcast"), (3, "Agent")]
+class RecipientType(models.IntegerChoices):  # Nimeipa jina 'RecipientType' au 'ChatType' kulingana na muktadha
+    USER = 0, _("User")
+    GROUP = 1, _("Group")
+    BROADCAST = 2, _("Broadcast")
+    AGENT = 3, _("Agent")

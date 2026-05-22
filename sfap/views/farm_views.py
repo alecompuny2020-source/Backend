@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from sfap.serializers import (FarmSerializers, FarmManagerHistorySerializer, FarmShedSerializer,
-FarmBatchSerializer, DailyObservationSerializer, BreederFlockSerializer)
-from sfap.models import Farm, ManagerHistory, FarmShed, Batch, DailyObservation, BreederFlock
+FarmBatchSerializer, FarmBlockSerializer, DailyObservationSerializer, BreederFlockSerializer)
+from sfap.models import Farm, ManagerHistory, FarmShed, FarmBlock, Batch, DailyObservation, BreederFlock
 from common.permissions.base import EnterpriseObjectLevelPermissionMixin
 from common.mixins import BaseEnterpriseViewSet
 from common.pagination import GenericEnteprisePaginator
@@ -23,6 +23,11 @@ class FarmManagerHistoryViewSet(EnterpriseObjectLevelPermissionMixin, viewsets.R
 class FarmShedViewSet(EnterpriseObjectLevelPermissionMixin, BaseEnterpriseViewSet):
     queryset = FarmShed.objects.select_related('farm').all()
     serializer_class = FarmShedSerializer
+
+
+class FarmBlockViewSet(EnterpriseObjectLevelPermissionMixin, BaseEnterpriseViewSet):
+    queryset = FarmBlock.objects.select_related('farm').all()
+    serializer_class = FarmBlockSerializer
 
 
 class FarmBatchViewSet(EnterpriseObjectLevelPermissionMixin, BaseEnterpriseViewSet):
