@@ -1,7 +1,7 @@
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import (BIRD_TYPE_CHOICES, HEALTH_RECORD_TYPE, now, OUTBREAK_STATUS)
+from common.choices import (BirdType, HealthRecordType, now, DiseaseOutbreakStatus)
 from djmoney.models.fields import MoneyField
 from django.contrib.postgres.indexes import GinIndex
 from datetime import timedelta
@@ -15,7 +15,7 @@ class HealthProtocol(BaseEnterpriseAuditModelMixin):
 
     name = models.CharField(_("Protocol Name"), max_length=255)
     target_bird_type = models.CharField(
-        _("Target Bird Type"), max_length=50, choices=BIRD_TYPE_CHOICES
+        _("Target Bird Type"), max_length=50, choices=BirdType
     )
 
     # Blueprint for protocol_steps (Schedule):
@@ -67,7 +67,7 @@ class MedicalRecord(BaseEnterpriseAuditModelMixin):
     )
     date_of_administration = models.DateField(_("Date of Administration"), db_index=True, default = now)
     record_type = models.CharField(
-        _("Record Type"), max_length=20, choices=HEALTH_RECORD_TYPE
+        _("Record Type"), max_length=20, choices=HealthRecordType
     )
 
     # Blueprint for event_details:
@@ -103,7 +103,7 @@ class MedicalRecord(BaseEnterpriseAuditModelMixin):
         ]
 
     @property
-    def is_in_withdrawal(self):
+    def is_in_withdrawal(self) -> bool:
         """Returns True if the batch is currently under medication restriction."""
         from django.utils.timezone import now
 
@@ -165,8 +165,8 @@ class DiseaseOutbreak(BaseEnterpriseAuditModelMixin):
     status = models.CharField(
         _("Incident Status"),
         max_length=20,
-        choices=OUTBREAK_STATUS,
-        default="ACTIVE",
+        choices=DiseaseOutbreakStatus,
+        default=DiseaseOutbreakStatus.ACTIVE,
         db_index=True,
     )
 

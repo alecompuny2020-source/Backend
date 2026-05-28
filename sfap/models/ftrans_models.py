@@ -5,10 +5,9 @@ from djmoney.models.fields import MoneyField
 from django.contrib.postgres.indexes import GinIndex
 
 
-
 class FarmVehicle(BaseEnterpriseAuditModelMixin):
     """
-    Tracks trucks, tractors, and delivery bikes.
+    Tracks trucks, tractors, and bikes.
     Essential for fuel tracking and maintenance scheduling.
     """
 
@@ -81,7 +80,7 @@ class TransportMovement(BaseEnterpriseAuditModelMixin):
         ]
 
     @property
-    def distance_covered(self):
+    def distance_covered(self) -> float:
         if self.end_odometer and self.start_odometer:
             return self.end_odometer - self.start_odometer
         return 0

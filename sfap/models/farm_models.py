@@ -5,11 +5,8 @@ from django.contrib.postgres.indexes import GinIndex
 from django.db.models import Avg
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
 from common.choices import (
-    BATCH_STATUS_CHOICES, BIRD_TYPE_CHOICES, CYCLE_STATUS,
-    BIRD_TYPE_CHOICES, CURRENCY_CHOICES, HEALTH_RECORD_TYPE, BLOCK_STATUS_CHOICES, OUTBREAK_STATUS,
-    now, current_time
+    FlockBatchStatus, BirdType, FarmBlockStatus, now, current_time
     )
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 from ppms.models import ProcessingPlant
@@ -215,8 +212,8 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
     status = models.CharField(
         _("Hali ya Kitalu"),
         max_length=20,
-        choices=BLOCK_STATUS_CHOICES,
-        default='RESTING',
+        choices=FarmBlockStatus,
+        default=FarmBlockStatus.RESTING,
         help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao.")
     )
 
@@ -237,7 +234,7 @@ class Batch(BaseEnterpriseAuditModelMixin):
     shed = models.ForeignKey(FarmShed, on_delete=models.PROTECT, related_name="batches")
     current_block = models.ForeignKey(FarmBlock, on_delete=models.SET_NULL, null=True, blank=True)
     bird_type = models.CharField(
-        _("Bird Type"), max_length=20, choices=BIRD_TYPE_CHOICES
+        _("Bird Type"), max_length=20, choices=BirdType
     )
     initial_count = models.PositiveIntegerField(_("Initial Bird Count"))
     current_count = models.PositiveIntegerField(_("Current Bird Count"))
@@ -255,7 +252,7 @@ class Batch(BaseEnterpriseAuditModelMixin):
     # }
     batch_details = models.JSONField(_("Batch Details"), default=dict, blank=True)
     status = models.CharField(
-        _("Status"), max_length=20, choices=BATCH_STATUS_CHOICES, default="ACTIVE"
+        _("Status"), max_length=20, choices=FlockBatchStatus, default=FlockBatchStatus.ACTIVE
     )
 
     class Meta:

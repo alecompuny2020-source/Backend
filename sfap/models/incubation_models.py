@@ -2,15 +2,15 @@ from django.db import models, transaction
 from common.mixins import BaseEnterpriseAuditModelMixin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.indexes import GinIndex
-from common.choices import MACHINE_TYPE_CHOICES, CYCLE_STATUS, current_time
+from common.choices import IncubatorMachineType, IncubationCycleStatus, current_time
 
 
 class Incubator(BaseEnterpriseAuditModelMixin):
     name = models.CharField(max_length=255)
     machine_type = models.CharField(
         max_length=20,
-        choices=MACHINE_TYPE_CHOICES,
-        default="COMBINED"
+        choices=IncubatorMachineType,
+        default=IncubatorMachineType.COMBINED
     )
     farm = models.ForeignKey(
         "sfap.Farm",
@@ -148,7 +148,7 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
     )
     actual_hatch_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(
-        _("Status"), max_length=20, choices=CYCLE_STATUS, default="SETTING"
+        _("Status"), max_length=20, choices=IncubationCycleStatus, default=IncubationCycleStatus.SETTING
     )
 
     class Meta:
