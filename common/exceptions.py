@@ -15,7 +15,7 @@ from rest_framework.views import exception_handler as drf_exception_handler
 
 logger = logging.getLogger(__name__)
 
-class APIExceptionHandler:
+class EnterpriseAPIExceptionHandler:
     """
     Enterprise Exception Handler.
     Manages the transformation and formatting of API exceptions.
@@ -104,7 +104,7 @@ class APIExceptionHandler:
 
 def general_exception_handler(exc: Exception, context: dict[str, Any]) -> Response:
     """The function DRF calls for exception handling."""
-    return APIExceptionHandler(exc, context).handle()
+    return EnterpriseAPIExceptionHandler(exc, context).handle()
 
 
 class EmailExceptionHandler:
