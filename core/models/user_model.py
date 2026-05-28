@@ -10,7 +10,7 @@ from django.contrib.postgres.indexes import GinIndex
 from common.services import upload_profile_picture
 from django.conf import settings
 from common.validators import image_validator, validate_image_mime
-from common.choices import ADDRESS_TYPES
+from common.choices import AddressType
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -212,7 +212,7 @@ class UserAddress(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
     address_type = models.CharField(
-        _("Address Type"), max_length=20, choices=ADDRESS_TYPES, default="shipping"
+        _("Address Type"), max_length=20, choices=AddressType, default = AddressType.SHIPPING
     )
     is_default = models.BooleanField(_("Default Address"), default=False)
     street_address = models.TextField(_("Street Address"))

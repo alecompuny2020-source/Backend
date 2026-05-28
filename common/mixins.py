@@ -57,7 +57,7 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
 
 class BaseEnterpriseViewSet(viewsets.ModelViewSet):
     """
-    A base ViewSet to handle shared configuration and consistent success messages.
+    A base ViewSet to handle shared configuration and consistent success or error messages.
     """
     pagination_class = GenericEnteprisePaginator
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]

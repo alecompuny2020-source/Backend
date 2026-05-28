@@ -5,8 +5,7 @@ from django.db import models, transaction
 from django.contrib.postgres.indexes import GinIndex
 from djmoney.models.fields import MoneyField
 from django.utils.translation import gettext_lazy as _
-from common.choices import (MARITAL_STATUSES, EMPLOYMENT_TYPES, TITLE_CHOICES,
-GENDER_CHOICES)
+from common.choices import (MaritalStatus, EmploymentType, UserTitle, Gender)
 from common.services import generate_secure_employee_number
 
 
@@ -42,14 +41,14 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     marital_status = models.CharField(
-        _("Marital Status"), max_length=20, choices = MARITAL_STATUSES, db_index=True,
-        default = 'single'
+        _("Marital Status"), max_length=20, choices = MaritalStatus, db_index=True,
+        default = MaritalStatus.SINGLE
     )
     employment_type = models.CharField(
         _("Employment Type"),
         max_length=20,
-        choices=EMPLOYMENT_TYPES,
-        default="FULL_TIME",
+        choices=EmploymentType,
+        default=EmploymentType.FULL_TIME,
         help_text=_(
             "Determines benefits eligibility; e.g., Casuals usually don't get housing."
         ),
@@ -88,10 +87,10 @@ class Employee(BaseEnterpriseModelMixin):
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
     employee_title = models.CharField(
-        _("Employee Title"), max_length=20, choices = TITLE_CHOICES, db_index=True, null = True
+        _("Employee Title"), max_length=20, choices = UserTitle, db_index=True, null = True
     )
     gender = models.CharField(
-        _("Employee Gender"), max_length=20, choices = GENDER_CHOICES, null = True
+        _("Employee Gender"), max_length=20, choices = Gender, null = True
     )
 
     hire_date = models.DateField(_("Hire Date"))

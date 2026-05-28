@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed as af
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from phonenumber_field.phonenumber import to_python
-from common.choices import (TOKEN_TYPE_REGISTRATION)
+from common.choices import TokenType
 from common.utils import (enforce_password, validate_user_identifier)
 from common.managers import EnterpriseOTPandLinkManager as OTPManager
 from core.models import User, Otp
@@ -75,7 +75,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         try:
             otp_entry = OTPManager.generate_and_send(
                 identifier=identifier,
-                token_type=TOKEN_TYPE_REGISTRATION,
+                token_type=TokenType.REGISTRATION,
             )
 
         except Exception as e:

@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
-from common.choices import CURRENCY_CHOICES
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.

@@ -8,7 +8,7 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     ikitumia mbolea kutoka kwa kuku.
     """
     class ProductionStatus(models.TextChoices):
-        PLANTED = 'PLANTED', 'Imepandwa'
+        PLANTED = 'PLANTED', 'planted'
         GROWING = 'GROWING', 'Inakua'
         HARVESTED = 'HARVESTED', 'Imevunwa'
         FAILED = 'FAILED', 'Imeharibika'
@@ -77,21 +77,6 @@ class EcologicalInput(BaseEnterpriseAuditModelMixin):
         return f"{self.input_name} - {self.quantity} {self.unit}"
 
 
-# Katika module ya kuku (e.g., poultry_feed/models.py au sfap/models.py)
-class FeedIngredientStock(BaseEnterpriseAuditModelMixin):
-    """
-    Inafuatilia stoki ya malighafi za chakula cha kuku zilizopo ghalani.
-    """
-    ingredient_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
-    available_qty_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
-    unit_cost_per_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0) # Kwa TZS
-    last_updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.ingredient_name} - {self.available_qty_kg} KG"
-
-
-
 
 from rest_framework import serializers
 
@@ -129,6 +114,7 @@ class CropProductionViewSet(viewsets.ModelViewSet):
         # 2. Chopoa data iliyosafishwa (Validated Data)
         actual_yield = serializer.validated_data['actual_yield_kg']
         unit_cost = serializer.validated_data['unit_cost_tzs']
+
 
         # 3. Tekeleza mchakato wa kimantiki kupitia safu ya huduma (Service Layer)
         try:
@@ -223,6 +209,22 @@ class FeedType(FarmAuditBaseModel):
 
     def __str__(self):
         return f"{self.name} ({self.brand})"
+
+
+# Katika module ya kuku (e.g., poultry_feed/models.py au sfap/models.py)
+class FeedIngredientStock(BaseEnterpriseAuditModelMixin):
+    """
+    Inafuatilia stoki ya malighafi za chakula cha kuku zilizopo ghalani.
+    """
+    ingredient_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
+    available_qty_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
+    unit_cost_per_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0) # Kwa TZS
+    last_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.ingredient_name} - {self.available_qty_kg} KG"
+
+
 
 
 class FeedInventory(FarmAuditBaseModel):

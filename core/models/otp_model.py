@@ -6,7 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
-from common.choices import (OTP_CODE_LENGTH, TOKEN_TYPE_CHOICES, OTP_EXPIRATION_TIME_MINUTES)
+from common.choices import (OTP_CODE_LENGTH, TokenType, OTP_EXPIRATION_TIME_MINUTES)
 
 
 
@@ -29,7 +29,7 @@ class Otp(BaseEnterpriseModelMixin):
     expires_at = models.DateTimeField(_("Expires At"), db_index=True)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
     token_type = models.CharField(
-        _("Token Type"), max_length=20, choices=TOKEN_TYPE_CHOICES
+        _("Token Type"), max_length=20, choices=TokenType
     )
     is_link_based = models.BooleanField(
         _("Is Link Based"),
