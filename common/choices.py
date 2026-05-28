@@ -1,5 +1,5 @@
 """
-CHOICES AND CONSTANTS REGISTRY
+CHOICES AND CONSTANTS REGISTRY FOR AN ENTERPRISE
 
 This file serves as the central source of truth for all standardized choices,
 lookups, and configuration constants used across the Enterprise System
@@ -32,7 +32,7 @@ class TokenType(models.TextChoices):
     TRANSACTION_AUTH = "TRANSACTION_AUTH", _("Transaction Authorization")
     EMAIL_CHANGE = "EMAIL_CHANGE", _("Email Change Verification")
     PHONE_VERIFICATION = "PHONE_VERIFICATION", _("Phone Number Verification")
-    2FA_ENABLE = "2FA_ENABLE", _("Two-Factor Auth Enablement")
+    TwoFA_ENABLE = "2FA_ENABLE", _("Two-Factor Auth Enablement")
     ACCOUNT_DELETION = "ACCOUNT_DELETION", _("Account Deletion Confirmation")
     STAFF_INVITATION = "STAFF_INVITATION", _("Staff Onboarding Invitation")
 
@@ -42,8 +42,8 @@ class CommunicationMethod(models.TextChoices):
     BOTH = "both", _("Both")
 
 class LanguageChoice(models.TextChoices):
-    EN-US = "en-us", _("English (US)")
-    EN-GB = "en-gb", _("English (British)")
+    EN_US = "en-us", _("English (US)")
+    EN_GB = "en-gb", _("English (British)")
     SW = "sw", _("Kiswahili")
 
 
@@ -243,10 +243,10 @@ class StorageUnitType(models.TextChoices):
 
 
 class ProductionStatus(models.TextChoices):
-    PLANTED = 'PLANTED', _('Imepandwa')
-    GROWING = 'GROWING', _('Inakua')
-    HARVESTED = 'HARVESTED', _('Imevunwa')
-    FAILED = 'FAILED', _('Imeharibika')
+    PLANTED = 'PLANTED', _('planted')
+    GROWING = 'GROWING', _('growing')
+    HARVESTED = 'HARVESTED', _('harvested')
+    FAILED = 'FAILED', _('failed')
 
 
 """ SALES, FINANCE & BOOKING """
