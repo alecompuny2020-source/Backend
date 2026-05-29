@@ -1,6 +1,7 @@
 from django.contrib.auth.models import PermissionsMixin
 import json
 
+
 from django.conf import settings
 from django.db import models, connections
 # from django.contrib.gis.db import models as coordinates
