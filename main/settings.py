@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # "lrh",
     "sfap",
     "ppms",
-    # "fns",
+    "fns",
     # "ipms",
 
     # third part packages

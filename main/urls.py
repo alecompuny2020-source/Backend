@@ -27,7 +27,7 @@ urlpatterns = [
     path("api/auth/", include("core.urls")),
     path("api/sfap/", include("sfap.urls")),
     path("api/hrms/", include("hrms.urls")),
-    # path("api/fns/", include("fns.urls")),
+    path("api/fns/", include("fns.urls")),
     # path("api/ipms/", include("ipms.urls")),
 
     # Including urls for API documentation
