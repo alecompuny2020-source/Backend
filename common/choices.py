@@ -1,3 +1,4 @@
+
 """
 CHOICES AND CONSTANTS REGISTRY FOR AN ENTERPRISE
 
@@ -164,6 +165,11 @@ class AddressType(models.TextChoices):
 
 
 """ FARM PRODUCTION & HEALTH """
+
+class SourceChoices(models.TextChoices):
+    COMMERCIAL = 'COMMERCIAL', _('Kibiashara / Kununuliwa')
+    FARM_PRODUCED = 'FARM_PRODUCED', _('Kiasili / Limeshindwa Shambani')
+
 
 class ProductCategory(models.TextChoices):
     EGG = "EGG", _("Eggs")
