@@ -1,20 +1,27 @@
-from django.db import models, transaction
 import uuid
+
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from phonenumber_field.modelfields import PhoneNumberField
+
 from ..helpers import (
-    CUSTOMER_TYPE, ITEM_DISPOSITION_CHOICES, ORDER_STATUS,
-    PAYMENT_METHOD_CHOICES, SALE_STATUS_CHOICES,UNIT_CHOICES
-    )
+    CUSTOMER_TYPE,
+    ITEM_DISPOSITION_CHOICES,
+    ORDER_STATUS,
+    PAYMENT_METHOD_CHOICES,
+    SALE_STATUS_CHOICES,
+    UNIT_CHOICES,
+)
 from ..utils import FarmAuditBaseModel
 
 # Create your models here.
+
 
 class Promotion(FarmAuditBaseModel):
     """

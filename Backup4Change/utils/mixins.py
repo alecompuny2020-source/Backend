@@ -2,18 +2,18 @@ import json
 import threading
 
 from django.conf import settings
-from django.db import models, connections
+from django.db import connections, models
 from django.forms.models import model_to_dict
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.translation import gettext_lazy as _
+from helpers.choices import now, now_iso
 from rest_framework import serializers
-from helpers.choices import now_iso, now
 
 _user = threading.local()
 
 
 class FarmAuditBaseModelMixin(models.Model):
-    """ Abstract base class to provide common audit fields."""
+    """Abstract base class to provide common audit fields."""
 
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -28,9 +28,7 @@ class FarmAuditBaseModelMixin(models.Model):
         related_name="%(app_label)s_%(class)s_updates",
     )
 
-    created_on = models.DateTimeField(
-        _("Created On"), db_index=True, default=now
-    )
+    created_on = models.DateTimeField(_("Created On"), db_index=True, default=now)
 
     updated_on = models.DateTimeField(
         _("Updated On"), auto_now=True, db_index=True, null=True
@@ -51,9 +49,7 @@ class ActionTrackingBaseModelMixin(models.Model):
         on_delete=models.RESTRICT,
         related_name="%(app_label)s_%(class)s_initiated",
     )
-    initiated_at = models.DateTimeField(
-        _("Initiated At"), default=now, db_index=True
-    )
+    initiated_at = models.DateTimeField(_("Initiated At"), default=now, db_index=True)
 
     verified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -148,25 +144,30 @@ class TrashableModelMixin(models.Model):
 
 
 class GeneralAuditFieldsMixin(serializers.ModelSerializer):
-    """ Enterprise mixin to handle ownership and YES/NO formatting. """
-    created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)
-    updated_by_name = serializers.CharField(source='updated_by.get_full_name', read_only=True)
+    """Enterprise mixin to handle ownership and YES/NO formatting."""
+
+    created_by_name = serializers.CharField(
+        source="created_by.get_full_name", read_only=True
+    )
+    updated_by_name = serializers.CharField(
+        source="updated_by.get_full_name", read_only=True
+    )
 
     def to_representation(self, instance):
         """Automatically converts booleans to YES/NO for any field starting with 'is_'"""
         data = super().to_representation(instance)
         for field, value in data.items():
-            if field.startswith('is_') and isinstance(value, bool):
+            if field.startswith("is_") and isinstance(value, bool):
                 data[field] = "YES" if value else "NO"
         return data
 
     def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
+        validated_data["created_by"] = self.context["request"].user
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
-        validated_data['updated_by'] = self.context['request'].user
-        validated_data['updated_on'] = now_iso
+        validated_data["updated_by"] = self.context["request"].user
+        validated_data["updated_on"] = now_iso
         return super().update(instance, validated_data)
 
 

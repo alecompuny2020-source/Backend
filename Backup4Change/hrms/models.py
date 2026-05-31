@@ -1,29 +1,47 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
-from helpers.validators import (upload_personal_id, IDs_scan_validator, validate_scan_mime)
 from helpers.choices import (
-    CURRENCY_CHOICES, EMPLOYMENT_TYPES, TITLE_CHOICES, MARITAL_STATUSES,
-    GENDER_CHOICES, ID_TYPES
-    )
-from ppms.models import ProcessingPlant
-from sfap.models import FarmShed
+    CURRENCY_CHOICES,
+    EMPLOYMENT_TYPES,
+    GENDER_CHOICES,
+    ID_TYPES,
+    MARITAL_STATUSES,
+    TITLE_CHOICES,
+)
+from helpers.validators import (
+    IDs_scan_validator,
+    upload_personal_id,
+    validate_scan_mime,
+)
+from phonenumber_field.modelfields import PhoneNumberField
 from utils.mixins import FarmAuditBaseModelMixin
 
+from ppms.models import ProcessingPlant
+from sfap.models import FarmShed
 
 # Create your models here.
 
+
 class Department(FarmAuditBaseModelMixin):
-    """ Core Employee Department model """
-    name = models.CharField(max_length = 200, verbose_name=_("Department name"), unique = True)
+    """Core Employee Department model"""
+
+    name = models.CharField(
+        max_length=200, verbose_name=_("Department name"), unique=True
+    )
     description = models.TextField(verbose_name=_("Department Description"))
-    sub_department = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = True, related_name="subordinates",
-    verbose_name=_("Minor department"))
-    is_active = models.BooleanField(default = True)
+    sub_department = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="subordinates",
+        verbose_name=_("Minor department"),
+    )
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.name} by {self.created_by}"
@@ -33,7 +51,6 @@ class Department(FarmAuditBaseModelMixin):
         verbose_name = _("Department")
         verbose_name_plural = _("Departments")
         ordering = ["created_by"]
-
 
 
 class Employee(models.Model):
@@ -58,7 +75,7 @@ class Employee(models.Model):
     department = models.ForeignKey(
         Department,
         on_delete=models.PROTECT,
-        default = '1',
+        default="1",
         related_name="departments",
         verbose_name=_("Employee Department"),
     )
@@ -68,8 +85,11 @@ class Employee(models.Model):
     )
 
     marital_status = models.CharField(
-        _("Marital Status"), max_length=20, choices = MARITAL_STATUSES, db_index=True,
-        default = 'single'
+        _("Marital Status"),
+        max_length=20,
+        choices=MARITAL_STATUSES,
+        db_index=True,
+        default="single",
     )
     employment_type = models.CharField(
         _("Employment Type"),
@@ -105,10 +125,14 @@ class Employee(models.Model):
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
     employee_title = models.CharField(
-        _("Employee Title"), max_length=20, choices = TITLE_CHOICES, db_index=True, null = True
+        _("Employee Title"),
+        max_length=20,
+        choices=TITLE_CHOICES,
+        db_index=True,
+        null=True,
     )
     gender = models.CharField(
-        _("Employee Gender"), max_length=20, choices = GENDER_CHOICES, null = True
+        _("Employee Gender"), max_length=20, choices=GENDER_CHOICES, null=True
     )
 
     hire_date = models.DateField(_("Hire Date"))
@@ -262,7 +286,7 @@ class NextOfKin(models.Model):
 
 
 class UserIdentity(models.Model):
-    """ Allows user to have multiple forms of ID (NIDA, Passport, MPIGA KURA etc.) """
+    """Allows user to have multiple forms of ID (NIDA, Passport, MPIGA KURA etc.)"""
 
     owner = models.ForeignKey(
         Employee,
@@ -280,8 +304,8 @@ class UserIdentity(models.Model):
     # Optional: If the scan of the ID is required
     id_image = models.ImageField(
         _("ID Scan/Photo"),
-        upload_to = upload_personal_id,
-        validators = [IDs_scan_validator, validate_scan_mime],
+        upload_to=upload_personal_id,
+        validators=[IDs_scan_validator, validate_scan_mime],
         null=True,
         blank=True,
     )

@@ -1,10 +1,11 @@
-from django.db import models
-from common.mixins import BaseEnterpriseAuditModelMixin
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class DisposalArea(BaseEnterpriseAuditModelMixin):
     """It store the areas where waste will be disposed"""
@@ -53,7 +54,9 @@ class WasteOutflow(BaseEnterpriseAuditModelMixin):
     """
 
     collection_logs = models.ManyToManyField(
-        'wces.WasteCollection', related_name="outflows", verbose_name=_("Linked Collections")
+        "wces.WasteCollection",
+        related_name="outflows",
+        verbose_name=_("Linked Collections"),
     )
     destination = models.ForeignKey(DisposalArea, on_delete=models.RESTRICT)
 

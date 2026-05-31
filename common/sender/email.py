@@ -1,14 +1,18 @@
+from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from django.conf import settings
+
 from common.exceptions import handle_mail_exception
+
 
 class EmailSenderService:
     """Handles all outgoing email notifications using templated HTML content."""
 
     @staticmethod
-    def _send_multipart_email(subject, recipient, template, context, high_priority=False):
+    def _send_multipart_email(
+        subject, recipient, template, context, high_priority=False
+    ):
         """Internal helper to dispatch HTML emails with a plain-text fallback."""
         try:
             html_content = render_to_string(template, context)
@@ -20,7 +24,10 @@ class EmailSenderService:
             email.attach_alternative(html_content, "text/html")
 
             if high_priority:
-                email.extra_headers = {"X-Priority": "1 (Highest)", "Importance": "High"}
+                email.extra_headers = {
+                    "X-Priority": "1 (Highest)",
+                    "Importance": "High",
+                }
 
             email.send(fail_silently=False)
             return True, "Email sent successfully."
@@ -43,7 +50,7 @@ class EmailSenderService:
             subject=f"Verification Code: {otp_entry.code} - Daz Electronics",
             recipient=user.email,
             template="emails/otp_email.html",
-            context=context
+            context=context,
         )
 
     @classmethod
@@ -59,7 +66,7 @@ class EmailSenderService:
             recipient=user.email,
             template="emails/password_reset.html",
             context=context,
-            high_priority=True
+            high_priority=True,
         )
 
     @classmethod
@@ -77,9 +84,8 @@ class EmailSenderService:
             recipient=user.email,
             template="emails/password_reset.html",
             context=context,
-            high_priority=True
+            high_priority=True,
         )
-
 
     @classmethod
     def send_staff_onboarding(cls, user, password, completion_link, greeting_name):
@@ -96,5 +102,5 @@ class EmailSenderService:
             subject="Welcome to Daz Electronics - Your Staff Account is Ready",
             recipient=user.email,
             template="emails/staff_welcome.html",
-            context=context
+            context=context,
         )

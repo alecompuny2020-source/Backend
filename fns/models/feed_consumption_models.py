@@ -1,14 +1,16 @@
-from django.db import models, transaction
+from decimal import Decimal
+
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
-from django.core.exceptions import ValidationError
-from decimal import Decimal
-from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import SourceChoices
 
+from common.choices import SourceChoices
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class FeedConsumption(BaseEnterpriseAuditModelMixin):
     """
@@ -17,13 +19,13 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
     """
 
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="feed_logs",
         verbose_name=_("Flock Batch"),
     )
     feed_type = models.ForeignKey(
-        'fns.FeedType', on_delete=models.PROTECT, verbose_name=_("Feed Type")
+        "fns.FeedType", on_delete=models.PROTECT, verbose_name=_("Feed Type")
     )
     quantity_used_kg = models.DecimalField(
         _("Quantity Used (KG)"), max_digits=10, decimal_places=2
@@ -66,7 +68,7 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
     @property
     def actual_intake(self) -> float:
         """Calculates what the birds actually ate safely."""
-        return max(Decimal('0.00'), self.quantity_used_kg - self.waste_amount_kg)
+        return max(Decimal("0.00"), self.quantity_used_kg - self.waste_amount_kg)
 
     @transaction.atomic
     def save(self, *args, **kwargs):
@@ -80,13 +82,21 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
 
         if quantity_delta != 0:
             try:
-                inventory = FeedInventory.objects.select_for_update().get(feed_type=self.feed_type)
+                inventory = FeedInventory.objects.select_for_update().get(
+                    feed_type=self.feed_type
+                )
             except FeedInventory.DoesNotExist:
-                raise ValidationError(_(f"Hakuna stoki iliyosajiliwa kwa ajili ya: {self.feed_type.name}."))
+                raise ValidationError(
+                    _(
+                        f"Hakuna stoki iliyosajiliwa kwa ajili ya: {self.feed_type.name}."
+                    )
+                )
 
             if inventory.total_quantity_kg < quantity_delta:
                 raise ValidationError(
-                    _(f"Inventory Shortage: Ghala lina kilo {inventory.total_quantity_kg} tu za {self.feed_type.name}.")
+                    _(
+                        f"Inventory Shortage: Ghala lina kilo {inventory.total_quantity_kg} tu za {self.feed_type.name}."
+                    )
                 )
 
             inventory.total_quantity_kg -= quantity_delta
@@ -97,14 +107,15 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
     @transaction.atomic
     def delete(self, *args, **kwargs):
         """Rudisha chakula ghalani kama logi ikifutwa na msimamizi."""
-        inventory = FeedInventory.objects.select_for_update().get(feed_type=self.feed_type)
+        inventory = FeedInventory.objects.select_for_update().get(
+            feed_type=self.feed_type
+        )
         inventory.total_quantity_kg += self.quantity_used_kg
         inventory.save()
         super().delete(*args, **kwargs)
 
     def __str__(self):
         return f"{self.batch.batch_id}: {self.quantity_used_kg}kg"
-
 
     def get_log_message(self, old_data=None):
         if old_data:

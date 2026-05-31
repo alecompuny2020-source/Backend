@@ -1,4 +1,3 @@
-
 """
 CHOICES AND CONSTANTS REGISTRY FOR AN ENTERPRISE
 
@@ -13,9 +12,8 @@ Responsibility:
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
+from django.utils.translation import gettext_lazy as _
 
 """ SYSTEM CONFIGURATION & AUTHENTICATION """
 
@@ -25,6 +23,7 @@ current_time = timezone.now()
 
 OTP_CODE_LENGTH = getattr(settings, "OTP_CODE_LENGTH", 6)
 OTP_EXPIRATION_TIME_MINUTES = getattr(settings, "OTP_EXPIRATION_TIME_MINUTES", 5)
+
 
 class TokenType(models.TextChoices):
     REGISTRATION = "REGISTRATION", _("Registration")
@@ -37,10 +36,12 @@ class TokenType(models.TextChoices):
     ACCOUNT_DELETION = "ACCOUNT_DELETION", _("Account Deletion Confirmation")
     STAFF_INVITATION = "STAFF_INVITATION", _("Staff Onboarding Invitation")
 
+
 class CommunicationMethod(models.TextChoices):
     EMAIL = "email", _("Email")
     PHONE = "phone", _("Phone")
     BOTH = "both", _("Both")
+
 
 class LanguageChoice(models.TextChoices):
     EN_US = "en-us", _("English (US)")
@@ -50,11 +51,13 @@ class LanguageChoice(models.TextChoices):
 
 """ USER PROFILE & HR """
 
+
 class RegistrationStatus(models.TextChoices):
     PENDING = "PENDING", _("Pending Verification")
     VERIFIED = "VERIFIED", _("Verified & Approved")
     REJECTED = "REJECTED", _("Rejected/Incomplete")
     REVOKED = "REVOKED", _("Revoked/Terminated")
+
 
 class UserTitle(models.TextChoices):
     # Standard Social Titles
@@ -107,6 +110,7 @@ class EmploymentType(models.TextChoices):
 
 
 """ LOGISTICS, SHIPPING & INVENTORY """
+
 
 class OrderStatus(models.TextChoices):
     PENDING = "PENDING", _("Pending")
@@ -166,10 +170,10 @@ class AddressType(models.TextChoices):
 
 """ FARM PRODUCTION & HEALTH """
 
-class SourceChoices(models.TextChoices):
-    FARM_PRODUCED = 'FARM_PRODUCED', _('Kiasili / Limeshindwa Shambani')
-    COMMERCIAL = 'COMMERCIAL', _('Kibiashara / Kununuliwa')
 
+class SourceChoices(models.TextChoices):
+    FARM_PRODUCED = "FARM_PRODUCED", _("Kiasili / Limeshindwa Shambani")
+    COMMERCIAL = "COMMERCIAL", _("Kibiashara / Kununuliwa")
 
 
 class ProductCategory(models.TextChoices):
@@ -250,10 +254,10 @@ class StorageUnitType(models.TextChoices):
 
 
 class ProductionStatus(models.TextChoices):
-    PLANTED = 'PLANTED', _('planted')
-    GROWING = 'GROWING', _('growing')
-    HARVESTED = 'HARVESTED', _('harvested')
-    FAILED = 'FAILED', _('failed')
+    PLANTED = "PLANTED", _("planted")
+    GROWING = "GROWING", _("growing")
+    HARVESTED = "HARVESTED", _("harvested")
+    FAILED = "FAILED", _("failed")
 
 
 class MeatCutType(models.TextChoices):
@@ -262,16 +266,20 @@ class MeatCutType(models.TextChoices):
     PIECE = "PIECE", _("Countable Piece (Idadi - mf. Soseji, Mishikaki)")
     WHOLE = "WHOLE", _("Whole Carcass / Bird (Mzoga Mzima / Kuku Mzima)")
 
+
 class StorageState(models.TextChoices):
     FRESH = "FRESH", _("Fresh / Chilled")
     FROZEN = "FROZEN", _("Frozen")
+
 
 class FatLevel(models.TextChoices):
     LEAN = "LEAN", _("Lean / Low Fat")
     MEDIUM = "MEDIUM", _("Medium Fat")
     HIGH = "HIGH", _("High Fat / Premium Marbled")
 
+
 """ SALES, FINANCE & BOOKING """
+
 
 class CurrencyCode(models.TextChoices):
     TZS = "TZS", _("Tanzanian Shilling")
@@ -311,6 +319,7 @@ class EventBookingStatus(models.TextChoices):
 
 """ ASSETS & FACILITIES """
 
+
 class AssetType(models.TextChoices):
     FARM = "FARM", _("Farm/Production Site")
     BUILDING = "BUILDING", _("Building/Structure")
@@ -327,6 +336,7 @@ class RentalUnitType(models.TextChoices):
 
 """ UNITS OF MEASURE & GENERAL TASK STATUS """
 
+
 class UnitOfMeasure(models.TextChoices):
     # Hapa tumeziunganisha zote kuwa kitu kimoja safi na chenye maana
     TRAY = "TRAY", _("Tray (Treya)")
@@ -342,13 +352,17 @@ class RateType(models.TextChoices):
     PER_KG = "PER_KG", _("Cost Per KG")
 
 
-class TicketStatus(models.TextChoices):  # Nimeipa jina la 'TicketStatus' au 'TaskStatus' ili iwe bayana kuliko 'STATUS_CHOICES' ya jumla
+class TicketStatus(
+    models.TextChoices
+):  # Nimeipa jina la 'TicketStatus' au 'TaskStatus' ili iwe bayana kuliko 'STATUS_CHOICES' ya jumla
     OPEN = "OPEN", _("Open")
     IN_PROGRESS = "IN_PROGRESS", _("In Progress")
     CLOSED = "CLOSED", _("Resolved")
 
 
-class TaskPriority(models.TextChoices):  # Nimeipa jina la 'TaskPriority' kuleta maana halisi ya kiutendaji shambani
+class TaskPriority(
+    models.TextChoices
+):  # Nimeipa jina la 'TaskPriority' kuleta maana halisi ya kiutendaji shambani
     LOW = "LOW", _("Low")
     NORMAL = "NORMAL", _("Normal")
     URGENT = "URGENT", _("Urgent/Safety")
@@ -356,7 +370,10 @@ class TaskPriority(models.TextChoices):  # Nimeipa jina la 'TaskPriority' kuleta
 
 """ MISCELLANEOUS / LEGACY """
 
-class RecipientType(models.IntegerChoices):  # Nimeipa jina 'RecipientType' au 'ChatType' kulingana na muktadha
+
+class RecipientType(
+    models.IntegerChoices
+):  # Nimeipa jina 'RecipientType' au 'ChatType' kulingana na muktadha
     USER = 0, _("User")
     GROUP = 1, _("Group")
     BROADCAST = 2, _("Broadcast")

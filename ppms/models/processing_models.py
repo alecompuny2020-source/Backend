@@ -1,11 +1,13 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class ProcessingPlant(BaseEnterpriseAuditModelMixin):
     """Represents the physical facility or station where processing occurs."""
@@ -69,7 +71,11 @@ class ProcessingPlant(BaseEnterpriseAuditModelMixin):
         )
 
     def get_plant_details(self):
-        return f"{self.name.title()} ({self.location})" if self.name and self.location else f"{self.name}"
+        return (
+            f"{self.name.title()} ({self.location})"
+            if self.name and self.location
+            else f"{self.name}"
+        )
 
     def __str__(self):
         return self.name
@@ -86,13 +92,13 @@ class ProcessingSession(BaseEnterpriseAuditModelMixin):
     )
 
     source_batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.PROTECT,
         related_name="processing_runs",
         verbose_name=_("Source Batch"),
     )
     assigned_workers = models.ManyToManyField(
-        'hrms.Employee',
+        "hrms.Employee",
         related_name="session_workers",
         blank=True,
         verbose_name=_("Assigned Staff"),

@@ -1,13 +1,14 @@
-from django.db import models
-from common.mixins import BaseEnterpriseModelMixin
 import secrets
 import string
-from django.utils import timezone
 from datetime import timedelta
-from django.conf import settings
-from django.utils.translation import gettext_lazy as _
-from common.choices import (OTP_CODE_LENGTH, TokenType, OTP_EXPIRATION_TIME_MINUTES)
 
+from django.conf import settings
+from django.db import models
+from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
+
+from common.choices import OTP_CODE_LENGTH, OTP_EXPIRATION_TIME_MINUTES, TokenType
+from common.mixins import BaseEnterpriseModelMixin
 
 
 class Otp(BaseEnterpriseModelMixin):
@@ -28,13 +29,11 @@ class Otp(BaseEnterpriseModelMixin):
     is_used = models.BooleanField(_("Is Used"), default=False)
     expires_at = models.DateTimeField(_("Expires At"), db_index=True)
     created_at = models.DateTimeField(_("Created At"), default=timezone.now)
-    token_type = models.CharField(
-        _("Token Type"), max_length=20, choices=TokenType
-    )
+    token_type = models.CharField(_("Token Type"), max_length=20, choices=TokenType)
     is_link_based = models.BooleanField(
         _("Is Link Based"),
         default=False,
-        help_text=_("Indicates if this record represents an email-based secure link.")
+        help_text=_("Indicates if this record represents an email-based secure link."),
     )
     # --- Enterprise Metadata (The 'Sweet' Logic) ---
     # Blueprint:

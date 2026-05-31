@@ -1,11 +1,13 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from ..helpers import CURRENCY_CHOICES, DISPOSAL_METHOD_CHOICES
 from ..utils import FarmAuditBaseModel
 
 # Create your models here.
+
 
 class WasteCategory(FarmAuditBaseModel):
     """

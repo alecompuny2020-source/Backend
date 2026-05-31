@@ -1,7 +1,8 @@
 from django.db.models import Q
-from rest_framework.exceptions import NotFound, APIException
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.phonenumber import to_python
+from rest_framework.exceptions import APIException, NotFound
+
 
 def initiate_user_login_otp(identifier):
     """

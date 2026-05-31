@@ -38,6 +38,4 @@ validate_video_mime = MimeTypeValidator(
 validate_scan_mime = MimeTypeValidator(
     ["image/jpg", "image/jpeg", "image/png", "application/pdf"]
 )
-validate_contract_mime = MimeTypeValidator(
-    ["application/pdf"]
-)
+validate_contract_mime = MimeTypeValidator(["application/pdf"])

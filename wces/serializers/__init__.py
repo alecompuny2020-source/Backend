@@ -1,2 +1,2 @@
-from .waste_serializers import *
 from .disposal_serializers import *
+from .waste_serializers import *

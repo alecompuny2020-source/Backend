@@ -2,9 +2,13 @@ import secrets
 import string
 import uuid
 from datetime import timedelta
+
 from django.conf import settings
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
@@ -12,13 +16,23 @@ from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-
-from utils.choices import (ADDRESS_TYPES, ID_TYPES, OTP_CODE_LENGTH,
-                             OTP_EXPIRATION_TIME_MINUTES, TOKEN_TYPE_CHOICES,
-                             COMMUNICATION_CHOICES, CURRENCY_CHOICES, LANGUAGE_CHOICES)
-from utils.validators import (IDs_scan_validator, image_validator,
-                                validate_image_mime, validate_scan_mime)
-from utils.services import (upload_profile_picture)
+from utils.choices import (
+    ADDRESS_TYPES,
+    COMMUNICATION_CHOICES,
+    CURRENCY_CHOICES,
+    ID_TYPES,
+    LANGUAGE_CHOICES,
+    OTP_CODE_LENGTH,
+    OTP_EXPIRATION_TIME_MINUTES,
+    TOKEN_TYPE_CHOICES,
+)
+from utils.services import upload_profile_picture
+from utils.validators import (
+    IDs_scan_validator,
+    image_validator,
+    validate_image_mime,
+    validate_scan_mime,
+)
 
 # Create your models here.
 
@@ -47,12 +61,14 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """ Core Enterprise Identity Model. """
+    """Core Enterprise Identity Model."""
 
     id = models.UUIDField(
         default=uuid.uuid4, editable=False, primary_key=True, db_index=True
     )
-    email = models.EmailField(_("Email Address"), unique=True, db_index=True, null=True, blank=True)
+    email = models.EmailField(
+        _("Email Address"), unique=True, db_index=True, null=True, blank=True
+    )
     phone_number = PhoneNumberField(
         _("Phone Number"), null=True, unique=True, db_index=True, blank=True
     )
@@ -123,7 +139,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         permissions = [
             ("can_register_staff", "Can register a new staff user"),
             ("can_reset_password_other_user", "Can force reset any user's password"),
-            ("can_deactivate_user", "Can deactivate any user account (is_active = False)"),
+            (
+                "can_deactivate_user",
+                "Can deactivate any user account (is_active = False)",
+            ),
             ("can_toggle_is_staff", "Can change a user's is_staff status"),
             ("can_change_self_password", "Can reset individual password"),
         ]

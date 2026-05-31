@@ -4,8 +4,10 @@ from utils.audit_track import FarmAuditBaseModel
 
 # Create your models here.
 
+
 class Supplier(FarmAuditBaseModel):
     """Poultry keepers who supply stock."""
+
     name = models.CharField(_("Supplier Name"), max_length=100)
     contact = models.CharField(_("Contact Info"), max_length=100, blank=True)
     location = models.CharField(_("Farm Location"), max_length=150, blank=True)

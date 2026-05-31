@@ -1,14 +1,14 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
 from ..helpers import PRIORITY_CHOICES, STATUS_CHOICES, UNIT_TYPES
 from ..utils import ActionTrackingBaseModel, FarmAuditBaseModel
 
-
 # Create your models here.
+
 
 class Building(FarmAuditBaseModel):
     """

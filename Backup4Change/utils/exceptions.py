@@ -71,18 +71,18 @@ def general_exception_handler(exc: Exception, context: dict[str, Any]) -> Respon
     # Converts Django's internal Model.clean() ValidationErrors into DRF format
     if isinstance(exc, DjangoValidationError):
         from rest_framework.serializers import as_serializer_error
+
         exc = DRFValidationError(as_serializer_error(exc))
 
     # Handles Foreign Key restrictions (Protect and Restrict)
     if isinstance(exc, (ProtectedError, RestrictedError)):
         blocking_objects = (
-            exc.protected_objects if isinstance(exc, ProtectedError)
+            exc.protected_objects
+            if isinstance(exc, ProtectedError)
             else exc.restricted_objects
         )
 
-        blocking_models = {
-            obj._meta.verbose_name.title() for obj in blocking_objects
-        }
+        blocking_models = {obj._meta.verbose_name.title() for obj in blocking_objects}
         model_list = ", ".join(blocking_models)
 
         error_message = f"Cannot delete: This item is used in {model_list}. Try deactivating it instead."
@@ -91,9 +91,9 @@ def general_exception_handler(exc: Exception, context: dict[str, Any]) -> Respon
             format_error_payload(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 message="Database Restriction",
-                details=error_msg
+                details=error_msg,
             ),
-            status=status.HTTP_400_BAD_REQUEST
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
     # Calls DRF's default exception handler for other errors
@@ -111,9 +111,7 @@ def general_exception_handler(exc: Exception, context: dict[str, Any]) -> Respon
 
         # Wraps everything in the standardized envelope
         response.data = format_error_payload(
-            status_code=response.status_code,
-            message=status_msg,
-            details=response.data
+            status_code=response.status_code, message=status_msg, details=response.data
         )
 
     return response

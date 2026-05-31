@@ -1,4 +1,4 @@
-""" Constitutes shared resources to make Enterprise code DRY """
+"""Constitutes shared resources to make Enterprise code DRY"""
 
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import EmailValidator
@@ -12,6 +12,7 @@ def enforce_password(value):
     except ve as e:
         raise serializers.ValidationError(e.messages)
     return value
+
 
 def validate_user_identifier(value):
     """Ensures identifier is a valid email or phone number."""
@@ -67,13 +68,18 @@ def mask_email(email: str) -> str:
         local, domain = email.split("@")
 
         if len(local) <= 3:
-            masked_local = local[0] + "*" * (len(local) - 2) + local[-1] if len(local) > 1 else local + "*"
+            masked_local = (
+                local[0] + "*" * (len(local) - 2) + local[-1]
+                if len(local) > 1
+                else local + "*"
+            )
         else:
             masked_local = local[:2] + "*" * (len(local) - 3) + local[-1]
 
         return f"{masked_local}@{domain}"
     except ValueError:
         return email
+
 
 def mask_phone(phone: str) -> str:
     """
@@ -85,8 +91,12 @@ def mask_phone(phone: str) -> str:
         return f"{phone_str[:4]}******{phone_str[-3:]}"
     return phone_str
 
+
 def get_greeting_name(user_instance):
-    """ Always return the employee number linked to the user."""
-    if hasattr(user_instance, "employee_profile") and user_instance.employee_profile.employee_number:
+    """Always return the employee number linked to the user."""
+    if (
+        hasattr(user_instance, "employee_profile")
+        and user_instance.employee_profile.employee_number
+    ):
         return user_instance.employee_profile.employee_number.upper()
     return _("Staff Member")

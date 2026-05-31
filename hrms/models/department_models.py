@@ -1,23 +1,34 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
+
 class Department(BaseEnterpriseAuditModelMixin):
-    """ Core Employee Department model """
-    name = models.CharField(max_length = 200, verbose_name=_("Department name"), unique = True)
+    """Core Employee Department model"""
+
+    name = models.CharField(
+        max_length=200, verbose_name=_("Department name"), unique=True
+    )
     description = models.TextField(verbose_name=_("Department Description"))
-    sub_department = models.ForeignKey('self', on_delete = models.SET_NULL, null = True, blank = True, related_name="subordinates",
-    verbose_name=_("Minor department"))
+    sub_department = models.ForeignKey(
+        "self",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="subordinates",
+        verbose_name=_("Minor department"),
+    )
     code = models.CharField(
         max_length=10,
         unique=True,
         db_index=True,
         verbose_name=_("Department Code"),
-        help_text=_("Unique short code for ID generation (e.g., HR, MFG, SLS, MKT)")
+        help_text=_("Unique short code for ID generation (e.g., HR, MFG, SLS, MKT)"),
     )
-    is_active = models.BooleanField(default = True)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         db_table = "department"
@@ -26,7 +37,7 @@ class Department(BaseEnterpriseAuditModelMixin):
         ordering = ["-id"]
 
     def clean(self):
-        """ Force consistency at the model validation layer """
+        """Force consistency at the model validation layer"""
         super().clean()
         if self.code:
             # Strip spaces and make uppercase (e.g., "  hr " -> "HR")
@@ -40,10 +51,12 @@ class Department(BaseEnterpriseAuditModelMixin):
         return f"{self.name} ({self.code})"
 
 
-
 class EmployeeIDSequence(models.Model):
     """Tracks the auto-incrementing sequence counter for each distinct prefix code."""
-    prefix = models.CharField(max_length=10, unique=True, db_index = True, help_text="e.g., HR, MFG, SLS")
+
+    prefix = models.CharField(
+        max_length=10, unique=True, db_index=True, help_text="e.g., HR, MFG, SLS"
+    )
     last_sequence = models.PositiveIntegerField(default=0)
 
     class Meta:

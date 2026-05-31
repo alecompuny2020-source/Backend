@@ -112,7 +112,11 @@ TECH_STRATEGY = {
             "feature": "Domain Driven Design (DDD)",
             "strategic_role": "Architectural Maintainability",
             "potential_bottleneck": "Over-engineering & Boilerplate bloat",
-            "recommended_tools": ["Service Layer", "Selectors Pattern", "Domain Separation"],
+            "recommended_tools": [
+                "Service Layer",
+                "Selectors Pattern",
+                "Domain Separation",
+            ],
         },
     ],
     "critical_gotchas": {

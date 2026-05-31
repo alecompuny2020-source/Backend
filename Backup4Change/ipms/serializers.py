@@ -1,6 +1,7 @@
-from rest_framework import serializers
-from .models import Supplier
 from helpers.choices import now, now_iso
+from rest_framework import serializers
+
+from .models import Supplier
 
 
 class SupplierSerializer(serializers.ModelSerializer):
@@ -11,24 +12,35 @@ class SupplierSerializer(serializers.ModelSerializer):
     class Meta:
         model = Supplier
         fields = [
-            'id', 'name', 'contact', 'location', 'is_active', 'created_by',
-            'updated_by', 'created_on', 'updated_on'
+            "id",
+            "name",
+            "contact",
+            "location",
+            "is_active",
+            "created_by",
+            "updated_by",
+            "created_on",
+            "updated_on",
         ]
         extra_kwargs = {
-            "read_only_fields" : {
-                "id", "created_by", "created_on", "updated_by", "updated_on"
+            "read_only_fields": {
+                "id",
+                "created_by",
+                "created_on",
+                "updated_by",
+                "updated_on",
             }
         }
 
     def create(self, validated_data):
-        request = self.context['request']
-        validated_data['created_by'] = request.user
+        request = self.context["request"]
+        validated_data["created_by"] = request.user
         return Supplier.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        request = self.context['request']
-        validated_data['updated_by'] = request.user
-        validate_data['updated_on'] = now_iso
+        request = self.context["request"]
+        validated_data["updated_by"] = request.user
+        validate_data["updated_on"] = now_iso
         return Supplier.objects.update(**validated_data)
 
     def get_created_by(self, obj) -> str:
@@ -38,4 +50,4 @@ class SupplierSerializer(serializers.ModelSerializer):
         return obj.updated_by.get_full_name() if obj.updated_by else None
 
     def get_is_active(self, obj) -> str:
-        return 'YES' if obj.is_active else 'No'
+        return "YES" if obj.is_active else "No"

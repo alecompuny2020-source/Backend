@@ -1,9 +1,10 @@
 from django.contrib.auth.models import BaseUserManager
 from django.db.models import Q
 from django.utils import timezone
-from rest_framework.response import Response
-from rest_framework import status
 from phonenumber_field.phonenumber import to_python
+from rest_framework import status
+from rest_framework.response import Response
+
 from .sender.gateway import NotificationSenderGateway as NotificationGateway
 
 
@@ -63,7 +64,9 @@ class EnterpriseOTPandLinkManager:
 
         otp_entry = Otp.generate_new_code(user, token_type)
 
-        success, message = NotificationGateway.dispatch_otp_or_link(otp_entry, identifier)
+        success, message = NotificationGateway.dispatch_otp_or_link(
+            otp_entry, identifier
+        )
 
         if not success:
             return Response(
@@ -84,13 +87,12 @@ class EnterpriseOTPandLinkManager:
 
         return Response({"message": res_msg}, status=status.HTTP_200_OK)
 
-
     @classmethod
     def verify(cls, identifier: str, code: str, token_type: str):
         """
         Verifies the OTP code, handles expiry, and updates user and otp status.
         """
-        from core.models import User, Otp
+        from core.models import Otp, User
 
         error_msg = {"error": "Invalid or expired OTP code."}
         phone = to_python(identifier)
@@ -101,9 +103,7 @@ class EnterpriseOTPandLinkManager:
 
             # Find most recent unused OTP
             otp_entry = Otp.objects.filter(
-                user=user,
-                token_type=token_type,
-                is_used=False
+                user=user, token_type=token_type, is_used=False
             ).latest("created_at")
 
         except (User.DoesNotExist, Otp.DoesNotExist):

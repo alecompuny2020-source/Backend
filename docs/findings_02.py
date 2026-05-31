@@ -1,6 +1,6 @@
 from django.db import models
-from common.mixins import BaseEnterpriseAuditModelMixin
 
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 
 class CropProduction(BaseEnterpriseAuditModelMixin):
@@ -8,18 +8,19 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     Inarekodi mazao yanayolimwa ili kulisha kuku au biashara,
     ikitumia mbolea kutoka kwa kuku.
     """
-    class ProductionStatus(models.TextChoices):
-        PLANTED = 'PLANTED', 'planted'
-        GROWING = 'GROWING', 'Inakua'
-        HARVESTED = 'HARVESTED', 'Imevunwa'
-        FAILED = 'FAILED', 'Imeharibika'
 
-    block = models.ForeignKey('sfap.FarmBlock', on_delete=models.CASCADE)
-    crop_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
+    class ProductionStatus(models.TextChoices):
+        PLANTED = "PLANTED", "planted"
+        GROWING = "GROWING", "Inakua"
+        HARVESTED = "HARVESTED", "Imevunwa"
+        FAILED = "FAILED", "Imeharibika"
+
+    block = models.ForeignKey("sfap.FarmBlock", on_delete=models.CASCADE)
+    crop_name = models.CharField(max_length=100)  # Mfano: Alizeti, Mtama
     status = models.CharField(
         max_length=20,
         choices=ProductionStatus.choices,
-        default=ProductionStatus.PLANTED
+        default=ProductionStatus.PLANTED,
     )
 
     # Ratiba
@@ -27,8 +28,12 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     harvest_date = models.DateField(null=True, blank=True)
 
     # Mavuno (Yield)
-    estimated_yield_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-    actual_yield_kg = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estimated_yield_kg = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.0
+    )
+    actual_yield_kg = models.DecimalField(
+        max_digits=10, decimal_places=2, null=True, blank=True
+    )
 
     # Mzunguko wa Virutubisho kutoka kwa kuku
     manure_used_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -48,26 +53,31 @@ class EcologicalInput(BaseEnterpriseAuditModelMixin):
     Inafuatilia pembejeo za asili (Organic Inputs)
     Kama vile: Wadudu (BSF), Nyasi, au Mbolea ya vimelea.
     """
-    class UnitChoices(models.TextChoices):
-        KG = 'KG', 'Kilogramu'
-        LITER = 'L', 'Lita'
-        PIECE = 'PCS', 'Idadi/Vipande'
 
-    farm = models.ForeignKey('sfap.Farm', on_delete=models.CASCADE)
+    class UnitChoices(models.TextChoices):
+        KG = "KG", "Kilogramu"
+        LITER = "L", "Lita"
+        PIECE = "PCS", "Idadi/Vipande"
+
+    farm = models.ForeignKey("sfap.Farm", on_delete=models.CASCADE)
     input_name = models.CharField(max_length=100)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.CharField(max_length=10, choices=UnitChoices.choices, default=UnitChoices.KG)
+    unit = models.CharField(
+        max_length=10, choices=UnitChoices.choices, default=UnitChoices.KG
+    )
 
     # Thamani ya Kifedha (Defaulting to TZS)
-    estimated_cost = models.DecimalField(max_digits=12, decimal_places=2, default=0.0, help_text="Gharama kwa TZS")
+    estimated_cost = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.0, help_text="Gharama kwa TZS"
+    )
 
     # Mabadiliko hapa: Inaweza kuwa null kama inatoka nje ya shamba (External Vendor)
     origin = models.ForeignKey(
-        'sfap.FarmBlock',
+        "sfap.FarmBlock",
         on_delete=models.PROTECT,
         null=True,
         blank=True,
-        help_text="Kitalu/Meli ilikotoka (Acha wazi kama inatoka nje ya shamba)"
+        help_text="Kitalu/Meli ilikotoka (Acha wazi kama inatoka nje ya shamba)",
     )
 
     class Meta:
@@ -78,30 +88,39 @@ class EcologicalInput(BaseEnterpriseAuditModelMixin):
         return f"{self.input_name} - {self.quantity} {self.unit}"
 
 
-
 from rest_framework import serializers
 
+
 class LogHarvestSerializer(serializers.Serializer):
-    actual_yield_kg = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=0.01)
-    unit_cost_tzs = serializers.DecimalField(max_digits=12, decimal_places=2, default=0.00, min_value=0.00)
+    actual_yield_kg = serializers.DecimalField(
+        max_digits=10, decimal_places=2, min_value=0.01
+    )
+    unit_cost_tzs = serializers.DecimalField(
+        max_digits=12, decimal_places=2, default=0.00, min_value=0.00
+    )
 
 
-
-from rest_framework import viewset, status
+from rest_framework import status, viewset
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
 from .models import CropProduction
-from .serializers import CropProductionSerializer, LogHarvestSerializer  # Assuming you have a standard model serializer
+from .serializers import (  # Assuming you have a standard model serializer
+    CropProductionSerializer,
+    LogHarvestSerializer,
+)
 from .services import CropHarvestLogisticsService
+
 
 class CropProductionViewSet(viewsets.ModelViewSet):
     """
     ViewSet ya kudhibiti mzunguko mzima wa uzalishaji wa mazao (Crop Production).
     """
+
     queryset = CropProduction.objects.all()
     serializer_class = CropProductionSerializer
 
-    @action(detail=True, methods=['post'], url_path='log-harvest')
+    @action(detail=True, methods=["post"], url_path="log-harvest")
     def log_harvest(self, request, pk=None):
         """
         Endpoint ya kurekodi mavuno ya zao husika na kuhamishia ghalani kama chakula cha kuku.
@@ -113,57 +132,57 @@ class CropProductionViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # 2. Chopoa data iliyosafishwa (Validated Data)
-        actual_yield = serializer.validated_data['actual_yield_kg']
-        unit_cost = serializer.validated_data['unit_cost_tzs']
-
+        actual_yield = serializer.validated_data["actual_yield_kg"]
+        unit_cost = serializer.validated_data["unit_cost_tzs"]
 
         # 3. Tekeleza mchakato wa kimantiki kupitia safu ya huduma (Service Layer)
         try:
             stock = CropHarvestLogisticsService.process_harvest_to_feed_stock(
                 crop_production_id=pk,
                 actual_yield=actual_yield,
-                unit_cost_tzs=unit_cost
+                unit_cost_tzs=unit_cost,
             )
-            return Response({
-                "status": "success",
-                "message": "Mavuno yamefanikiwa kurekodiwa na stoki ya chakula imeongezwa.",
-                "ingredient": stock.ingredient_name,
-                "current_stock_kg": float(stock.available_qty_kg)
-            }, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "status": "success",
+                    "message": "Mavuno yamefanikiwa kurekodiwa na stoki ya chakula imeongezwa.",
+                    "ingredient": stock.ingredient_name,
+                    "current_stock_kg": float(stock.available_qty_kg),
+                },
+                status=status.HTTP_200_OK,
+            )
 
         except Exception as e:
-            return Response(
-                {"error": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
+
 from .views import CropProductionViewSet
 
 router = DefaultRouter()
-router.register(r'crop-productions', CropProductionViewSet, basename='crop-production')
+router.register(r"crop-productions", CropProductionViewSet, basename="crop-production")
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path("", include(router.urls)),
 ]
 
 
-from django.db import models, transaction
-from django.conf import settings
-from django.contrib.postgres.indexes import GinIndex
-from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError  # FIX: Aliyekosekana kwenye import
-from djmoney.models.fields import MoneyField
 from decimal import Decimal
 
+from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError  # FIX: Aliyekosekana kwenye import
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
 from helpers.choices import CURRENCY_CHOICES
 from utils.audit_track import FarmAuditBaseModel
 
 
 class FeedType(FarmAuditBaseModel):
-    """ Defines the nutritional profile and pricing of feed."""
+    """Defines the nutritional profile and pricing of feed."""
 
     name = models.CharField(_("Feed Name"), max_length=100, unique=True)
     brand = models.CharField(_("Brand/Manufacturer"), max_length=100, blank=True)
@@ -217,19 +236,20 @@ class FeedIngredientStock(BaseEnterpriseAuditModelMixin):
     """
     Inafuatilia stoki ya malighafi za chakula cha kuku zilizopo ghalani.
     """
-    ingredient_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
+
+    ingredient_name = models.CharField(max_length=100)  # Mfano: Alizeti, Mtama
     available_qty_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
-    unit_cost_per_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0) # Kwa TZS
+    unit_cost_per_kg = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.0
+    )  # Kwa TZS
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.ingredient_name} - {self.available_qty_kg} KG"
 
 
-
-
 class FeedInventory(FarmAuditBaseModel):
-    """ Tracks stock levels in silos or warehouses. """
+    """Tracks stock levels in silos or warehouses."""
 
     feed_type = models.OneToOneField(
         FeedType,
@@ -274,7 +294,11 @@ class FeedInventory(FarmAuditBaseModel):
     def get_log_message(self, old_data=None):
         if old_data:
             # FIX: Salama zaidi kama old_data si dictionary tupu
-            old_qty = old_data.get('total_quantity_kg') if isinstance(old_data, dict) else old_data
+            old_qty = (
+                old_data.get("total_quantity_kg")
+                if isinstance(old_data, dict)
+                else old_data
+            )
             return (
                 f"Updated Feed Inventory for '{self.feed_type.name}' "
                 f"from total: {old_qty}kg "
@@ -296,7 +320,7 @@ class FeedConsumption(FarmAuditBaseModel):
     """
 
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="feed_logs",
         verbose_name=_("Flock Batch"),
@@ -312,7 +336,9 @@ class FeedConsumption(FarmAuditBaseModel):
     log_date = models.DateField(
         _("Log Date"),
         auto_now_add=True,
-        help_text=_("The specific day this consumption is recorded for optimization tracking.")
+        help_text=_(
+            "The specific day this consumption is recorded for optimization tracking."
+        ),
     )
 
     # {
@@ -347,7 +373,7 @@ class FeedConsumption(FarmAuditBaseModel):
     def actual_intake(self):
         """Calculates what the birds actually ate by parsing JSON data."""
         # FIX: Tunatoa waste kutoka kwa JSON moja kwa moja ili kuzuia split source of truth
-        waste = self.consumption_notes.get('waste_kg', 0)
+        waste = self.consumption_notes.get("waste_kg", 0)
         try:
             return self.quantity_used_kg - Decimal(str(waste))
         except Exception:
@@ -376,7 +402,9 @@ class FeedConsumption(FarmAuditBaseModel):
                 )
             except FeedInventory.DoesNotExist:
                 raise ValidationError(
-                    _(f"Hakuna stoki iliyosajiliwa kwa ajili ya aina hii ya chakula: {self.feed_type.name}.")
+                    _(
+                        f"Hakuna stoki iliyosajiliwa kwa ajili ya aina hii ya chakula: {self.feed_type.name}."
+                    )
                 )
 
             if inventory.total_quantity_kg < self.quantity_used_kg:
@@ -397,33 +425,37 @@ class FeedConsumption(FarmAuditBaseModel):
         return f"{self.batch.batch_id}: {self.quantity_used_kg}kg"
 
 
-
-from django.db import models, transaction
-from django.conf import settings
-from django.contrib.postgres.indexes import GinIndex
-from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
-from djmoney.models.fields import MoneyField
 from decimal import Decimal
 
+from django.conf import settings
+from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
 from helpers.choices import CURRENCY_CHOICES
 from utils.audit_track import FarmAuditBaseModel
 
 
 class FeedType(FarmAuditBaseModel):
-    """ Defines the nutritional profile and pricing of feed."""
+    """Defines the nutritional profile and pricing of feed."""
 
     class SourceChoices(models.TextChoices):
-        COMMERCIAL = 'COMMERCIAL', _('Kibiashara / Kununuliwa')
-        FARM_PRODUCED = 'FARM_PRODUCED', _('Kiasili / Limeshindwa Shambani')
+        COMMERCIAL = "COMMERCIAL", _("Kibiashara / Kununuliwa")
+        FARM_PRODUCED = "FARM_PRODUCED", _("Kiasili / Limeshindwa Shambani")
 
     name = models.CharField(_("Feed Name"), max_length=100, unique=True)
-    brand = models.CharField(_("Brand/Manufacturer"), max_length=100, blank=True, help_text=_("Acha wazi kama limetengenezwa shambani."))
+    brand = models.CharField(
+        _("Brand/Manufacturer"),
+        max_length=100,
+        blank=True,
+        help_text=_("Acha wazi kama limetengenezwa shambani."),
+    )
     feed_source = models.CharField(
         _("Feed Source"),
         max_length=20,
         choices=SourceChoices.choices,
-        default=SourceChoices.COMMERCIAL
+        default=SourceChoices.COMMERCIAL,
     )
 
     composition = models.JSONField(
@@ -452,7 +484,7 @@ class FeedType(FarmAuditBaseModel):
 
 
 class FeedInventory(FarmAuditBaseModel):
-    """ Tracks stock levels in silos or warehouses. """
+    """Tracks stock levels in silos or warehouses."""
 
     feed_type = models.OneToOneField(
         FeedType,
@@ -494,7 +526,7 @@ class FeedConsumption(FarmAuditBaseModel):
     """
 
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="feed_logs",
         verbose_name=_("Flock Batch"),
@@ -515,7 +547,9 @@ class FeedConsumption(FarmAuditBaseModel):
     )
 
     log_date = models.DateField(_("Log Date"), auto_now_add=True)
-    consumption_notes = models.JSONField(_("Consumption Notes"), default=dict, blank=True)
+    consumption_notes = models.JSONField(
+        _("Consumption Notes"), default=dict, blank=True
+    )
 
     class Meta:
         db_table = "feed_consumption"
@@ -531,7 +565,7 @@ class FeedConsumption(FarmAuditBaseModel):
     @property
     def actual_intake(self):
         """Calculates what the birds actually ate safely."""
-        return max(Decimal('0.00'), self.quantity_used_kg - self.waste_amount_kg)
+        return max(Decimal("0.00"), self.quantity_used_kg - self.waste_amount_kg)
 
     @transaction.atomic
     def save(self, *args, **kwargs):
@@ -548,14 +582,22 @@ class FeedConsumption(FarmAuditBaseModel):
 
         if quantity_delta != 0:
             try:
-                inventory = FeedInventory.objects.select_for_update().get(feed_type=self.feed_type)
+                inventory = FeedInventory.objects.select_for_update().get(
+                    feed_type=self.feed_type
+                )
             except FeedInventory.DoesNotExist:
-                raise ValidationError(_(f"Hakuna stoki iliyosajiliwa kwa ajili ya: {self.feed_type.name}."))
+                raise ValidationError(
+                    _(
+                        f"Hakuna stoki iliyosajiliwa kwa ajili ya: {self.feed_type.name}."
+                    )
+                )
 
             # Angalia kama kuna upungufu ghalani kabla ya kuruhusu makabadiliko
             if inventory.total_quantity_kg < quantity_delta:
                 raise ValidationError(
-                    _(f"Inventory Shortage: Ghala lina kilo {inventory.total_quantity_kg} tu za {self.feed_type.name}.")
+                    _(
+                        f"Inventory Shortage: Ghala lina kilo {inventory.total_quantity_kg} tu za {self.feed_type.name}."
+                    )
                 )
 
             # Punguza au rudisha mali ghalani kulingana na delta value
@@ -567,7 +609,9 @@ class FeedConsumption(FarmAuditBaseModel):
     @transaction.atomic
     def delete(self, *args, **kwargs):
         """Rudisha chakula ghalani kama logi ikifutwa na msimamizi."""
-        inventory = FeedInventory.objects.select_for_update().get(feed_type=self.feed_type)
+        inventory = FeedInventory.objects.select_for_update().get(
+            feed_type=self.feed_type
+        )
         inventory.total_quantity_kg += self.quantity_used_kg
         inventory.save()
         super().delete(*args, **kwargs)
@@ -577,25 +621,35 @@ class FeedConsumption(FarmAuditBaseModel):
 
 
 from datetime import datetime  # FIX: Aliyekosekana kuzuia NameError crash
-from django.db import models, transaction
+
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import (
+    ValidationError,
+)  # FIX: Hakikisha ipo kwa ajili ya validation
 from django.core.validators import MinValueValidator
-from django.core.exceptions import ValidationError  # FIX: Hakikisha ipo kwa ajili ya validation
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from ..helpers import (CURRENCY_CHOICES, PRODUCT_CATEGORY_CHOICES,
-                       READINESS_CHOICES, STOCK_MOVEMENT_TYPES,
-                       STORAGE_UNIT_TYPES, UOM_CHOICES)
+from ..helpers import (
+    CURRENCY_CHOICES,
+    PRODUCT_CATEGORY_CHOICES,
+    READINESS_CHOICES,
+    STOCK_MOVEMENT_TYPES,
+    STORAGE_UNIT_TYPES,
+    UOM_CHOICES,
+)
 from ..utils import FarmAuditBaseModel
 
 
 class Product(FarmAuditBaseModel):
-    """ Defines the global catalog (e.g., Broiler Meat, Organic Eggs). """
+    """Defines the global catalog (e.g., Broiler Meat, Organic Eggs)."""
 
     name = models.CharField(_("Product Name"), max_length=100, unique=True)
-    category = models.CharField(_("Category"), max_length=50, choices=PRODUCT_CATEGORY_CHOICES)
+    category = models.CharField(
+        _("Category"), max_length=50, choices=PRODUCT_CATEGORY_CHOICES
+    )
 
     source_batch = models.ForeignKey(
         settings.BATCH_REFERENCE,
@@ -622,6 +676,7 @@ class Product(FarmAuditBaseModel):
 
     def __str__(self):
         return f"{self.name} ({self.get_category_display()})"
+
 
 class PackagedProduct(BaseEnterpriseAuditModelMixin):
     """
@@ -705,8 +760,9 @@ class PackagedProduct(BaseEnterpriseAuditModelMixin):
     def __str__(self):
         return f"{self.label_code} - {self.product_stock_ref.product_name}"
 
+
 class WarehouseLocation(FarmAuditBaseModel):
-    """ Physical facilities (e.g., Dodoma Main, Mwanza Staging). """
+    """Physical facilities (e.g., Dodoma Main, Mwanza Staging)."""
 
     name = models.CharField(_("Location Name"), max_length=100, unique=True)
     code = models.CharField(_("Warehouse Code"), max_length=20, unique=True)
@@ -728,9 +784,11 @@ class WarehouseLocation(FarmAuditBaseModel):
 
 
 class Zone(FarmAuditBaseModel):
-    """ Sections like 'Cold Storage', 'Electronics', or 'Loading Dock'. """
+    """Sections like 'Cold Storage', 'Electronics', or 'Loading Dock'."""
 
-    warehouse = models.ForeignKey(WarehouseLocation, on_delete=models.CASCADE, related_name="zones")
+    warehouse = models.ForeignKey(
+        WarehouseLocation, on_delete=models.CASCADE, related_name="zones"
+    )
     name = models.CharField(_("Zone Name"), max_length=100)
     code = models.CharField(_("Zone Code"), max_length=10, blank=True)
 
@@ -749,11 +807,15 @@ class Zone(FarmAuditBaseModel):
 
 
 class StorageUnit(FarmAuditBaseModel):
-    """ The specific mean: Shelf A1, Freezer 2, or Drawer 10. """
+    """The specific mean: Shelf A1, Freezer 2, or Drawer 10."""
 
-    zone = models.ForeignKey(Zone, on_delete=models.CASCADE, related_name="storage_units")
+    zone = models.ForeignKey(
+        Zone, on_delete=models.CASCADE, related_name="storage_units"
+    )
     unit_code = models.CharField(_("Unit Code"), max_length=20)
-    unit_type = models.CharField(_("Storage Mean"), max_length=20, choices=STORAGE_UNIT_TYPES, default="SHELF")
+    unit_type = models.CharField(
+        _("Storage Mean"), max_length=20, choices=STORAGE_UNIT_TYPES, default="SHELF"
+    )
     max_capacity = models.IntegerField(_("Max Capacity"), default=0)
 
     class Meta:
@@ -772,22 +834,48 @@ class StorageUnit(FarmAuditBaseModel):
 
 
 class ProductStock(FarmAuditBaseModel):
-    """ Real-time inventory linking Production (Batch) to Sale (Revenue). """
+    """Real-time inventory linking Production (Batch) to Sale (Revenue)."""
 
-    product_type = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="current_stock")
-    storage_unit = models.ForeignKey(StorageUnit, on_delete=models.PROTECT, related_name="stock_items")
-    quantity_on_hand = models.DecimalField(_("Quantity on Hand"), max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
-    minimum_stock_level = models.PositiveIntegerField(_("Minimum Stock Level"), default=0)
-    storage_temperature = models.DecimalField(_("Target Storage Temp (°C)"), max_digits=5, decimal_places=2, null=True, blank=True)
+    product_type = models.ForeignKey(
+        Product, on_delete=models.PROTECT, related_name="current_stock"
+    )
+    storage_unit = models.ForeignKey(
+        StorageUnit, on_delete=models.PROTECT, related_name="stock_items"
+    )
+    quantity_on_hand = models.DecimalField(
+        _("Quantity on Hand"),
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0.00)],
+    )
+    minimum_stock_level = models.PositiveIntegerField(
+        _("Minimum Stock Level"), default=0
+    )
+    storage_temperature = models.DecimalField(
+        _("Target Storage Temp (°C)"),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
     unit_of_measure = models.CharField(_("UOM"), max_length=20, choices=UOM_CHOICES)
-    readiness_status = models.CharField(_("Readiness"), max_length=20, choices=READINESS_CHOICES, default="READY")
-    batch_number = models.CharField(_("Batch Number"), max_length=100, unique=True, db_index=True)
+    readiness_status = models.CharField(
+        _("Readiness"), max_length=20, choices=READINESS_CHOICES, default="READY"
+    )
+    batch_number = models.CharField(
+        _("Batch Number"), max_length=100, unique=True, db_index=True
+    )
     stock_metadata = models.JSONField(_("Stock Metadata"), default=dict, blank=True)
     last_inspected = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = "product_stock"
-        unique_together = ("product_type", "storage_unit", "readiness_status", "batch_number")
+        unique_together = (
+            "product_type",
+            "storage_unit",
+            "readiness_status",
+            "batch_number",
+        )
         indexes = [
             GinIndex(fields=["stock_metadata"], name="stock_meta_gin_idx"),
         ]
@@ -815,16 +903,24 @@ class ProductStock(FarmAuditBaseModel):
         return self.quantity_on_hand <= self.minimum_stock_level
 
     def __str__(self):
-        return f"{self.product_type.name} - {self.quantity_on_hand} {self.unit_of_measure}"
+        return (
+            f"{self.product_type.name} - {self.quantity_on_hand} {self.unit_of_measure}"
+        )
 
 
-class StockMovement(FarmAuditBaseModel):  # UPGRADE: Imerudishwa kwenye FarmAuditBaseModel kulinda mfumo wako wa audit logs
-    """ Every single change in stock: Sales, Restocks, Decay, or Transfers. """
+class StockMovement(
+    FarmAuditBaseModel
+):  # UPGRADE: Imerudishwa kwenye FarmAuditBaseModel kulinda mfumo wako wa audit logs
+    """Every single change in stock: Sales, Restocks, Decay, or Transfers."""
 
-    stock = models.ForeignKey(ProductStock, on_delete=models.CASCADE, related_name="movements")
+    stock = models.ForeignKey(
+        ProductStock, on_delete=models.CASCADE, related_name="movements"
+    )
     movement_type = models.CharField(max_length=20, choices=STOCK_MOVEMENT_TYPES)
     quantity_change = models.DecimalField(max_digits=12, decimal_places=2)
-    performed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    performed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
     timestamp = models.DateTimeField(default=timezone.now)
     reference_id = models.CharField(max_length=50, blank=True, null=True)
     is_reversible = models.BooleanField(_("Is Reversible"), default=True)
@@ -841,13 +937,15 @@ class StockMovement(FarmAuditBaseModel):  # UPGRADE: Imerudishwa kwenye FarmAudi
 
     @transaction.atomic
     def reverse_movement(self, user):
-        """ Handles cancellations by creating a compensating entry safely. """
+        """Handles cancellations by creating a compensating entry safely."""
         if not self.is_reversible:
-            raise ValidationError(_("Movement hii tayari ishabadilishwa au haina uwezo wa kugeuzwa tena."))
+            raise ValidationError(
+                _("Movement hii tayari ishabadilishwa au haina uwezo wa kugeuzwa tena.")
+            )
 
         # FIX: Zima uwezo wa kureverse tena kwenye instance hii kuzuia double reversals bugs
         self.is_reversible = False
-        self.save(update_fields=['is_reversible'])
+        self.save(update_fields=["is_reversible"])
 
         # Hii itatengeneza log mpya ambayo nayo itajipunguza/itajiendesha kwenye save() hapa chini
         return StockMovement.objects.create(
@@ -862,17 +960,21 @@ class StockMovement(FarmAuditBaseModel):  # UPGRADE: Imerudishwa kwenye FarmAudi
 
     @transaction.atomic
     def save(self, *args, **kwargs):
-        """ Updates ProductStock quantities safely using pessimistic concurrency database locks. """
+        """Updates ProductStock quantities safely using pessimistic concurrency database locks."""
         is_new = self._state.adding
         if is_new:
             # FIX: Pata na ufunge (Lock) ProductStock row kwenye database kuzuia kabisa Race Condition za watumiaji wengi
-            locked_stock = ProductStock.objects.select_for_update().get(pk=self.stock_id)
+            locked_stock = ProductStock.objects.select_for_update().get(
+                pk=self.stock_id
+            )
 
             # Fanya hesabu kwenye record iliyofungwa (Safe Database State)
             locked_stock.quantity_on_hand += self.quantity_change
 
             if locked_stock.quantity_on_hand < 0:
-                raise ValidationError(_("Mavuno/Bidhaa hazitoshi kwenye stoki kukamilisha mchakato huu."))
+                raise ValidationError(
+                    _("Mavuno/Bidhaa hazitoshi kwenye stoki kukamilisha mchakato huu.")
+                )
 
             locked_stock.save()
 
@@ -885,6 +987,7 @@ class StockMovement(FarmAuditBaseModel):  # UPGRADE: Imerudishwa kwenye FarmAudi
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class StorageUnitType(models.TextChoices):
     SHELF = "SHELF", _("Shelf (Rafu)")
     KABATI = "KABATI", _("Cabinet (Kabati)")
@@ -894,7 +997,7 @@ class StorageUnitType(models.TextChoices):
 
 
 class ProductionStatus(models.TextChoices):
-    PLANTED = 'PLANTED', _('Imepandwa')
-    GROWING = 'GROWING', _('Inakua')
-    HARVESTED = 'HARVESTED', _('Imevunwa')
-    FAILED = 'FAILED', _('Imeharibika')
+    PLANTED = "PLANTED", _("Imepandwa")
+    GROWING = "GROWING", _("Inakua")
+    HARVESTED = "HARVESTED", _("Imevunwa")
+    FAILED = "FAILED", _("Imeharibika")

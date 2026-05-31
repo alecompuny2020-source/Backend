@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
@@ -7,6 +7,7 @@ from ..helpers import ASSET_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES
 from ..utils import FarmAuditBaseModel
 
 # Create your models here.
+
 
 class MaintenanceRequest(FarmAuditBaseModel):
     """

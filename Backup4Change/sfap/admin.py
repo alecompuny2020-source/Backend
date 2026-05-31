@@ -1,26 +1,31 @@
 from django.contrib import admin
-from .models import (Farm,
-ManagerHistory,
-FarmShed,
-Batch,
-DailyObservation,
-BreederFlock,
-Incubator,
-IncubationCycle,
-HatchRecord,
-FarmVehicle,
-TransportMovement,
-HealthProtocol,
-MedicalRecord,
-DiseaseOutbreak)
 from guardian.admin import GuardedModelAdmin
 
+from .models import (
+    Batch,
+    BreederFlock,
+    DailyObservation,
+    DiseaseOutbreak,
+    Farm,
+    FarmShed,
+    FarmVehicle,
+    HatchRecord,
+    HealthProtocol,
+    IncubationCycle,
+    Incubator,
+    ManagerHistory,
+    MedicalRecord,
+    TransportMovement,
+)
+
 # Register your models here.
+
 
 # admin.site.register(Farm)
 @admin.register(Farm)
 class FarmAdmin(GuardedModelAdmin):
-    list_display = ('name', 'created_by', 'is_active')
+    list_display = ("name", "created_by", "is_active")
+
 
 admin.site.register(ManagerHistory)
 admin.site.register(FarmShed)

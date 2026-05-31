@@ -1,15 +1,19 @@
-from django.db import models, transaction
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.core.validators import MinValueValidator
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from ..helpers import (CURRENCY_CHOICES, PRODUCT_CATEGORY_CHOICES,
-                       READINESS_CHOICES, STOCK_MOVEMENT_TYPES,
-                       STORAGE_UNIT_TYPES, UOM_CHOICES)
+from ..helpers import (
+    CURRENCY_CHOICES,
+    PRODUCT_CATEGORY_CHOICES,
+    READINESS_CHOICES,
+    STOCK_MOVEMENT_TYPES,
+    STORAGE_UNIT_TYPES,
+    UOM_CHOICES,
+)
 from ..utils import FarmAuditBaseModel
-
 
 # Create your models here.
 

@@ -1,13 +1,12 @@
-from common.mixins import BaseEnterpriseModelMixin
 from django.conf import settings
-from django.db import models
-from django.db import models, transaction
 from django.contrib.postgres.indexes import GinIndex
-from djmoney.models.fields import MoneyField
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
-from common.choices import (MaritalStatus, EmploymentType, UserTitle, Gender)
-from common.services import generate_secure_employee_number
+from djmoney.models.fields import MoneyField
 
+from common.choices import EmploymentType, Gender, MaritalStatus, UserTitle
+from common.mixins import BaseEnterpriseModelMixin
+from common.services import generate_secure_employee_number
 
 
 class Employee(BaseEnterpriseModelMixin):
@@ -30,7 +29,7 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     department = models.ForeignKey(
-        'hrms.Department',
+        "hrms.Department",
         on_delete=models.PROTECT,
         related_name="departments",
         verbose_name=_("Employee Department"),
@@ -41,8 +40,11 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     marital_status = models.CharField(
-        _("Marital Status"), max_length=20, choices = MaritalStatus, db_index=True,
-        default = MaritalStatus.SINGLE
+        _("Marital Status"),
+        max_length=20,
+        choices=MaritalStatus,
+        db_index=True,
+        default=MaritalStatus.SINGLE,
     )
     employment_type = models.CharField(
         _("Employment Type"),
@@ -55,7 +57,7 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     assigned_shed = models.ForeignKey(
-        'sfap.FarmShed',
+        "sfap.FarmShed",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -64,7 +66,7 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     assigned_block = models.ForeignKey(
-        'sfap.FarmBlock',
+        "sfap.FarmBlock",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -73,7 +75,7 @@ class Employee(BaseEnterpriseModelMixin):
     )
 
     assigned_plant = models.ForeignKey(
-        'ppms.ProcessingPlant',
+        "ppms.ProcessingPlant",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -87,10 +89,10 @@ class Employee(BaseEnterpriseModelMixin):
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
     employee_title = models.CharField(
-        _("Employee Title"), max_length=20, choices = UserTitle, db_index=True, null = True
+        _("Employee Title"), max_length=20, choices=UserTitle, db_index=True, null=True
     )
     gender = models.CharField(
-        _("Employee Gender"), max_length=20, choices = Gender, null = True
+        _("Employee Gender"), max_length=20, choices=Gender, null=True
     )
 
     hire_date = models.DateField(_("Hire Date"))
@@ -152,7 +154,7 @@ class Employee(BaseEnterpriseModelMixin):
     def save(self, *args, **kwargs):
         if not self.pk or not self.employee_number:
 
-            if hasattr(self.department, 'code') and self.department.code:
+            if hasattr(self.department, "code") and self.department.code:
                 prefix = self.department.code
             else:
                 words = self.department.name.split()
@@ -161,7 +163,9 @@ class Employee(BaseEnterpriseModelMixin):
                 else:
                     prefix = "EMP"
 
-            self.employee_number = generate_secure_employee_number(prefix_code=prefix, padding_length=5)
+            self.employee_number = generate_secure_employee_number(
+                prefix_code=prefix, padding_length=5
+            )
 
         super().save(*args, **kwargs)
 

@@ -1,8 +1,9 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin
-from django.utils.translation import gettext_lazy as _
 from django.contrib.postgres.indexes import GinIndex
-from common.choices import IncubatorMachineType, IncubationCycleStatus, current_time
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+
+from common.choices import IncubationCycleStatus, IncubatorMachineType, current_time
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 
 class Incubator(BaseEnterpriseAuditModelMixin):
@@ -10,19 +11,19 @@ class Incubator(BaseEnterpriseAuditModelMixin):
     machine_type = models.CharField(
         max_length=20,
         choices=IncubatorMachineType,
-        default=IncubatorMachineType.COMBINED
+        default=IncubatorMachineType.COMBINED,
     )
     farm = models.ForeignKey(
         "sfap.Farm",
         on_delete=models.CASCADE,
         related_name="incubators",
-        verbose_name=_("Location/Farm")
+        verbose_name=_("Location/Farm"),
     )
     code = models.CharField(
         _("Machine Code or Machine Identification (Short code like 'INC-01')"),
         max_length=20,
         unique=True,
-        db_index=True
+        db_index=True,
     )
     features = models.JSONField(
         _("Incubator features"),
@@ -92,17 +93,16 @@ class Incubator(BaseEnterpriseAuditModelMixin):
         return f"{self.name.title()}"
 
 
-
 class IncubationCycle(BaseEnterpriseAuditModelMixin):
-    """ Tracks a 'Set' of eggs. Normalizes the 21-day timeline.
-        Identity Format: [SITE]-[TYPE]-CYC-[YYYYMMDD]-[SEQ]
+    """Tracks a 'Set' of eggs. Normalizes the 21-day timeline.
+    Identity Format: [SITE]-[TYPE]-CYC-[YYYYMMDD]-[SEQ]
     """
 
     cycle_number = models.CharField(
         _("Cycle Number"), max_length=50, unique=True, db_index=True
     )
     breeder_flock = models.ForeignKey(
-        'sfap.BreederFlock',
+        "sfap.BreederFlock",
         on_delete=models.PROTECT,
         related_name="incubation_cycles",
         verbose_name=_("Breeder Flock"),
@@ -148,7 +148,10 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
     )
     actual_hatch_date = models.DateTimeField(null=True, blank=True)
     status = models.CharField(
-        _("Status"), max_length=20, choices=IncubationCycleStatus, default=IncubationCycleStatus.SETTING
+        _("Status"),
+        max_length=20,
+        choices=IncubationCycleStatus,
+        default=IncubationCycleStatus.SETTING,
     )
 
     class Meta:
@@ -211,25 +214,27 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
         Example: HOM-BRO-CYC-20260517-0001
         """
         farm = self.hatcher.farm
-        site_code = getattr(farm, 'code', farm.name[:3]).upper()
+        site_code = getattr(farm, "code", farm.name[:3]).upper()
 
-        bird_type = getattr(self.breeder_flock, 'bird_type', 'GEN')
+        bird_type = getattr(self.breeder_flock, "bird_type", "GEN")
         type_code = bird_type[:3].upper()
 
-        date_str = current_time.strftime('%Y%m%d')
+        date_str = current_time.strftime("%Y%m%d")
 
         prefix = f"{site_code}-{type_code}-CYC-{date_str}-"
 
-        last_cycle = IncubationCycle.objects.filter(
-            cycle_id__startswith=prefix
-        ).order_by('-cycle_id').first()
+        last_cycle = (
+            IncubationCycle.objects.filter(cycle_id__startswith=prefix)
+            .order_by("-cycle_id")
+            .first()
+        )
 
         if not last_cycle:
             new_seq = "0001"
         else:
             try:
                 # Extract the number from the end (e.g., ...-0001 -> 1)
-                last_number_str = last_cycle.cycle_number.split('-')[-1]
+                last_number_str = last_cycle.cycle_number.split("-")[-1]
                 new_seq = f"{int(last_number_str) + 1:04d}"
             except (ValueError, IndexError):
                 new_seq = "0001"
@@ -265,9 +270,8 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
         return f"{self.cycle_number} - {self.get_status_display()}"
 
 
-
 class HatchRecord(BaseEnterpriseAuditModelMixin):
-    """ Final quality metrics of the Day-Old-Chicks (DOCs). """
+    """Final quality metrics of the Day-Old-Chicks (DOCs)."""
 
     incubation_cycle = models.OneToOneField(
         IncubationCycle,
@@ -277,7 +281,7 @@ class HatchRecord(BaseEnterpriseAuditModelMixin):
     )
     is_added_to_inventory = models.BooleanField(default=False)
     destination_batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

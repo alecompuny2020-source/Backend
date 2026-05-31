@@ -1,7 +1,7 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
+from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
@@ -11,6 +11,7 @@ from ..helpers import BOOKING_STATUS, CURRENCY_CHOICES
 from ..utils import FarmAuditBaseModel
 
 # Create your models here.
+
 
 class RecreationZone(FarmAuditBaseModel):
     """

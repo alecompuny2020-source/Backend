@@ -1,11 +1,13 @@
-from django.db import models
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class PackagedProduct(BaseEnterpriseAuditModelMixin):
     """

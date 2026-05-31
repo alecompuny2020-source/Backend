@@ -2,17 +2,17 @@ import random
 import secrets
 import string
 
+from django.conf import settings
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.tokens import default_token_generator
 from django.core.validators import EmailValidator
 from django.db.models import Q
-from django.conf import settings
 from django.utils import timezone
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from phonenumber_field.phonenumber import to_python
 from rest_framework import status
 from rest_framework.response import Response
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.utils.encoding import force_bytes, force_str
-from django.contrib.auth.tokens import default_token_generator
 
 from core import models
 
@@ -24,6 +24,7 @@ def enforce_password(value):
     except ve as e:
         raise serializers.ValidationError(e.messages)
     return value
+
 
 def validate_user_identifier(value):
     """Ensures identifier is a valid email or phone number."""
@@ -87,8 +88,11 @@ def generate_secure_password(length=12):
 
 
 def get_greeting_name(user_instance):
-    """ Always return the employee number linked to the user."""
-    if hasattr(user_instance, "employee_profile") and user_instance.employee_profile.employee_number:
+    """Always return the employee number linked to the user."""
+    if (
+        hasattr(user_instance, "employee_profile")
+        and user_instance.employee_profile.employee_number
+    ):
         return user_instance.employee_profile.employee_number.upper()
     return _("Staff Member")
 
@@ -168,7 +172,9 @@ def verify_otp(identifier: str, code: str, token_type: str):
 
     try:
         # Find user by email or phone to ensure correct UUID is obtained for OTP filter
-        user = models.User.objects.get(Q(email__iexact=identifier) | Q(phone_number=phone))
+        user = models.User.objects.get(
+            Q(email__iexact=identifier) | Q(phone_number=phone)
+        )
 
         otp_entry = models.Otp.objects.filter(
             user=user, token_type=token_type, is_used=False
@@ -202,7 +208,7 @@ def verify_otp(identifier: str, code: str, token_type: str):
     return Response({"message": message}, status=status.HTTP_200_OK)
 
 
-def send_otp_email(otp_entry: 'core.Otp'):
+def send_otp_email(otp_entry: "core.Otp"):
     """Sends a templated OTP email."""
     try:
         recipient_email = otp_entry.user.email
@@ -264,7 +270,9 @@ def send_forgot_password_link_email(user, reset_link):
         return handle_mail_exception(e)
 
 
-def onboarding_email_to_staff(user_instance, password, completion_link=None, greeting_name = None):
+def onboarding_email_to_staff(
+    user_instance, password, completion_link=None, greeting_name=None
+):
     """
     Sends templated login credentials and setup link to new staff.
     Supports both Email and Phone as the primary identifier (username).
@@ -297,7 +305,9 @@ def onboarding_email_to_staff(user_instance, password, completion_link=None, gre
 
         email.send(fail_silently=False)
 
-        return True, _("Staff credentials sent successfully to {email}").format(email=user_instance.email)
+        return True, _("Staff credentials sent successfully to {email}").format(
+            email=user_instance.email
+        )
 
     except Exception as e:
         return handle_mail_exception(e)
@@ -399,6 +409,7 @@ def universal_path_generator(instance, filename, folder_base, name_attr="name"):
     unique_id = uuid.uuid4().hex[:8]
     clean_name = f"{slugify(raw_name)}_{unique_id}.{ext}"
     return os.path.join(f"Media/{folder_base}", clean_name)
+
 
 def upload_profile_picture(inst, fn):
     return universal_path_generator(inst, fn, "Profile")

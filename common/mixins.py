@@ -1,34 +1,32 @@
-from django.contrib.auth.models import PermissionsMixin
 import json
 
-
-from django.conf import settings
-from django.db import models, connections
 # from django.contrib.gis.db import models as coordinates
 import uuid
-from rest_framework.response import Response
+
+from django.conf import settings
+from django.contrib.auth.models import PermissionsMixin
+from django.db import connections, models
 from django.forms.models import model_to_dict
 from django.utils.deprecation import MiddlewareMixin
 from django.utils.translation import gettext_lazy as _
-from rest_framework import serializers, viewsets, filters, status, permissions
+from rest_framework import filters, permissions, serializers, status, viewsets
+from rest_framework.response import Response
+
+from common.choices import current_time, now, now_iso
 from common.pagination import GenericEnteprisePaginator
-from common.choices import current_time, now_iso, now
 
 
 class BaseEnterpriseModelMixin(models.Model):
     """Reusable Base Model for Enterprise Apps"""
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
-    )
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     class Meta:
         abstract = True
 
 
 class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
-    """ Abstract base class to provide common audit fields."""
+    """Abstract base class to provide common audit fields."""
 
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -43,9 +41,7 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
         related_name="%(app_label)s_%(class)s_updates",
     )
 
-    created_on = models.DateTimeField(
-        _("Created On"), db_index=True, default=now
-    )
+    created_on = models.DateTimeField(_("Created On"), db_index=True, default=now)
 
     updated_on = models.DateTimeField(
         _("Updated On"), auto_now=False, db_index=True, null=True
@@ -60,8 +56,13 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
     A dynamic base serializer that automatically exposes audit fields if they
     exist on the model, using 'created_by' and 'updated_by' for user full names.
     """
-    created_by = serializers.CharField(source='created_by.get_full_name', read_only=True)
-    updated_by = serializers.CharField(source='updated_by.get_full_name', read_only=True)
+
+    created_by = serializers.CharField(
+        source="created_by.get_full_name", read_only=True
+    )
+    updated_by = serializers.CharField(
+        source="updated_by.get_full_name", read_only=True
+    )
     created_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
     updated_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
 
@@ -70,7 +71,7 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
 
         # Check if the model actually has the audit fields
         model = self.Meta.model
-        audit_fields = ['created_by', 'updated_by', 'created_on', 'updated_on']
+        audit_fields = ["created_by", "updated_by", "created_on", "updated_on"]
 
         for field_name in audit_fields:
             if not hasattr(model, field_name):
@@ -78,14 +79,14 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
                 self.fields.pop(field_name, None)
 
     def to_representation(self, instance):
-        """ remove empty audit data from being returned """
+        """remove empty audit data from being returned"""
         data = super().to_representation(instance)
 
-        if data.get('updated_on') is None:
-            data.pop('updated_on', None)
+        if data.get("updated_on") is None:
+            data.pop("updated_on", None)
 
-        if data.get('updated_by') is None:
-            data.pop('updated_by', None)
+        if data.get("updated_by") is None:
+            data.pop("updated_by", None)
 
         return data
 
@@ -94,16 +95,17 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
     """
     A base ViewSet to handle shared configuration and consistent success or error messages.
     """
+
     pagination_class = GenericEnteprisePaginator
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    ordering = ['-id']
+    ordering = ["-id"]
 
     def get_permissions(self):
         """
         Default baseline permissions for standard enterprise views.
         Public can read, authenticated users can write.
         """
-        if self.action in ['list', 'retrieve']:
+        if self.action in ["list", "retrieve"]:
             permission_classes = [permissions.AllowAny]
         else:
             permission_classes = [permissions.IsAuthenticated]
@@ -118,16 +120,16 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
         model_name = self.get_model_name()
 
         messages = {
-            'create': f"{model_name} created successfully",
-            'update': f"{model_name} was updated successfully",
-            'partial_update': f"{model_name} was updated successfully",
-            'destroy': f"{model_name} was deleted successfully"
+            "create": f"{model_name} created successfully",
+            "update": f"{model_name} was updated successfully",
+            "partial_update": f"{model_name} was updated successfully",
+            "destroy": f"{model_name} was deleted successfully",
         }
         # self.action automatically resolves to 'create', 'update', 'partial_update', or 'destroy'
         return messages.get(self.action, "Action successful")
 
     def perform_create(self, serializer):
-        if hasattr(serializer.Meta.model, 'created_by'):
+        if hasattr(serializer.Meta.model, "created_by"):
             serializer.save(created_by=self.request.user)
         else:
             serializer.save()
@@ -136,11 +138,11 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
         model = serializer.Meta.model
         save_kwargs = {}
 
-        if hasattr(model, 'updated_by') and self.request.user.is_authenticated:
-            save_kwargs['updated_by'] = self.request.user
+        if hasattr(model, "updated_by") and self.request.user.is_authenticated:
+            save_kwargs["updated_by"] = self.request.user
 
-        if hasattr(model, 'updated_on'):
-            save_kwargs['updated_on'] = current_time
+        if hasattr(model, "updated_on"):
+            save_kwargs["updated_on"] = current_time
 
         # Single clean save execution for both audited and non-audited models
         serializer.save(**save_kwargs)
@@ -148,28 +150,25 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         return Response(
-            {"message": self.get_success_message()},
-            status=status.HTTP_201_CREATED
+            {"message": self.get_success_message()}, status=status.HTTP_201_CREATED
         )
 
     def update(self, request, *args, **kwargs):
         response = super().update(request, *args, **kwargs)
         return Response(
-            {"message": self.get_success_message()},
-            status=status.HTTP_200_OK
+            {"message": self.get_success_message()}, status=status.HTTP_200_OK
         )
 
     def destroy(self, request, *args, **kwargs):
         super().destroy(request, *args, **kwargs)
         return Response(
-            {"message": self.get_success_message()},
-            status=status.HTTP_200_OK
+            {"message": self.get_success_message()}, status=status.HTTP_200_OK
         )
-
 
 
 class BaseAddressModelMixin(BaseEnterpriseModelMixin):
     """Reusable Base Address Model throughout the Enterprise"""
+
     region = models.CharField(max_length=100, db_index=True)
     district = models.CharField(max_length=100, db_index=True)
     ward = models.CharField(max_length=100)

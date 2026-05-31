@@ -1,12 +1,18 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from helpers.choices import REGISTRATION_STATUS
-from helpers.validators import (upload_employee_contract_document, contact_validator, validate_contract_mime)
+from helpers.validators import (
+    contact_validator,
+    upload_employee_contract_document,
+    validate_contract_mime,
+)
 from utils.mixins import ActionTrackingBaseModelMixin
+
 from hrms.models import Employee
 
 # Create your models here.
+
 
 class EmployeeRegistrationHistory(ActionTrackingBaseModelMixin):
     """

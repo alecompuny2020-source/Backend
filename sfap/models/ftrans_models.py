@@ -1,8 +1,9 @@
+from django.contrib.postgres.indexes import GinIndex
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
-from common.mixins import BaseEnterpriseAuditModelMixin
 from djmoney.models.fields import MoneyField
-from django.contrib.postgres.indexes import GinIndex
+
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 
 class FarmVehicle(BaseEnterpriseAuditModelMixin):
@@ -50,9 +51,8 @@ class FarmVehicle(BaseEnterpriseAuditModelMixin):
         )
 
 
-
 class TransportMovement(BaseEnterpriseAuditModelMixin):
-    """ Tracks the journey of assets (Birds, Feed, or Meat). """
+    """Tracks the journey of assets (Birds, Feed, or Meat)."""
 
     vehicle = models.ForeignKey(FarmVehicle, on_delete=models.PROTECT)
     driver = models.ForeignKey("hrms.Employee", on_delete=models.PROTECT)
@@ -105,7 +105,7 @@ class TransportMovement(BaseEnterpriseAuditModelMixin):
         )
 
     def clean(self):
-        """ Ensure cargo doesn't exceed vehicle capacity."""
+        """Ensure cargo doesn't exceed vehicle capacity."""
         cargo_weight = self.transit_data.get("total_weight_kg", 0)
         if cargo_weight > self.vehicle.max_payload_kg:
             raise ValidationError(

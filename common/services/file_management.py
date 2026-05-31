@@ -29,6 +29,7 @@ def universal_path_generator(instance, filename, folder_base, name_attr="name"):
     clean_name = f"{slugify(raw_name)}_{unique_id}.{ext}"
     return os.path.join(f"Media/uploads/{folder_base}", clean_name)
 
+
 def upload_profile_picture(inst, fn):
     return universal_path_generator(inst, fn, "Profile")
 

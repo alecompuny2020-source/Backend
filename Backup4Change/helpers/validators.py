@@ -73,9 +73,7 @@ validate_video_mime = MimeTypeValidator(
 validate_scan_mime = MimeTypeValidator(
     ["image/jpg", "image/jpeg", "image/png", "application/pdf"]
 )
-validate_contract_mime = MimeTypeValidator(
-    ["application/pdf"]
-)
+validate_contract_mime = MimeTypeValidator(["application/pdf"])
 
 
 def upload_profile_picture(inst, fn):
@@ -123,14 +121,20 @@ def mask_email(email: str) -> str:
 
 
 class BaseEnterpriseSerializer(serializers.ModelSerializer):
-    created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)
-    updated_by_name = serializers.CharField(source='updated_by.get_full_name', read_only=True)
+    created_by_name = serializers.CharField(
+        source="created_by.get_full_name", read_only=True
+    )
+    updated_by_name = serializers.CharField(
+        source="updated_by.get_full_name", read_only=True
+    )
 
     def create(self, validated_data):
-        validated_data['created_by'] = self.context['request'].user
+        validated_data["created_by"] = self.context["request"].user
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
-        validated_data['updated_by'] = self.context['request'].user
-        validated_data['updated_on'] = now_iso # Note: Ensure your model supports updated_on
+        validated_data["updated_by"] = self.context["request"].user
+        validated_data["updated_on"] = (
+            now_iso  # Note: Ensure your model supports updated_on
+        )
         return super().update(instance, validated_data)

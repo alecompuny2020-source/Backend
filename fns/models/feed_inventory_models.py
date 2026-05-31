@@ -1,19 +1,22 @@
-from django.db import models, transaction
+from decimal import Decimal
+
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
-from django.core.exceptions import ValidationError
-from decimal import Decimal
-from common.mixins import BaseEnterpriseAuditModelMixin
+
 from common.choices import SourceChoices
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
+
 class FeedInventory(BaseEnterpriseAuditModelMixin):
-    """ Tracks stock levels in silos or warehouses. """
+    """Tracks stock levels in silos or warehouses."""
 
     feed_type = models.OneToOneField(
-        'fns.FeedType',
+        "fns.FeedType",
         on_delete=models.CASCADE,
         related_name="inventory",
         verbose_name=_("Feed Type"),

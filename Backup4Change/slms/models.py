@@ -1,16 +1,19 @@
-from django.db import models, transaction
 import random
 from decimal import Decimal
+
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models, transaction
 from django.db.models import F, Q, Sum
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
+
 from ..helpers import CARRIER_TYPES, RATE_TYPES, SHIPPING_CHOICES
 from ..utils import FarmAuditBaseModel
 
 # Create your models here.
+
 
 class ShipmentRequest(models.Model):
     """

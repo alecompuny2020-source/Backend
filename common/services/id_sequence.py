@@ -11,9 +11,11 @@ def generate_secure_employee_number(prefix_code: str, padding_length: int = 5) -
 
     with transaction.atomic():
         # select_for_update() locks the sequence row in the database until this transaction finishes
-        sequence_tracker, created = EmployeeIDSequence.objects.select_for_update().get_or_create(
-            prefix=prefix,
-            defaults={'last_sequence': 0}
+        (
+            sequence_tracker,
+            created,
+        ) = EmployeeIDSequence.objects.select_for_update().get_or_create(
+            prefix=prefix, defaults={"last_sequence": 0}
         )
 
         # Increment counter

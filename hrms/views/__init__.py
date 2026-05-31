@@ -1,1 +1,1 @@
-from . department_views import *
+from .department_views import *

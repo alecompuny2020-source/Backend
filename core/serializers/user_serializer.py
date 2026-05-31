@@ -1,17 +1,18 @@
-from rest_framework import serializers
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth import authenticate
-from rest_framework.exceptions import AuthenticationFailed as af
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from phonenumber_field.phonenumber import to_python
-from common.choices import TokenType
-from common.utils import (enforce_password, validate_user_identifier)
-from common.managers import EnterpriseOTPandLinkManager as OTPManager
-from core.models import User, Otp
-from django.db.models import Q
 import base64
 import json
 
+from django.contrib.auth import authenticate
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from phonenumber_field.phonenumber import to_python
+from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed as af
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from common.choices import TokenType
+from common.managers import EnterpriseOTPandLinkManager as OTPManager
+from common.utils import enforce_password, validate_user_identifier
+from core.models import Otp, User
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -33,7 +34,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if not identifier:
             raise serializers.ValidationError(
-                {"identifier": _("Either a valid email or phone number must be provided.")}
+                {
+                    "identifier": _(
+                        "Either a valid email or phone number must be provided."
+                    )
+                }
             )
 
         if not first_name or not last_name:
@@ -66,10 +71,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         phone_number = to_python(identifier) if not email else None
 
         user = User.objects.create_user(
-            email=email,
-            phone_number=phone_number,
-            password=password,
-            **validated_data
+            email=email, phone_number=phone_number, password=password, **validated_data
         )
 
         try:
@@ -143,28 +145,35 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            "phone_number", "first_name", "last_name", "email", "is_verified",
-            "is_default_password", "groups", "is_profile_complete",
-            "preferred_language", "preferred_currency"
+            "phone_number",
+            "first_name",
+            "last_name",
+            "email",
+            "is_verified",
+            "is_default_password",
+            "groups",
+            "is_profile_complete",
+            "preferred_language",
+            "preferred_currency",
         ]
 
     def get_groups(self, obj):
-        """ Returns a list of group names user belongs to. """
+        """Returns a list of group names user belongs to."""
         return list(obj.groups.values_list("name", flat=True))
 
     def get_preferred_language(self, obj):
         """Extracts language from the linked UserPreference JSONField"""
-        user_prefs = getattr(obj, 'preferences', None)
+        user_prefs = getattr(obj, "preferences", None)
         if user_prefs and user_prefs.preferences:
-            return user_prefs.preferences.get('preferred_language', 'en-us')
-        return 'en-us'
+            return user_prefs.preferences.get("preferred_language", "en-us")
+        return "en-us"
 
     def get_preferred_currency(self, obj):
         """Extracts currency from the linked UserPreference JSONField"""
-        user_prefs = getattr(obj, 'preferences', None)
+        user_prefs = getattr(obj, "preferences", None)
         if user_prefs and user_prefs.preferences:
-            return user_prefs.preferences.get('preferred_currency', 'TZS')
-        return 'TZS'
+            return user_prefs.preferences.get("preferred_currency", "TZS")
+        return "TZS"
 
 
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -201,6 +210,7 @@ class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class BaseIdentifierSerializer(serializers.Serializer):
     """Base class to provide shared identifier validation logic."""
+
     identifier = serializers.CharField()
 
     def validate_identifier(self, value):
@@ -222,6 +232,7 @@ class BaseIdentifierSerializer(serializers.Serializer):
 
 class RequestOTPSerializer(BaseIdentifierSerializer):
     """Initiates OTP sending by validating identifier existence."""
+
     pass
 
 
@@ -245,9 +256,7 @@ class ConfirmPasswordResetSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         otp_response = OTPManager.verify(
-            attrs["identifier"],
-            attrs["OTP"],
-            Otp.TOKEN_TYPE_PASSWORD_RESET
+            attrs["identifier"], attrs["OTP"], Otp.TOKEN_TYPE_PASSWORD_RESET
         )
 
         if otp_response.status_code != status.HTTP_200_OK:
@@ -277,6 +286,7 @@ class ConfirmPasswordResetSerializer(serializers.Serializer):
 
 class RequestForgotPasswordSerializer(BaseIdentifierSerializer):
     """Initiates password reset using identifier validation."""
+
     pass
 
 

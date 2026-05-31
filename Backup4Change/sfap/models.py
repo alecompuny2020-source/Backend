@@ -1,30 +1,39 @@
-from django.db import models, transaction
-from django.conf import settings
 import uuid
+
+from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.db.models import Avg
 from django.utils import timezone
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from helpers.choices import (
-    BATCH_STATUS_CHOICES, BIRD_TYPE_CHOICES, CYCLE_STATUS,
-    BIRD_TYPE_CHOICES, CURRENCY_CHOICES, HEALTH_RECORD_TYPE, OUTBREAK_STATUS
-    )
+    BATCH_STATUS_CHOICES,
+    BIRD_TYPE_CHOICES,
+    CURRENCY_CHOICES,
+    CYCLE_STATUS,
+    HEALTH_RECORD_TYPE,
+    OUTBREAK_STATUS,
+)
 from utils.mixins import FarmAuditBaseModelMixin
-from ppms.models import ProcessingPlant
 
+from ppms.models import ProcessingPlant
 
 # Create your models here.
 
 
 class Farm(FarmAuditBaseModelMixin):
-    """ The parent container for every farm or site (e.g., Ihumwa, Nyamhongolo, Nyamori and etc) """
+    """The parent container for every farm or site (e.g., Ihumwa, Nyamhongolo, Nyamori and etc)"""
 
-    id = models.UUIDField(primary_key = True, default = uuid.uuid4, editable = False, db_index = True)
+    id = models.UUIDField(
+        primary_key=True, default=uuid.uuid4, editable=False, db_index=True
+    )
     name = models.CharField(_("Farm Name"), max_length=255, unique=True)
     region = models.CharField(_("Region"), max_length=100)
-    gps_coordinates = coordinates.PointField(_("GPS Coordinates"), geography = True, null = True, blank = True, srdi = 4326)
+    gps_coordinates = coordinates.PointField(
+        _("GPS Coordinates"), geography=True, null=True, blank=True, srdi=4326
+    )
 
     manager = models.ForeignKey(
         "hrms.Employee",
@@ -61,7 +70,7 @@ class Farm(FarmAuditBaseModelMixin):
         db_table = "farm"
         verbose_name = _("Farm")
         verbose_name_plural = _("Farms")
-        ordering = ['-id']
+        ordering = ["-id"]
         indexes = [
             GinIndex(fields=["site_config"], name="farm_site_cfg_gin_idx"),
         ]
@@ -84,15 +93,17 @@ class Farm(FarmAuditBaseModelMixin):
         #     ("issue_health_clearance", "Can issue health clearance"),
         # ]
 
-
-
     def get_log_message(self, old_data=None):
         if old_data:
             return f"Updated Farm '{self.name}' in {self.region} from: {old_data} to: {self.site_config}"
         return f"Created new Farm '{self.name}' located in {self.region}"
 
     def get_farm_details(self):
-        return f"{self.name.title()} ({self.region})" if self.name and self.region else f"{self.name}"
+        return (
+            f"{self.name.title()} ({self.region})"
+            if self.name and self.region
+            else f"{self.name}"
+        )
 
     def __str__(self):
         return f"{self.name} ({self.region})"
@@ -201,7 +212,7 @@ class FarmShed(FarmAuditBaseModelMixin):
 
 
 class Batch(FarmAuditBaseModelMixin):
-    """ A specific flock. Tracks lifecycle from day-old-chicks to depletion."""
+    """A specific flock. Tracks lifecycle from day-old-chicks to depletion."""
 
     batch_id = models.CharField(
         _("Batch ID"), max_length=50, unique=True, db_index=True
@@ -288,7 +299,7 @@ class Batch(FarmAuditBaseModelMixin):
 
 
 class DailyObservation(FarmAuditBaseModelMixin):
-    """ Time-series data for Kiosk monitoring. """
+    """Time-series data for Kiosk monitoring."""
 
     batch = models.ForeignKey(
         Batch, on_delete=models.CASCADE, related_name="observations"
@@ -475,7 +486,7 @@ class Incubator(FarmAuditBaseModelMixin):
 
 
 class IncubationCycle(FarmAuditBaseModelMixin):
-    """ Tracks a 'Set' of eggs. Normalizes the 21-day timeline. """
+    """Tracks a 'Set' of eggs. Normalizes the 21-day timeline."""
 
     cycle_id = models.CharField(
         _("Cycle ID"), max_length=50, unique=True, db_index=True
@@ -666,7 +677,6 @@ class HatchRecord(FarmAuditBaseModelMixin):
         return f"Hatch: {self.incubation_cycle.cycle_id}"
 
 
-
 class HealthProtocol(FarmAuditBaseModelMixin):
     """
     Standardized health procedures (e.g., Gumboro Vaccination Protocol).
@@ -724,7 +734,9 @@ class MedicalRecord(FarmAuditBaseModelMixin):
         related_name="health_records",
         verbose_name=_("Flock Batch"),
     )
-    date_of_administration = models.DateField(_("Date of Administration"), db_index=True, default = timezone.now)
+    date_of_administration = models.DateField(
+        _("Date of Administration"), db_index=True, default=timezone.now
+    )
     record_type = models.CharField(
         _("Record Type"), max_length=20, choices=HEALTH_RECORD_TYPE
     )
@@ -898,7 +910,7 @@ class FarmVehicle(FarmAuditBaseModelMixin):
 
 
 class TransportMovement(FarmAuditBaseModelMixin):
-    """ Tracks the journey of assets (Birds, Feed, or Meat). """
+    """Tracks the journey of assets (Birds, Feed, or Meat)."""
 
     vehicle = models.ForeignKey(FarmVehicle, on_delete=models.PROTECT)
     driver = models.ForeignKey("hrms.Employee", on_delete=models.PROTECT)
@@ -946,7 +958,7 @@ class TransportMovement(FarmAuditBaseModelMixin):
         )
 
     def clean(self):
-        """ Ensure cargo doesn't exceed vehicle capacity."""
+        """Ensure cargo doesn't exceed vehicle capacity."""
         cargo_weight = self.transit_data.get("total_weight_kg", 0)
         if cargo_weight > self.vehicle.max_payload_kg:
             raise ValidationError(

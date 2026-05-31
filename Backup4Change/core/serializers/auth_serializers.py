@@ -17,7 +17,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if not identifier:
             raise serializers.ValidationError(
-                {"identifier": _("Either a valid email or phone number must be provided.")}
+                {
+                    "identifier": _(
+                        "Either a valid email or phone number must be provided."
+                    )
+                }
             )
 
         if not first_name or not last_name:
@@ -26,17 +30,24 @@ class RegistrationSerializer(serializers.ModelSerializer):
             )
 
         if not first_name or not first_name.strip():
-            raise serializers.ValidationError({"first_name": _("First name cannot be empty.")})
+            raise serializers.ValidationError(
+                {"first_name": _("First name cannot be empty.")}
+            )
         if not last_name or not last_name.strip():
-            raise serializers.ValidationError({"last_name": _("Last name cannot be empty.")})
+            raise serializers.ValidationError(
+                {"last_name": _("Last name cannot be empty.")}
+            )
 
         if not first_name.isalpha():
-            raise serializers.ValidationError({"first_name": _("First name must contain only letters.")})
+            raise serializers.ValidationError(
+                {"first_name": _("First name must contain only letters.")}
+            )
         if not last_name.isalpha():
-            raise serializers.ValidationError({"last_name": _("Last name must contain only letters.")})
+            raise serializers.ValidationError(
+                {"last_name": _("Last name must contain only letters.")}
+            )
 
         return attrs
-
 
     def to_internal_value(self, data):
         """
@@ -63,7 +74,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return validate_user_identifier(value)
 
     def create(self, validated_data):
-        """ Perform create as per provided identifier """
+        """Perform create as per provided identifier"""
         identifier = validated_data.pop("identifier", None)
         password = validated_data.pop("password", None)
         email = validated_data.pop("email", None)
@@ -73,10 +84,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         phone_number = to_python(identifier) if not email else None
 
         user = User.objects.create_user(
-            email=email,
-            phone_number=phone_number,
-            password=password,
-            **validated_data
+            email=email, phone_number=phone_number, password=password, **validated_data
         )
 
         otp_entry = Otp.generate_new_code(user, Otp.TOKEN_TYPE_REGISTRATION)

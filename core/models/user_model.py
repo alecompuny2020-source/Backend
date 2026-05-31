@@ -1,23 +1,27 @@
-from django.db import models, transaction
 import uuid
 from datetime import timedelta
-from django.utils import timezone
+
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from common.managers import EnterpriseUserManager
+from django.contrib.postgres.indexes import GinIndex
+from django.db import models, transaction
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.postgres.indexes import GinIndex
-from common.services import upload_profile_picture
-from django.conf import settings
-from common.validators import image_validator, validate_image_mime
+
 from common.choices import AddressType
+from common.managers import EnterpriseUserManager
+from common.services import upload_profile_picture
+from common.validators import image_validator, validate_image_mime
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    """ Core Enterprise Identity Model. """
+    """Core Enterprise Identity Model."""
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(_("Email Address"), unique=True, db_index=True, null=True, blank=True)
+    email = models.EmailField(
+        _("Email Address"), unique=True, db_index=True, null=True, blank=True
+    )
     phone_number = PhoneNumberField(
         _("Phone Number"), null=True, unique=True, db_index=True, blank=True
     )
@@ -88,7 +92,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         permissions = [
             ("can_register_staff", "Can register a new staff user"),
             ("can_reset_password_other_user", "Can force reset any user's password"),
-            ("can_deactivate_user", "Can deactivate any user account (is_active = False)"),
+            (
+                "can_deactivate_user",
+                "Can deactivate any user account (is_active = False)",
+            ),
             ("can_toggle_is_staff", "Can change a user's is_staff status"),
             ("can_change_self_password", "Can reset individual password"),
         ]
@@ -124,7 +131,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.get_full_name()
-
 
 
 class UserPreference(models.Model):
@@ -212,7 +218,10 @@ class UserAddress(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
     address_type = models.CharField(
-        _("Address Type"), max_length=20, choices=AddressType, default = AddressType.SHIPPING
+        _("Address Type"),
+        max_length=20,
+        choices=AddressType,
+        default=AddressType.SHIPPING,
     )
     is_default = models.BooleanField(_("Default Address"), default=False)
     street_address = models.TextField(_("Street Address"))

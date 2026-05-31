@@ -1,21 +1,25 @@
-from django.db import models
-from django.db import models, transaction
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
-from django.db.models import Avg
 from django.core.exceptions import ValidationError
+from django.db import models, transaction
+from django.db.models import Avg
 from django.utils.translation import gettext_lazy as _
+
 from common.choices import (
-    FlockBatchStatus, BirdType, FarmBlockStatus, now, current_time
-    )
+    BirdType,
+    FarmBlockStatus,
+    FlockBatchStatus,
+    current_time,
+    now,
+)
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 from ppms.models import ProcessingPlant
 
-
 # Create your models here.
 
+
 class Farm(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
-    """ The parent container for every farm or site (e.g., Ihumwa, Nyamhongolo, Nyamori and etc) """
+    """The parent container for every farm or site (e.g., Ihumwa, Nyamhongolo, Nyamori and etc)"""
 
     name = models.CharField(_("Farm Name"), max_length=255, unique=True)
     manager = models.ForeignKey(
@@ -53,7 +57,7 @@ class Farm(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
         db_table = "farm"
         verbose_name = _("Farm")
         verbose_name_plural = _("Farms")
-        ordering = ['name']
+        ordering = ["name"]
         indexes = [
             GinIndex(fields=["site_config"], name="farm_site_cfg_gin_idx"),
         ]
@@ -76,11 +80,10 @@ class Farm(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
         #     ("issue_health_clearance", "Can issue health clearance"),
         # ]
 
-
     @property
     def full_address(self) -> str:
-        """ Helper to extract the JSON metadata for display. """
-        street = self.address_metadata.get('street_name', 'N/A')
+        """Helper to extract the JSON metadata for display."""
+        street = self.address_metadata.get("street_name", "N/A")
         return f"{street}, {self.ward}, {self.district}, {self.region}"
 
     def get_log_message(self, old_data=None):
@@ -89,11 +92,14 @@ class Farm(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
         return f"Created new Farm '{self.name}' located in {self.region}"
 
     def get_farm_details(self) -> str:
-        return f"{self.name.title()} ({self.region})" if self.name and self.region else f"{self.name}"
+        return (
+            f"{self.name.title()} ({self.region})"
+            if self.name and self.region
+            else f"{self.name}"
+        )
 
     def __str__(self):
         return f"{self.name} - {self.region}"
-
 
 
 class ManagerHistory(models.Model):
@@ -149,8 +155,6 @@ class ManagerHistory(models.Model):
         return self.farm.name.title()
 
 
-
-
 class FarmShed(BaseEnterpriseAuditModelMixin):
     """Represents physical housing. Links birds to a specific structure."""
 
@@ -200,12 +204,12 @@ class FarmShed(BaseEnterpriseAuditModelMixin):
         return f"{self.farm.name} - {self.name}"
 
 
-
 class FarmBlock(BaseEnterpriseAuditModelMixin):
     """
     Vitalu vya Kilimo Ikolojia ndani ya Shamba.
     Hivi hutumika kwa mzunguko wa kuku (Rotational Grazing).
     """
+
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="blocks")
     name = models.CharField(max_length=100)
     size_acres = models.DecimalField(max_digits=5, decimal_places=2)
@@ -214,7 +218,7 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
         max_length=20,
         choices=FarmBlockStatus,
         default=FarmBlockStatus.RESTING,
-        help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao.")
+        help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao."),
     )
 
     # Data ya IoT
@@ -224,18 +228,17 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
         return f"{self.farm.name} - {self.name}"
 
 
-
 class Batch(BaseEnterpriseAuditModelMixin):
-    """ A specific flock. Tracks lifecycle from day-old-chicks to depletion."""
+    """A specific flock. Tracks lifecycle from day-old-chicks to depletion."""
 
     batch_id = models.CharField(
         _("Batch ID"), max_length=50, unique=True, db_index=True
     )
     shed = models.ForeignKey(FarmShed, on_delete=models.PROTECT, related_name="batches")
-    current_block = models.ForeignKey(FarmBlock, on_delete=models.SET_NULL, null=True, blank=True)
-    bird_type = models.CharField(
-        _("Bird Type"), max_length=20, choices=BirdType
+    current_block = models.ForeignKey(
+        FarmBlock, on_delete=models.SET_NULL, null=True, blank=True
     )
+    bird_type = models.CharField(_("Bird Type"), max_length=20, choices=BirdType)
     initial_count = models.PositiveIntegerField(_("Initial Bird Count"))
     current_count = models.PositiveIntegerField(_("Current Bird Count"))
     expected_depletion_date = models.DateField(
@@ -252,7 +255,10 @@ class Batch(BaseEnterpriseAuditModelMixin):
     # }
     batch_details = models.JSONField(_("Batch Details"), default=dict, blank=True)
     status = models.CharField(
-        _("Status"), max_length=20, choices=FlockBatchStatus, default=FlockBatchStatus.ACTIVE
+        _("Status"),
+        max_length=20,
+        choices=FlockBatchStatus,
+        default=FlockBatchStatus.ACTIVE,
     )
 
     class Meta:
@@ -286,22 +292,24 @@ class Batch(BaseEnterpriseAuditModelMixin):
         """
 
         farm = self.shed.farm
-        site_code = getattr(farm, 'code', farm.name[:3]).upper()
+        site_code = getattr(farm, "code", farm.name[:3]).upper()
 
         type_code = self.bird_type[:3].upper()
-        date_str = current_time().strftime('%Y%m%d')
+        date_str = current_time().strftime("%Y%m%d")
         prefix = f"{site_code}-{type_code}-{date_str}-"
 
-        last_batch = Batch.objects.filter(
-            batch_id__startswith=prefix
-        ).order_by('-batch_id').first()
+        last_batch = (
+            Batch.objects.filter(batch_id__startswith=prefix)
+            .order_by("-batch_id")
+            .first()
+        )
 
         if not last_batch:
             new_seq = "0001"
         else:
             try:
                 # Extract the number from the end of the string
-                last_number_str = last_batch.batch_id.split('-')[-1]
+                last_number_str = last_batch.batch_id.split("-")[-1]
                 new_seq = f"{int(last_number_str) + 1:04d}"
             except (ValueError, IndexError):
                 new_seq = "0001"
@@ -347,7 +355,7 @@ class Batch(BaseEnterpriseAuditModelMixin):
 
 
 class DailyObservation(BaseEnterpriseAuditModelMixin):
-    """ Time-series data for Kiosk or farm monitoring. """
+    """Time-series data for Kiosk or farm monitoring."""
 
     batch = models.ForeignKey(
         Batch, on_delete=models.CASCADE, related_name="observations"
@@ -373,7 +381,6 @@ class DailyObservation(BaseEnterpriseAuditModelMixin):
     environmental_data = models.JSONField(
         _("Environmental & Feeding Data"), default=dict
     )
-
 
     class Meta:
         db_table = "daily_observation"
@@ -415,7 +422,7 @@ class BreederFlock(BaseEnterpriseAuditModelMixin):
     """
 
     source_batch = models.OneToOneField(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="breeder_details",
         verbose_name=_("Source Batch"),

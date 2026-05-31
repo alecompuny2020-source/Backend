@@ -1,26 +1,32 @@
-from django.db import models, transaction
+from decimal import Decimal
+
 from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
-from django.core.exceptions import ValidationError
-from decimal import Decimal
-from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import SourceChoices
 
+from common.choices import SourceChoices
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
 
 class FeedType(BaseEnterpriseAuditModelMixin):
-    """ Defines the nutritional profile and pricing of feed."""
+    """Defines the nutritional profile and pricing of feed."""
 
     name = models.CharField(_("Feed Name"), max_length=100, unique=True)
-    brand = models.CharField(_("Brand/Manufacturer"), max_length=100, blank=True, help_text=_("Acha wazi kama limetengenezwa shambani."))
+    brand = models.CharField(
+        _("Brand/Manufacturer"),
+        max_length=100,
+        blank=True,
+        help_text=_("Acha wazi kama limetengenezwa shambani."),
+    )
     feed_source = models.CharField(
         _("Feed Source"),
         max_length=20,
         choices=SourceChoices.choices,
-        default=SourceChoices.FARM_PRODUCED
+        default=SourceChoices.FARM_PRODUCED,
     )
 
     # Blueprint for composition (Nutritional specs):

@@ -4,28 +4,35 @@ import random
 import secrets
 import string
 
+from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError as ve
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
-from django.conf import settings
+from django.utils.translation import gettext_lazy as _
+from lrh.models import EmployeeRegistrationHistory
 from phonenumber_field.phonenumber import to_python
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers, status
 from rest_framework.exceptions import AuthenticationFailed as af
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.utils.translation import gettext_lazy as _
-from utils.services import (enforce_password, validate_user_identifier, generate_secure_password,
-                          send_otp_email, send_onboarding_notification, onboarding_email_to_staff)
+from utils.choices import EMPLOYMENT_TYPES
+from utils.services import (
+    enforce_password,
+    generate_secure_password,
+    onboarding_email_to_staff,
+    send_onboarding_notification,
+    send_otp_email,
+    validate_user_identifier,
+)
+
+from hrms.models import Department, Employee, NextOfKin, UserIdentity
+from hrms.serializers import NextOfKinSerializer, UserIdentitySerializer
 
 from .models import Otp, UserAddress, UserPreference
-from hrms.models import Department, Employee, NextOfKin, UserIdentity
-from lrh.models import EmployeeRegistrationHistory
-from hrms.serializers import NextOfKinSerializer, UserIdentitySerializer
-from utils.choices import EMPLOYMENT_TYPES
 
 User = get_user_model()
 
@@ -49,7 +56,11 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if not identifier:
             raise serializers.ValidationError(
-                {"identifier": _("Either a valid email or phone number must be provided.")}
+                {
+                    "identifier": _(
+                        "Either a valid email or phone number must be provided."
+                    )
+                }
             )
 
         if not first_name or not last_name:
@@ -58,17 +69,24 @@ class RegistrationSerializer(serializers.ModelSerializer):
             )
 
         if not first_name or not first_name.strip():
-            raise serializers.ValidationError({"first_name": _("First name cannot be empty.")})
+            raise serializers.ValidationError(
+                {"first_name": _("First name cannot be empty.")}
+            )
         if not last_name or not last_name.strip():
-            raise serializers.ValidationError({"last_name": _("Last name cannot be empty.")})
+            raise serializers.ValidationError(
+                {"last_name": _("Last name cannot be empty.")}
+            )
 
         if not first_name.isalpha():
-            raise serializers.ValidationError({"first_name": _("First name must contain only letters.")})
+            raise serializers.ValidationError(
+                {"first_name": _("First name must contain only letters.")}
+            )
         if not last_name.isalpha():
-            raise serializers.ValidationError({"last_name": _("Last name must contain only letters.")})
+            raise serializers.ValidationError(
+                {"last_name": _("Last name must contain only letters.")}
+            )
 
         return attrs
-
 
     def to_internal_value(self, data):
         """
@@ -95,7 +113,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return validate_user_identifier(value)
 
     def create(self, validated_data):
-        """ Perform create as per provided identifier """
+        """Perform create as per provided identifier"""
         identifier = validated_data.pop("identifier", None)
         password = validated_data.pop("password", None)
         email = validated_data.pop("email", None)
@@ -105,10 +123,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         phone_number = to_python(identifier) if not email else None
 
         user = User.objects.create_user(
-            email=email,
-            phone_number=phone_number,
-            password=password,
-            **validated_data
+            email=email, phone_number=phone_number, password=password, **validated_data
         )
 
         otp_entry = Otp.generate_new_code(user, Otp.TOKEN_TYPE_REGISTRATION)
@@ -198,26 +213,26 @@ class UserDetailsSerializer(serializers.ModelSerializer):
             "groups",
             "is_profile_complete",
             "preferred_language",
-            "preferred_currency"
+            "preferred_currency",
         ]
 
     def get_groups(self, obj):
-        """ Returns a list of group names user belongs to. """
+        """Returns a list of group names user belongs to."""
         return list(obj.groups.values_list("name", flat=True))
 
     def get_preferred_language(self, obj):
         """Extracts language from the linked UserPreference JSONField"""
-        user_prefs = getattr(obj, 'preferences', None)
+        user_prefs = getattr(obj, "preferences", None)
         if user_prefs and user_prefs.preferences:
-            return user_prefs.preferences.get('preferred_language', 'en-us')
-        return 'en-us'
+            return user_prefs.preferences.get("preferred_language", "en-us")
+        return "en-us"
 
     def get_preferred_currency(self, obj):
         """Extracts currency from the linked UserPreference JSONField"""
-        user_prefs = getattr(obj, 'preferences', None)
+        user_prefs = getattr(obj, "preferences", None)
         if user_prefs and user_prefs.preferences:
-            return user_prefs.preferences.get('preferred_currency', 'TZS')
-        return 'TZS'
+            return user_prefs.preferences.get("preferred_currency", "TZS")
+        return "TZS"
 
 
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -334,7 +349,8 @@ class ConfirmPasswordResetSerializer(serializers.Serializer):
 
 
 class ProfilePictureSerializer(serializers.ModelSerializer):
-    """ For user profile picture management """
+    """For user profile picture management"""
+
     class Meta:
         model = User
         fields = ["profile_picture"]
@@ -344,9 +360,14 @@ class UserAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAddress
         fields = [
-            "id", "address_type", "is_default",
-            "street_address", "city", "state_province",
-            "postal_code", "country"
+            "id",
+            "address_type",
+            "is_default",
+            "street_address",
+            "city",
+            "state_province",
+            "postal_code",
+            "country",
         ]
 
 
@@ -360,7 +381,9 @@ class StaffOnboardingSerializer(serializers.Serializer):
     identifier = serializers.CharField(help_text=_("Email or Phone Number"))
     department = serializers.PrimaryKeyRelatedField(queryset=Department.objects.all())
     employment_type = serializers.ChoiceField(choices=EMPLOYMENT_TYPES)
-    group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), required=False)
+    group = serializers.PrimaryKeyRelatedField(
+        queryset=Group.objects.all(), required=False
+    )
     remarks = serializers.CharField(required=False, allow_blank=True)
 
     def validate(self, attrs):
@@ -376,12 +399,12 @@ class StaffOnboardingSerializer(serializers.Serializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        identifier = validated_data['identifier']
-        department = validated_data['department']
-        emp_type = validated_data['employment_type']
-        remarks = validated_data.get('remarks', "Initial system onboarding.")
-        group = validated_data.get('group')
-        request = self.context.get('request')
+        identifier = validated_data["identifier"]
+        department = validated_data["department"]
+        emp_type = validated_data["employment_type"]
+        remarks = validated_data.get("remarks", "Initial system onboarding.")
+        group = validated_data.get("group")
+        request = self.context.get("request")
 
         email = identifier if "@" in identifier else None
         phone_number = to_python(identifier) if not email else None
@@ -389,9 +412,13 @@ class StaffOnboardingSerializer(serializers.Serializer):
         raw_password = generate_secure_password()
         year = timezone.now().year
         prefix = f"EMP-{year}"
-        last_emp = Employee.objects.filter(employee_number__startswith=prefix).order_by("-employee_number").first()
+        last_emp = (
+            Employee.objects.filter(employee_number__startswith=prefix)
+            .order_by("-employee_number")
+            .first()
+        )
         if last_emp:
-            last_count = int(last_emp.employee_number.split('-')[-1])
+            last_count = int(last_emp.employee_number.split("-")[-1])
             new_count = last_count + 1
         else:
             new_count = 1
@@ -404,7 +431,7 @@ class StaffOnboardingSerializer(serializers.Serializer):
             password=raw_password,
             is_staff=True,
             is_active=True,
-            is_default_password=True
+            is_default_password=True,
         )
 
         if group:
@@ -417,7 +444,7 @@ class StaffOnboardingSerializer(serializers.Serializer):
             employment_type=emp_type,
             employee_number=new_emp_number,
             hire_date=timezone.now().date(),
-            base_salary = 0
+            base_salary=0,
         )
 
         # Initialize Registration Audit History
@@ -425,11 +452,15 @@ class StaffOnboardingSerializer(serializers.Serializer):
             employee=employee,
             status="PENDING",
             remarks=remarks,
-            initiated_by=request.user if request and request.user.is_authenticated else None
+            initiated_by=(
+                request.user if request and request.user.is_authenticated else None
+            ),
         )
 
-        user.status_metadata = self._build_initial_metadata(request, email, new_emp_number)
-        user.save(update_fields=['status_metadata'])
+        user.status_metadata = self._build_initial_metadata(
+            request, email, new_emp_number
+        )
+        user.save(update_fields=["status_metadata"])
 
         user.status_metadata = metadata
         user.save()
@@ -439,15 +470,15 @@ class StaffOnboardingSerializer(serializers.Serializer):
         if not success:
             user.status_metadata["onboarding"]["notification_status"] = "FAILED"
             user.status_metadata["onboarding"]["error_log"] = message
-            user.save(update_fields=['status_metadata'])
+            user.save(update_fields=["status_metadata"])
 
-            raise serializers.ValidationError({
-                "notification_error": _("Onboarding failed: ") + message
-            })
+            raise serializers.ValidationError(
+                {"notification_error": _("Onboarding failed: ") + message}
+            )
 
         else:
             user.status_metadata["onboarding"]["notification_status"] = "SUCCESS"
-            user.save(update_fields=['status_metadata'])
+            user.save(update_fields=["status_metadata"])
 
         return employee
 
@@ -466,27 +497,28 @@ class StaffOnboardingSerializer(serializers.Serializer):
                 {
                     "timestamp": timezone.now().isoformat(),
                     "password_generated": True,
-                    "reason": "Initial Onboarding"
+                    "reason": "Initial Onboarding",
                 }
             ],
             "profile_completion_checklist": {
                 "identity_uploaded": False,
                 "emergency_contact_added": False,
                 "bank_details_provided": False,
-                "education_details_provided": False
+                "education_details_provided": False,
             },
             "security_log": {
                 "last_password_change": timezone.now().isoformat(),
-                "is_forced_reset_pending": False
-            }
+                "is_forced_reset_pending": False,
+            },
         }
 
 
 class OnboardConfirmSerializer(serializers.Serializer):
-    """ Serializer for confirming staff onboarding via secure link."""
+    """Serializer for confirming staff onboarding via secure link."""
+
     uid = serializers.CharField(write_only=True)
     token = serializers.CharField(write_only=True)
-    new_password = serializers.CharField(write_only = True)
+    new_password = serializers.CharField(write_only=True)
 
     def validate(self, attrs):
         uid = attrs.get("uid")
@@ -522,18 +554,22 @@ class RequestOnboardingLinkSerializer(serializers.Serializer):
             )
 
         if not user.is_default_password or user.is_verified:
-            raise serializers.ValidationError({
-                "error": _("This account is already fully activated. Please use the login or forgot password options.")
-            })
+            raise serializers.ValidationError(
+                {
+                    "error": _(
+                        "This account is already fully activated. Please use the login or forgot password options."
+                    )
+                }
+            )
 
         self.user = user
         return value
 
 
-
 class CompleteProfileSerializer(serializers.ModelSerializer):
-    """ Onboard profile completion serializer by the authenticated and qualified employee """
-    personal_info = serializers.JSONField(write_only=True, required = True)
+    """Onboard profile completion serializer by the authenticated and qualified employee"""
+
+    personal_info = serializers.JSONField(write_only=True, required=True)
     residential_details = UserAddressSerializer(many=True)
     preferences = serializers.JSONField(write_only=True)
     contact_details = serializers.JSONField(write_only=True)
@@ -544,29 +580,36 @@ class CompleteProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'personal_info', 'residential_details', 'next_of_kin', 'identities',
-            'preferences', 'contact_details', 'financial_details'
+            "personal_info",
+            "residential_details",
+            "next_of_kin",
+            "identities",
+            "preferences",
+            "contact_details",
+            "financial_details",
         ]
 
     def update(self, instance, validated_data):
-        personal = validated_data.pop('personal_info', {})
-        residential = validated_data.pop('residential_details', None)
-        prefs = validated_data.pop('preferences', {})
-        contacts = validated_data.pop('contact_details', {})
-        financial = validated_data.pop('financial_details', {})
-        nok_data = validated_data.pop('next_of_kin', None)
-        user_identities = validated_data.pop('identities', None)
+        personal = validated_data.pop("personal_info", {})
+        residential = validated_data.pop("residential_details", None)
+        prefs = validated_data.pop("preferences", {})
+        contacts = validated_data.pop("contact_details", {})
+        financial = validated_data.pop("financial_details", {})
+        nok_data = validated_data.pop("next_of_kin", None)
+        user_identities = validated_data.pop("identities", None)
 
         with transaction.atomic():
-            instance.first_name = personal.get('first_name', instance.first_name)
-            instance.middle_name = personal.get('middle_name', instance.middle_name)
-            instance.last_name = personal.get('last_name', instance.last_name)
+            instance.first_name = personal.get("first_name", instance.first_name)
+            instance.middle_name = personal.get("middle_name", instance.middle_name)
+            instance.last_name = personal.get("last_name", instance.last_name)
 
-            if hasattr(instance, 'employee_profile'):
+            if hasattr(instance, "employee_profile"):
                 emp = instance.employee_profile
-                emp.gender = personal.get('gender', emp.gender)
-                emp.marital_status = personal.get('marital_status', emp.marital_status)
-                emp.hr_metadata['religion'] = personal.get('religion', emp.hr_metadata.get('religion'))
+                emp.gender = personal.get("gender", emp.gender)
+                emp.marital_status = personal.get("marital_status", emp.marital_status)
+                emp.hr_metadata["religion"] = personal.get(
+                    "religion", emp.hr_metadata.get("religion")
+                )
                 emp.save()
 
             if residential is not None:
@@ -574,36 +617,40 @@ class CompleteProfileSerializer(serializers.ModelSerializer):
                 for addr in residential:
                     UserAddress.objects.create(user=instance, **addr)
 
-            if prefs and hasattr(instance, 'preferences'):
+            if prefs and hasattr(instance, "preferences"):
                 instance.preferences.preferences.update(prefs)
                 instance.preferences.save()
 
-            if hasattr(instance, 'employee_profile'):
+            if hasattr(instance, "employee_profile"):
                 emp = instance.employee_profile
-                emp.hr_metadata.update({
-                    "secondary_phone": contacts.get("second_phone"),
-                    "secondary_email": contacts.get("second_email")
-                })
+                emp.hr_metadata.update(
+                    {
+                        "secondary_phone": contacts.get("second_phone"),
+                        "secondary_email": contacts.get("second_email"),
+                    }
+                )
                 emp.save()
 
-            if financial and hasattr(instance, 'employee_profile'):
+            if financial and hasattr(instance, "employee_profile"):
                 emp = instance.employee_profile
-                payroll = emp.hr_metadata.get('payroll_config', {})
-                payroll.update({
-                    "bank_name": financial.get("bank_type"),
-                    "account_name": financial.get("account_name"),
-                    "account_number": financial.get("account_number")
-                })
-                emp.hr_metadata['payroll_config'] = payroll
+                payroll = emp.hr_metadata.get("payroll_config", {})
+                payroll.update(
+                    {
+                        "bank_name": financial.get("bank_type"),
+                        "account_name": financial.get("account_name"),
+                        "account_number": financial.get("account_number"),
+                    }
+                )
+                emp.hr_metadata["payroll_config"] = payroll
                 emp.save()
 
-            if nok_data is not None and hasattr(instance, 'employee_profile'):
+            if nok_data is not None and hasattr(instance, "employee_profile"):
                 emp = instance.employee_profile
                 emp.next_of_kin_contacts.all().delete()
                 for nok in nok_data:
                     NextOfKin.objects.create(owner=emp, **nok)
 
-            if user_identities is not None and hasattr(instance, 'employee_profile'):
+            if user_identities is not None and hasattr(instance, "employee_profile"):
                 emp = instance.employee_profile
                 emp.identities.all().delete()
                 for identity in user_identities:

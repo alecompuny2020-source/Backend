@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from rest_framework_guardian.filters import ObjectPermissionsFilter
-from rest_framework import viewsets, permissions, filters, status
 from helpers.permissions import CustomFarmPermissions
+from rest_framework import filters, permissions, status, viewsets
+from rest_framework_guardian.filters import ObjectPermissionsFilter
 from utils.renderers import GenericPaginator
+
 from .models import Supplier
 from .serializers import SupplierSerializer
 
@@ -14,11 +15,19 @@ class SupplierViewSet(viewsets.ModelViewSet):
     serializer_class = SupplierSerializer
     pagination_class = GenericPaginator
     permission_classes = [CustomFarmPermissions]
-    filter_backends = [ObjectPermissionsFilter, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['name', 'location', 'is_active']
+    filter_backends = [
+        ObjectPermissionsFilter,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["name", "location", "is_active"]
     search_fields = [
-        'name', 'contact', 'location', 'is_active', 'created_by',
-        'updated_by'
+        "name",
+        "contact",
+        "location",
+        "is_active",
+        "created_by",
+        "updated_by",
     ]
     ordering_fields = ["name", "contact", "is_active"]
 
@@ -30,16 +39,16 @@ class SupplierViewSet(viewsets.ModelViewSet):
         return Response({"message": message}, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
+        partial = kwargs.pop("partial", False)
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         message = f"Supplier was updated successfully"
-        return Response({"message" : message}, status=status.HTTP_200_OK)
+        return Response({"message": message}, status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
         self.perform_destroy(instance)
         message = f"Supplier was deleted successfully"
-        return Response({"message" : message}, status=status.HTTP_200_OK)
+        return Response({"message": message}, status=status.HTTP_200_OK)

@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
     # Enterprise Apps
     "core",
     "hrms",
@@ -51,7 +50,6 @@ INSTALLED_APPS = [
     "fns",
     "wces",
     # "ipms",
-
     # third part packages
     "django.contrib.postgres",
     "rest_framework",
@@ -70,12 +68,12 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'django.middleware.locale.LocaleMiddleware',
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     # "utils.AuthActivityMiddleware",
-    'common.middleware.EnterpriseUserPreferenceMiddleware',
+    "common.middleware.EnterpriseUserPreferenceMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -161,13 +159,11 @@ LANGUAGES = [
     ("en-us", _("English (US)")),
     ("en-gb", _("English (British)")),
     ("sw", _("Kiswahili")),
-    ('fr', _('French')),
+    ("fr", _("French")),
     ("zh-hans", _("Simplified Chinese")),
 ]
 
-LOCALE_PATHS = [
-    BASE_DIR / "locale/"
-]
+LOCALE_PATHS = [BASE_DIR / "locale/"]
 
 # Django-money settings
 CURRENCIES = ("TZS", "USD", "KES", "EUR")
@@ -211,12 +207,15 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-       'rest_framework.permissions.AllowAny',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend", "rest_framework.filters.SearchFilter",
-        "rest_framework.filters.OrderingFilter"),
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ),
     "EXCEPTION_HANDLER": "common.exceptions.general_exception_handler",
     "DEFAULT_RENDERER_CLASSES": [
         "common.renderers.GeneralEntepriseJSONRenderer",

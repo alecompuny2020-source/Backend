@@ -5,7 +5,7 @@ from . import views as v
 
 router = DefaultRouter()
 #
-router.register(r'departments', v.DepartmentViewSet)
+router.register(r"departments", v.DepartmentViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),

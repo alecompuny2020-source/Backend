@@ -1,5 +1,6 @@
 import africastalking
 from django.conf import settings
+
 from common.exceptions import handle_sms_exception
 
 
@@ -17,8 +18,8 @@ class SMSSenderService:
             response = sms.send(message, recipients)
 
             # Check the status of the first recipient (since we usually send to one)
-            status = response['SMSMessageData']['Recipients'][0]['status']
-            if status in ['Success', 'Sent']:
+            status = response["SMSMessageData"]["Recipients"][0]["status"]
+            if status in ["Success", "Sent"]:
                 return True, "SMS sent successfully."
 
             return False, f"SMS Gateway returned status: {status}"

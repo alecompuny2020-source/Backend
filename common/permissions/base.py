@@ -1,14 +1,20 @@
-from rest_framework_guardian.filters import ObjectPermissionsFilter
 from rest_framework import filters
-from rest_framework.permissions import IsAuthenticated, DjangoObjectPermissions
+from rest_framework.permissions import DjangoObjectPermissions, IsAuthenticated
+from rest_framework_guardian.filters import ObjectPermissionsFilter
+
 
 class EnterpriseObjectLevelPermissionMixin:
     """
     Mixin to inject row-level object security constraints
     only where explicitly inherited.
     """
+
     permission_classes = [IsAuthenticated, DjangoObjectPermissions]
-    filter_backends = [ObjectPermissionsFilter, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        ObjectPermissionsFilter,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
 
     def get_permissions(self):
         """

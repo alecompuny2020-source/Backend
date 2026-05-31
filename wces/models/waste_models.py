@@ -1,10 +1,12 @@
-from django.db import models
-from common.mixins import BaseEnterpriseAuditModelMixin
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from common.choices import WasteDisposalMethod
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class WasteCategory(BaseEnterpriseAuditModelMixin):
     """
@@ -14,8 +16,10 @@ class WasteCategory(BaseEnterpriseAuditModelMixin):
 
     name = models.CharField(_("Waste Type Name"), max_length=100, unique=True)
     disposal_method = models.CharField(
-        _("Primary Disposal Method"), max_length=50, choices=WasteDisposalMethod.choices,
-        default = WasteDisposalMethod.RECYCLE
+        _("Primary Disposal Method"),
+        max_length=50,
+        choices=WasteDisposalMethod.choices,
+        default=WasteDisposalMethod.RECYCLE,
     )
 
     # Blueprint for financial_logic:
@@ -67,7 +71,6 @@ class WasteCategory(BaseEnterpriseAuditModelMixin):
         return self.name
 
 
-
 class WasteCollection(BaseEnterpriseAuditModelMixin):
     """
     Daily Kiosk Log: Records waste generation at the source (Sheds or Rental Units).
@@ -75,7 +78,7 @@ class WasteCollection(BaseEnterpriseAuditModelMixin):
     """
 
     location = models.ForeignKey(
-        'sfap.Farm',
+        "sfap.Farm",
         on_delete=models.CASCADE,
         related_name="waste_collections",
         verbose_name=_("Farm Location"),
@@ -86,7 +89,7 @@ class WasteCollection(BaseEnterpriseAuditModelMixin):
 
     # Source identification using string references to prevent circular imports
     source_batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,

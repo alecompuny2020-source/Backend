@@ -1,4 +1,4 @@
-def send_otp_email(otp_entry: 'core.Otp'):
+def send_otp_email(otp_entry: "core.Otp"):
     """Sends a templated OTP email."""
     try:
         recipient_email = otp_entry.user.email
@@ -60,7 +60,9 @@ def send_forgot_password_link_email(user, reset_link):
         return handle_mail_exception(e)
 
 
-def onboarding_email_to_staff(user_instance, password, completion_link=None, greeting_name = None):
+def onboarding_email_to_staff(
+    user_instance, password, completion_link=None, greeting_name=None
+):
     """
     Sends templated login credentials and setup link to new staff.
     Supports both Email and Phone as the primary identifier (username).
@@ -93,7 +95,9 @@ def onboarding_email_to_staff(user_instance, password, completion_link=None, gre
 
         email.send(fail_silently=False)
 
-        return True, _("Staff credentials sent successfully to {email}").format(email=user_instance.email)
+        return True, _("Staff credentials sent successfully to {email}").format(
+            email=user_instance.email
+        )
 
     except Exception as e:
         return handle_mail_exception(e)

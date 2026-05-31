@@ -1,7 +1,9 @@
-from django.core.management.base import BaseCommand
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.core.management.base import BaseCommand
+
 from sfap.models import Farm
+
 
 class Command(BaseCommand):
     help = "Seed groups and permissions for Poultry Farm Management System"
@@ -45,7 +47,9 @@ class Command(BaseCommand):
                 )
                 group.permissions.add(perm)
 
-        self.stdout.write(self.style.SUCCESS("Roles and permissions seeded successfully"))
+        self.stdout.write(
+            self.style.SUCCESS("Roles and permissions seeded successfully")
+        )
 
 
 # {

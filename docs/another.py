@@ -1,20 +1,21 @@
 from datetime import datetime
 from decimal import Decimal
-from django.db import models, transaction
+
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
-from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 # Tukichukulia kuwa hizi zimeshaandikwa kwenye helpers.py kama tulivyozirekebisha
 from ..helpers import (
     ProductCategory,
-    StorageUnitType,
-    StockReadinessStatus,
     StockMovementType,
-    UnitOfMeasure
+    StockReadinessStatus,
+    StorageUnitType,
+    UnitOfMeasure,
 )
 from ..utils import FarmAuditBaseModel
 
@@ -31,13 +32,13 @@ class ProcessingSession(BaseEnterpriseAuditModelMixin):
     )
 
     source_batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.PROTECT,
         related_name="processing_runs",
         verbose_name=_("Source Batch"),
     )
     assigned_workers = models.ManyToManyField(
-        'hrms.Employee',
+        "hrms.Employee",
         related_name="session_workers",
         blank=True,
         verbose_name=_("Assigned Staff"),
@@ -169,9 +170,12 @@ class MeatCutType(models.TextChoices):
 
 
 class Product(FarmAuditBaseModel):
-    """ Defines the global catalog (e.g., Broiler Meat, Organic Eggs). """
+    """Defines the global catalog (e.g., Broiler Meat, Organic Eggs)."""
+
     name = models.CharField(_("Product Name"), max_length=100, unique=True)
-    category = models.CharField(_("Category"), max_length=50, choices=ProductCategory.choices)
+    category = models.CharField(
+        _("Category"), max_length=50, choices=ProductCategory.choices
+    )
     specs = models.JSONField(_("Product Specifications"), default=dict, blank=True)
 
     class Meta:
@@ -196,19 +200,46 @@ class ProductVariant(FarmAuditBaseModel):
     The Variant level enabling Amazon/AliExpress style selection.
     Combines the parent Product with specific physical attributes, pricing, and SKU.
     """
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="variants", verbose_name=_("Parent Product"))
 
-    cut_type = models.CharField(_("Cut Type"), max_length=20, choices=MeatCutType.choices, default=MeatCutType.WHOLE)
-    storage_state = models.CharField(_("Storage State"), max_length=20, choices=StorageState.choices, default=StorageState.FRESH)
-    fat_level = models.CharField(_("Fat Content"), max_length=20, choices=FatLevel.choices, default=FatLevel.MEDIUM)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="variants",
+        verbose_name=_("Parent Product"),
+    )
 
-    sku = models.CharField(_("SKU / Item Code"), max_length=100, unique=True, db_index=True)
+    cut_type = models.CharField(
+        _("Cut Type"),
+        max_length=20,
+        choices=MeatCutType.choices,
+        default=MeatCutType.WHOLE,
+    )
+    storage_state = models.CharField(
+        _("Storage State"),
+        max_length=20,
+        choices=StorageState.choices,
+        default=StorageState.FRESH,
+    )
+    fat_level = models.CharField(
+        _("Fat Content"),
+        max_length=20,
+        choices=FatLevel.choices,
+        default=FatLevel.MEDIUM,
+    )
+
+    sku = models.CharField(
+        _("SKU / Item Code"), max_length=100, unique=True, db_index=True
+    )
 
     # Enterprise Pricing Model
     if MoneyField:
-        price = MoneyField(_("Unit Price"), max_digits=12, decimal_places=2, default_currency="TZS")
+        price = MoneyField(
+            _("Unit Price"), max_digits=12, decimal_places=2, default_currency="TZS"
+        )
     else:
-        price = models.DecimalField(_("Unit Price (TZS)"), max_digits=12, decimal_places=2)
+        price = models.DecimalField(
+            _("Unit Price (TZS)"), max_digits=12, decimal_places=2
+        )
 
     is_active = models.BooleanField(_("Is Available for Sale"), default=True)
     variant_metadata = models.JSONField(_("Variant Metadata"), default=dict, blank=True)
@@ -224,7 +255,8 @@ class ProductVariant(FarmAuditBaseModel):
 
 
 class PackagedProduct(FarmAuditBaseModel):
-    """ Specific items ready for retail tagged to their architectural variants. """
+    """Specific items ready for retail tagged to their architectural variants."""
+
     session = models.ForeignKey(
         ProcessingSession, on_delete=models.CASCADE, related_name="packages"
     )
@@ -233,12 +265,23 @@ class PackagedProduct(FarmAuditBaseModel):
         ProductVariant,
         on_delete=models.CASCADE,
         verbose_name=_("Product Variant Reference"),
-        related_name="packages"
+        related_name="packages",
     )
-    production_line = models.CharField(_("Production Line"), max_length=50, db_index=True, blank=True)
-    label_code = models.CharField(_("QR/Barcode"), max_length=100, unique=True, db_index=True)
-    weight = models.DecimalField(_("Unit Weight (KG)"), max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
-    units_inside_package = models.PositiveIntegerField(_("Pieces Inside Package"), default=1)
+    production_line = models.CharField(
+        _("Production Line"), max_length=50, db_index=True, blank=True
+    )
+    label_code = models.CharField(
+        _("QR/Barcode"), max_length=100, unique=True, db_index=True
+    )
+    weight = models.DecimalField(
+        _("Unit Weight (KG)"),
+        max_digits=10,
+        decimal_places=2,
+        validators=[MinValueValidator(0.01)],
+    )
+    units_inside_package = models.PositiveIntegerField(
+        _("Pieces Inside Package"), default=1
+    )
 
     packaging_metadata = models.JSONField(
         _("Packaging Specs"),
@@ -257,15 +300,19 @@ class PackagedProduct(FarmAuditBaseModel):
         ]
 
     def clean(self):
-        """ Ensures packaged weight doesn't exceed the processing session yield capacity. """
+        """Ensures packaged weight doesn't exceed the processing session yield capacity."""
         try:
-            locked_session = ProcessingSession.objects.select_for_update().get(pk=self.session_id)
+            locked_session = ProcessingSession.objects.select_for_update().get(
+                pk=self.session_id
+            )
         except ProcessingSession.DoesNotExist:
             raise ValidationError(_("Processing Session inayorejelewa haipo."))
 
         existing_pkg_weight = PackagedProduct.objects.filter(
             session=locked_session
-        ).exclude(pk=self.pk).aggregate(total=models.Sum("weight"))["total"] or Decimal("0.00")
+        ).exclude(pk=self.pk).aggregate(total=models.Sum("weight"))["total"] or Decimal(
+            "0.00"
+        )
 
         if (existing_pkg_weight + self.weight) > locked_session.total_dressed_weight:
             raise ValidationError(
@@ -299,7 +346,9 @@ class WarehouseLocation(FarmAuditBaseModel):
 
 
 class Zone(FarmAuditBaseModel):
-    warehouse = models.ForeignKey(WarehouseLocation, on_delete=models.CASCADE, related_name="zones")
+    warehouse = models.ForeignKey(
+        WarehouseLocation, on_delete=models.CASCADE, related_name="zones"
+    )
     name = models.CharField(_("Zone Name"), max_length=100)
     code = models.CharField(_("Zone Code"), max_length=10, blank=True)
 
@@ -311,9 +360,16 @@ class Zone(FarmAuditBaseModel):
 
 
 class StorageUnit(FarmAuditBaseModel):
-    zone = models.ForeignKey(Zone, on_delete=models.CASCADE, related_name="storage_units")
+    zone = models.ForeignKey(
+        Zone, on_delete=models.CASCADE, related_name="storage_units"
+    )
     unit_code = models.CharField(_("Unit Code"), max_length=20)
-    unit_type = models.CharField(_("Storage Mean"), max_length=20, choices=StorageUnitType.choices, default=StorageUnitType.SHELF)
+    unit_type = models.CharField(
+        _("Storage Mean"),
+        max_length=20,
+        choices=StorageUnitType.choices,
+        default=StorageUnitType.SHELF,
+    )
     max_capacity = models.IntegerField(_("Max Capacity"), default=0)
 
     class Meta:
@@ -326,20 +382,51 @@ class StorageUnit(FarmAuditBaseModel):
 
 # --- 3. REALS-TIME STOCK BALANCE NA LEDGER ---
 class ProductStock(FarmAuditBaseModel):
-    product_type = models.ForeignKey(Product, on_delete=models.PROTECT, related_name="current_stock")
-    storage_unit = models.ForeignKey(StorageUnit, on_delete=models.PROTECT, related_name="stock_items")
-    quantity_on_hand = models.DecimalField(_("Quantity on Hand"), max_digits=12, decimal_places=2, validators=[MinValueValidator(0.00)])
-    minimum_stock_level = models.PositiveIntegerField(_("Minimum Stock Level"), default=0)
-    storage_temperature = models.DecimalField(_("Target Storage Temp (°C)"), max_digits=5, decimal_places=2, null=True, blank=True)
-    unit_of_measure = models.CharField(_("UOM"), max_length=20, choices=UnitOfMeasure.choices)
-    readiness_status = models.CharField(_("Readiness"), max_length=20, choices=StockReadinessStatus.choices, default=StockReadinessStatus.READY)
-    batch_number = models.CharField(_("Batch Number"), max_length=100, unique=True, db_index=True)
+    product_type = models.ForeignKey(
+        Product, on_delete=models.PROTECT, related_name="current_stock"
+    )
+    storage_unit = models.ForeignKey(
+        StorageUnit, on_delete=models.PROTECT, related_name="stock_items"
+    )
+    quantity_on_hand = models.DecimalField(
+        _("Quantity on Hand"),
+        max_digits=12,
+        decimal_places=2,
+        validators=[MinValueValidator(0.00)],
+    )
+    minimum_stock_level = models.PositiveIntegerField(
+        _("Minimum Stock Level"), default=0
+    )
+    storage_temperature = models.DecimalField(
+        _("Target Storage Temp (°C)"),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    unit_of_measure = models.CharField(
+        _("UOM"), max_length=20, choices=UnitOfMeasure.choices
+    )
+    readiness_status = models.CharField(
+        _("Readiness"),
+        max_length=20,
+        choices=StockReadinessStatus.choices,
+        default=StockReadinessStatus.READY,
+    )
+    batch_number = models.CharField(
+        _("Batch Number"), max_length=100, unique=True, db_index=True
+    )
     stock_metadata = models.JSONField(_("Stock Metadata"), default=dict, blank=True)
     last_inspected = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = "product_stock"
-        unique_together = ("product_type", "storage_unit", "readiness_status", "batch_number")
+        unique_together = (
+            "product_type",
+            "storage_unit",
+            "readiness_status",
+            "batch_number",
+        )
         indexes = [
             GinIndex(fields=["stock_metadata"], name="stock_meta_gin_idx"),
         ]
@@ -349,10 +436,14 @@ class ProductStock(FarmAuditBaseModel):
 
 
 class StockMovement(FarmAuditBaseModel):
-    stock = models.ForeignKey(ProductStock, on_delete=models.CASCADE, related_name="movements")
+    stock = models.ForeignKey(
+        ProductStock, on_delete=models.CASCADE, related_name="movements"
+    )
     movement_type = models.CharField(max_digits=20, choices=StockMovementType.choices)
     quantity_change = models.DecimalField(max_digits=12, decimal_places=2)
-    performed_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    performed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
     timestamp = models.DateTimeField(default=timezone.now)
     reference_id = models.CharField(max_length=50, blank=True, null=True)
     is_reversible = models.BooleanField(_("Is Reversible"), default=True)
@@ -368,10 +459,14 @@ class StockMovement(FarmAuditBaseModel):
     def save(self, *args, **kwargs):
         is_new = self._state.adding
         if is_new:
-            locked_stock = ProductStock.objects.select_for_update().get(pk=self.stock_id)
+            locked_stock = ProductStock.objects.select_for_update().get(
+                pk=self.stock_id
+            )
             locked_stock.quantity_on_hand += self.quantity_change
             if locked_stock.quantity_on_hand < 0:
-                raise ValidationError(_("Mavuno/Bidhaa hazitoshi ghalani kukamilisha mchakato huu."))
+                raise ValidationError(
+                    _("Mavuno/Bidhaa hazitoshi ghalani kukamilisha mchakato huu.")
+                )
             locked_stock.save()
             self.stock = locked_stock
         super().save(*args, **kwargs)

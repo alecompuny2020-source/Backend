@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import User, UserAddress, UserPreference, Otp
+
+from .models import Otp, User, UserAddress, UserPreference
 
 # Register your models here.
 admin.site.register(User)

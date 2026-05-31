@@ -1,18 +1,16 @@
-from django.db import models, transaction
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
-
 from helpers.choices import CURRENCY_CHOICES
 from utils.audit_track import FarmAuditBaseModel
-
 
 # Create your models here.
 
 
 class FeedType(FarmAuditBaseModel):
-    """ Defines the nutritional profile and pricing of feed."""
+    """Defines the nutritional profile and pricing of feed."""
 
     name = models.CharField(_("Feed Name"), max_length=100, unique=True)
     brand = models.CharField(_("Brand/Manufacturer"), max_length=100, blank=True)
@@ -63,7 +61,7 @@ class FeedType(FarmAuditBaseModel):
 
 
 class FeedInventory(FarmAuditBaseModel):
-    """ Tracks stock levels in silos or warehouses. """
+    """Tracks stock levels in silos or warehouses."""
 
     feed_type = models.OneToOneField(
         FeedType,
@@ -130,7 +128,7 @@ class FeedConsumption(FarmAuditBaseModel):
 
     # Use string 'core.Batch' to prevent circular import
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="feed_logs",
         verbose_name=_("Flock Batch"),
@@ -215,14 +213,16 @@ class FeedConsumption(FarmAuditBaseModel):
         return f"{self.batch.batch_id}: {self.quantity_used_kg}kg"
 
 
-
 class FeedIngredientStock(BaseEnterpriseAuditModelMixin):
     """
     Inafuatilia stoki ya malighafi za chakula cha kuku zilizopo ghalani.
     """
-    ingredient_name = models.CharField(max_length=100) # Mfano: Alizeti, Mtama
+
+    ingredient_name = models.CharField(max_length=100)  # Mfano: Alizeti, Mtama
     available_qty_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0)
-    unit_cost_per_kg = models.DecimalField(max_digits=12, decimal_places=2, default=0.0) # Kwa TZS
+    unit_cost_per_kg = models.DecimalField(
+        max_digits=12, decimal_places=2, default=0.0
+    )  # Kwa TZS
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):

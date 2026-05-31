@@ -1,7 +1,8 @@
 
-from rest_framework import viewsets, status, permissions
-from rest_framework.response import Response
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.response import Response
+
 
 class UserProfileViewSet(viewsets.GenericViewSet):
     """
@@ -102,11 +103,14 @@ class UserProfileViewSet(viewsets.GenericViewSet):
         pref = getattr(request.user, 'preferences', None)
         return self._handle_action(pref, UserPreferenceSerializer, request)
 
-from rest_framework import viewsets, status, filters
+from rest_framework import filters, status, viewsets
 from rest_framework.response import Response
+
+from core.renderers import GenericPaginator  # Using the new core folder
+
 from .models import *
 from .serializers import *
-from core.renderers import GenericPaginator # Using the new core folder
+
 
 class BaseEnterpriseViewSet(viewsets.ModelViewSet):
     """
@@ -129,8 +133,9 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
         return Response({"message": self.get_success_message('create'), "data": response.data}, status=status.HTTP_201_CREATED)
 
 
-from rest_framework import viewsets, status, filters
+from rest_framework import filters, status, viewsets
 from rest_framework.response import Response
+
 
 class BaseEnterpriseViewSet(viewsets.ModelViewSet):
     """
@@ -240,6 +245,7 @@ class CustomFarmPermissions(EnterpriseObjectPermission):
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class EmployeeIDSequence(models.Model):
     """Tracks the auto-incrementing sequence counter for each distinct prefix code."""
     prefix = models.CharField(max_length=10, unique=True, help_text="e.g., HR, MFG, SLS")
@@ -255,7 +261,9 @@ class EmployeeIDSequence(models.Model):
 
 
 from django.db import transaction
+
 from .models import EmployeeIDSequence
+
 
 def generate_secure_employee_number(prefix_code: str, padding_length: int = 5) -> str:
     """
@@ -284,8 +292,9 @@ def generate_secure_employee_number(prefix_code: str, padding_length: int = 5) -
         return f"{prefix}-{padded_sequence}"
 
 
-from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import models
+
 
 class Employee(models.Model):
     # Relies on the Department model we designed earlier

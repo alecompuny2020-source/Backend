@@ -1,10 +1,12 @@
+from datetime import timedelta
+
+from django.contrib.postgres.indexes import GinIndex
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
-from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import (BirdType, HealthRecordType, now, DiseaseOutbreakStatus)
 from djmoney.models.fields import MoneyField
-from django.contrib.postgres.indexes import GinIndex
-from datetime import timedelta
+
+from common.choices import BirdType, DiseaseOutbreakStatus, HealthRecordType, now
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 
 class HealthProtocol(BaseEnterpriseAuditModelMixin):
@@ -53,19 +55,20 @@ class HealthProtocol(BaseEnterpriseAuditModelMixin):
         return f"{self.name} ({self.target_bird_type})"
 
 
-
 class MedicalRecord(BaseEnterpriseAuditModelMixin):
     """
     Tracks specific health events. Links directly to Accounting for 'Cost per Bird' analysis.
     """
 
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.CASCADE,
         related_name="health_records",
         verbose_name=_("Flock Batch"),
     )
-    date_of_administration = models.DateField(_("Date of Administration"), db_index=True, default = now)
+    date_of_administration = models.DateField(
+        _("Date of Administration"), db_index=True, default=now
+    )
     record_type = models.CharField(
         _("Record Type"), max_length=20, choices=HealthRecordType
     )
@@ -140,7 +143,7 @@ class DiseaseOutbreak(BaseEnterpriseAuditModelMixin):
     """
 
     batch = models.ForeignKey(
-        'sfap.Batch',
+        "sfap.Batch",
         on_delete=models.PROTECT,
         verbose_name=_("Impacted Batch"),
     )

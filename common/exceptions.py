@@ -3,10 +3,10 @@ import socket
 from http import HTTPStatus
 from smtplib import SMTPAuthenticationError, SMTPConnectError, SMTPException
 from typing import Any
-from requests.exceptions import RequestException, Timeout, ConnectionError
 
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db.models import ProtectedError, RestrictedError
+from requests.exceptions import ConnectionError, RequestException, Timeout
 from rest_framework import status
 from rest_framework.exceptions import ValidationError as DRFValidationError
 from rest_framework.response import Response
@@ -14,6 +14,7 @@ from rest_framework.serializers import as_serializer_error
 from rest_framework.views import exception_handler as drf_exception_handler
 
 logger = logging.getLogger(__name__)
+
 
 class EnterpriseAPIExceptionHandler:
     """
@@ -52,7 +53,8 @@ class EnterpriseAPIExceptionHandler:
     def _handle_db_restrictions(self) -> Response | None:
         if isinstance(self.exc, (ProtectedError, RestrictedError)):
             blocking_objects = (
-                self.exc.protected_objects if isinstance(self.exc, ProtectedError)
+                self.exc.protected_objects
+                if isinstance(self.exc, ProtectedError)
                 else self.exc.restricted_objects
             )
 
@@ -67,9 +69,9 @@ class EnterpriseAPIExceptionHandler:
                 self.format_payload(
                     status_code=status.HTTP_400_BAD_REQUEST,
                     message="Database Restriction",
-                    details=error_message
+                    details=error_message,
                 ),
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         return None
 
@@ -83,9 +85,7 @@ class EnterpriseAPIExceptionHandler:
         )
 
         response.data = self.format_payload(
-            status_code=response.status_code,
-            message=status_msg,
-            details=response.data
+            status_code=response.status_code, message=status_msg, details=response.data
         )
         return response
 
@@ -114,22 +114,35 @@ class EmailExceptionHandler:
     def handle(cls, e: Exception) -> tuple[bool, str]:
         logger.error(f"Email system error: {str(e)}")
 
-        if isinstance(e, (socket.gaierror, socket.timeout, TimeoutError, SMTPConnectError)):
-            return False, "Network error or timeout. Please check your internet connection and try again."
+        if isinstance(
+            e, (socket.gaierror, socket.timeout, TimeoutError, SMTPConnectError)
+        ):
+            return (
+                False,
+                "Network error or timeout. Please check your internet connection and try again.",
+            )
 
         if isinstance(e, SMTPAuthenticationError):
-            return False, "Email service is temporarily unavailable. Please contact support if this persists."
+            return (
+                False,
+                "Email service is temporarily unavailable. Please contact support if this persists.",
+            )
 
         if isinstance(e, SMTPException):
-            return False, "We couldn't deliver the email. Please double-check the address or try again."
+            return (
+                False,
+                "We couldn't deliver the email. Please double-check the address or try again.",
+            )
 
-        return False, "Oops, something went wrong while sending the email. Please try again later."
+        return (
+            False,
+            "Oops, something went wrong while sending the email. Please try again later.",
+        )
 
 
 def handle_mail_exception(e: Exception) -> tuple[bool, str]:
     """Legacy wrapper for Email Exception."""
     return EmailExceptionHandler.handle(e)
-
 
 
 class SMSExceptionHandler:
@@ -143,10 +156,16 @@ class SMSExceptionHandler:
             return False, "Request timeout. Please try again."
 
         if isinstance(e, (ConnectionError, socket.gaierror)):
-            return False, "Network error. Please check your internet connection and try again"
+            return (
+                False,
+                "Network error. Please check your internet connection and try again",
+            )
 
         if isinstance(e, RequestException):
-            return False, "Communication with the SMS service failed. Try again in a moment."
+            return (
+                False,
+                "Communication with the SMS service failed. Try again in a moment.",
+            )
 
         error_msg = str(e).lower()
 
@@ -158,7 +177,10 @@ class SMSExceptionHandler:
             logger.critical("CRITICAL: Africa's Talking balance is empty!")
             return False, "The SMS service is temporarily unavailable."
 
-        return False, "Oops, something went wrong while sending the SMS. Please try again later."
+        return (
+            False,
+            "Oops, something went wrong while sending the SMS. Please try again later.",
+        )
 
 
 def handle_sms_exception(e: Exception) -> tuple[bool, str]:

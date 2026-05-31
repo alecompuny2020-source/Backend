@@ -6,9 +6,9 @@ from . import views as v
 
 router = DefaultRouter()
 
-router.register(r'', v.AuthViewSet, basename='auth')
+router.register(r"", v.AuthViewSet, basename="auth")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path('token/refresh/', TokenRefreshView.as_view()),
+    path("token/refresh/", TokenRefreshView.as_view()),
 ]
