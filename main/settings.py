@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "sfap",
     "ppms",
     "fns",
+    "wces",
     # "ipms",
 
     # third part packages

@@ -167,8 +167,9 @@ class AddressType(models.TextChoices):
 """ FARM PRODUCTION & HEALTH """
 
 class SourceChoices(models.TextChoices):
-    COMMERCIAL = 'COMMERCIAL', _('Kibiashara / Kununuliwa')
     FARM_PRODUCED = 'FARM_PRODUCED', _('Kiasili / Limeshindwa Shambani')
+    COMMERCIAL = 'COMMERCIAL', _('Kibiashara / Kununuliwa')
+
 
 
 class ProductCategory(models.TextChoices):
