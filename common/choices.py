@@ -256,6 +256,21 @@ class ProductionStatus(models.TextChoices):
     FAILED = 'FAILED', _('failed')
 
 
+class MeatCutType(models.TextChoices):
+    SLICE = "SLICE", _("Slice / Steak (Lidandi / Shaba)")
+    PART = "PART", _("Primal Part / Cut (Sehemu ya Mnyama - mf. Paja, Mbavu)")
+    PIECE = "PIECE", _("Countable Piece (Idadi - mf. Soseji, Mishikaki)")
+    WHOLE = "WHOLE", _("Whole Carcass / Bird (Mzoga Mzima / Kuku Mzima)")
+
+class StorageState(models.TextChoices):
+    FRESH = "FRESH", _("Fresh / Chilled")
+    FROZEN = "FROZEN", _("Frozen")
+
+class FatLevel(models.TextChoices):
+    LEAN = "LEAN", _("Lean / Low Fat")
+    MEDIUM = "MEDIUM", _("Medium Fat")
+    HIGH = "HIGH", _("High Fat / Premium Marbled")
+
 """ SALES, FINANCE & BOOKING """
 
 class CurrencyCode(models.TextChoices):
