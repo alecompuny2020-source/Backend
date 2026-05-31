@@ -51,6 +51,24 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
         abstract = True
 
 
+class BaseAddressModelMixin(BaseEnterpriseModelMixin):
+    """Reusable Base Address Model throughout the Enterprise"""
+
+    region = models.CharField(max_length=100, db_index=True)
+    district = models.CharField(max_length=100, db_index=True)
+    ward = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=5, db_index=True)
+    # gps_coordinates = coordinates.PointField(_("GPS Coordinates"), geography = True, null = True, blank = True, srid = 4326)
+
+    # DYNAMIC FIELD (For Granularity)
+    # Stores: street_name, plot_no, block_no, house_no, village, hamlet, landmark, etc.
+    address_metadata = models.JSONField(default=dict, blank=True)
+
+    class Meta(BaseEnterpriseModelMixin.Meta):
+        abstract = True
+
+
+
 class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
     """
     A dynamic base serializer that automatically exposes audit fields if they
@@ -166,24 +184,7 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
         )
 
 
-class BaseAddressModelMixin(BaseEnterpriseModelMixin):
-    """Reusable Base Address Model throughout the Enterprise"""
 
-    region = models.CharField(max_length=100, db_index=True)
-    district = models.CharField(max_length=100, db_index=True)
-    ward = models.CharField(max_length=100)
-    postcode = models.CharField(max_length=5, db_index=True)
-    # gps_coordinates = coordinates.PointField(_("GPS Coordinates"), geography = True, null = True, blank = True, srid = 4326)
-
-    # DYNAMIC FIELD (For Granularity)
-    # Stores: street_name, plot_no, block_no, house_no, village, hamlet, landmark, etc.
-    address_metadata = models.JSONField(default=dict, blank=True)
-
-    class Meta(BaseEnterpriseModelMixin.Meta):
-        abstract = True
-
-
-#
 # class ActionTrackingBaseModelMixin(models.Model):
 #     """
 #     Abstract base class for multi-stage workflow tracking.
