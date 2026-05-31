@@ -9,12 +9,11 @@ from common.choices import SourceChoices
 
 # Create your models here.
 
-
 class FeedInventory(BaseEnterpriseAuditModelMixin):
     """ Tracks stock levels in silos or warehouses. """
 
     feed_type = models.OneToOneField(
-        FeedType,
+        'fns.FeedType',
         on_delete=models.CASCADE,
         related_name="inventory",
         verbose_name=_("Feed Type"),

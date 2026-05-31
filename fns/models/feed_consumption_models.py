@@ -7,8 +7,8 @@ from decimal import Decimal
 from common.mixins import BaseEnterpriseAuditModelMixin
 from common.choices import SourceChoices
 
-# Create your models here.
 
+# Create your models here.
 
 class FeedConsumption(BaseEnterpriseAuditModelMixin):
     """
@@ -23,7 +23,7 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
         verbose_name=_("Flock Batch"),
     )
     feed_type = models.ForeignKey(
-        FeedType, on_delete=models.PROTECT, verbose_name=_("Feed Type")
+        'fns.FeedType', on_delete=models.PROTECT, verbose_name=_("Feed Type")
     )
     quantity_used_kg = models.DecimalField(
         _("Quantity Used (KG)"), max_digits=10, decimal_places=2
@@ -64,7 +64,7 @@ class FeedConsumption(BaseEnterpriseAuditModelMixin):
         ]
 
     @property
-    def actual_intake(self):
+    def actual_intake(self) -> float:
         """Calculates what the birds actually ate safely."""
         return max(Decimal('0.00'), self.quantity_used_kg - self.waste_amount_kg)
 
