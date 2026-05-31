@@ -8,6 +8,7 @@ from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
+
 class ProcessingPlant(BaseEnterpriseAuditModelMixin):
     """Represents the physical facility or station where processing occurs."""
 

@@ -15,6 +15,10 @@ class ProcessingPlantViewSet(
     serializer_class = ProcessingPlantSerializers
 
 
-class ProcessingSessionViewSet(EnterpriseObjectLevelPermissionMixin, BaseEnterpriseViewSet):
-    queryset = ProcessingSession.objects.select_related('plant', 'source_batch', 'assigned_workers').all()
+class ProcessingSessionViewSet(
+    EnterpriseObjectLevelPermissionMixin, BaseEnterpriseViewSet
+):
+    queryset = ProcessingSession.objects.select_related(
+        "plant", "source_batch", "assigned_workers"
+    ).all()
     serializer_class = ProcessingSessionSerializers

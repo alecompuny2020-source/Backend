@@ -1,11 +1,14 @@
 from django.db import models
-from common.mixins import BaseAddressModelMixin
 from django.utils.translation import gettext_lazy as _
+
+from common.mixins import BaseAddressModelMixin
 
 # Create your models here.
 
+
 class WarehouseLocation(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
     """Physical facilities (e.g., Dodoma Main, Mwanza Staging)."""
+
     name = models.CharField(_("Location Name"), max_length=100, unique=True)
     code = models.CharField(_("Warehouse Code"), max_length=20, unique=True)
     is_active = models.BooleanField(default=True)
@@ -51,10 +54,8 @@ class Zone(FarmAuditBaseModel):
             f"(Code: {self.code})"
         )
 
-
     def __str__(self):
         return f"{self.warehouse.code} - {self.name}"
-
 
 
 class StorageUnit(FarmAuditBaseModel):

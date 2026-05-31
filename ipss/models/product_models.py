@@ -1,17 +1,19 @@
+from decimal import Decimal
+
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
-from django.db import models
-from django.db.models import Sum
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from decimal import Decimal
-from djmoney.models.fields import MoneyField
+from django.db import models
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
 
+from common.choices import FatLevel, MeatCutType, ProductCategory, StorageState
 from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import MeatCutType, StorageState, FatLevel, ProductCategory
 
 # Create your models here.
+
 
 class Product(BaseEnterpriseAuditModelMixin):
     """Defines the global catalog (e.g., Broiler Meat, Organic Eggs)."""
@@ -46,7 +48,6 @@ class Product(BaseEnterpriseAuditModelMixin):
 
     def __str__(self):
         return f"{self.name} ({self.get_cut_type_display()})"
-
 
 
 class ProductVariant(BaseEnterpriseAuditModelMixin):
@@ -100,13 +101,11 @@ class ProductVariant(BaseEnterpriseAuditModelMixin):
         return f"{self.product.name} - {self.get_cut_type_display()} [{self.get_storage_state_display()}]"
 
 
-
-
 class PackagedProduct(BaseEnterpriseAuditModelMixin):
     """Specific items ready for retail tagged to their architectural variants."""
 
     session = models.ForeignKey(
-        'ppms.ProcessingSession', on_delete=models.CASCADE, related_name="packages"
+        "ppms.ProcessingSession", on_delete=models.CASCADE, related_name="packages"
     )
 
     variant_ref = models.ForeignKey(

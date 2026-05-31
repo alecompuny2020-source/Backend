@@ -68,7 +68,6 @@ class BaseAddressModelMixin(BaseEnterpriseModelMixin):
         abstract = True
 
 
-
 class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
     """
     A dynamic base serializer that automatically exposes audit fields if they
@@ -182,7 +181,6 @@ class BaseEnterpriseViewSet(viewsets.ModelViewSet):
         return Response(
             {"message": self.get_success_message()}, status=status.HTTP_200_OK
         )
-
 
 
 # class ActionTrackingBaseModelMixin(models.Model):

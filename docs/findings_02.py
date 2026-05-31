@@ -9,7 +9,6 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     ikitumia mbolea kutoka kwa kuku.
     """
 
-
     class ProductionStatus(models.TextChoices):
         PLANTED = "PLANTED", "planted"
         GROWING = "GROWING", "Inakua"

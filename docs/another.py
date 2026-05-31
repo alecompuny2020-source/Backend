@@ -471,41 +471,41 @@ class StockMovement(FarmAuditBaseModel):
         super().save(*args, **kwargs)
 
 
-from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import ProductStock
+
 
 class IntegratedInventoryListView(APIView):
     def get(self, request):
         # select_related inafanya SQL JOIN ya table ya Variant na Product mara moja tu!
         stock_queryset = ProductStock.objects.select_related(
-            'product_variant__product',
-            'storage_unit__zone__warehouse'
+            "product_variant__product", "storage_unit__zone__warehouse"
         ).all()
 
         # Kutengeneza JSON moja iliyounganishwa kwa ajili ya Angular Frontend
         combined_data = []
         for stock in stock_queryset:
-            combined_data.append({
-                "stock_id": stock.id,
-                "batch_number": stock.batch_number,
-                "quantity": float(stock.quantity_on_hand),
-                "uom": stock.unit_of_measure,
-
-                # Data kutoka ProductVariant (JOIN 1)
-                "sku": stock.product_variant.sku,
-                "price": str(stock.product_variant.price),
-                "cut_type": stock.product_variant.get_cut_type_display(),
-                "storage_state": stock.product_variant.get_storage_state_display(),
-                "fat_level": stock.product_variant.get_fat_level_display(),
-
-                # Data kutoka Product ya juu kabisa (JOIN 2)
-                "product_name": stock.product_variant.product.name,
-                "category": stock.product_variant.product.get_category_display(),
-
-                # Data ya eneo stoki ilipo (JOIN 3)
-                "warehouse": stock.storage_unit.zone.warehouse.name,
-                "storage_unit_code": stock.storage_unit.unit_code,
-            })
+            combined_data.append(
+                {
+                    "stock_id": stock.id,
+                    "batch_number": stock.batch_number,
+                    "quantity": float(stock.quantity_on_hand),
+                    "uom": stock.unit_of_measure,
+                    # Data kutoka ProductVariant (JOIN 1)
+                    "sku": stock.product_variant.sku,
+                    "price": str(stock.product_variant.price),
+                    "cut_type": stock.product_variant.get_cut_type_display(),
+                    "storage_state": stock.product_variant.get_storage_state_display(),
+                    "fat_level": stock.product_variant.get_fat_level_display(),
+                    # Data kutoka Product ya juu kabisa (JOIN 2)
+                    "product_name": stock.product_variant.product.name,
+                    "category": stock.product_variant.product.get_category_display(),
+                    # Data ya eneo stoki ilipo (JOIN 3)
+                    "warehouse": stock.storage_unit.zone.warehouse.name,
+                    "storage_unit_code": stock.storage_unit.unit_code,
+                }
+            )
 
         return Response(combined_data)
