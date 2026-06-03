@@ -471,6 +471,147 @@ class StockMovement(FarmAuditBaseModel):
         super().save(*args, **kwargs)
 
 
+from django.db.models import Sum, Count
+from decimal import Decimal
+
+class ProductStock(BaseEnterpriseAuditModelMixin):
+    # ... fields zako zote zilizopo ...
+
+    @property
+    def total_packaged_units_count(self) -> int:
+        """
+        Inarudisha idadi kamili ya pakiti zilizopo ghalani
+        kwa ajili ya Variant hii na Batch hii.
+        """
+        from .models import PackagedProduct  # Kuzuia circular import
+
+        # Tunahesabu idadi ya mifuko/pakiti (Rows zilizopo kwenye PackagedProduct)
+        result = PackagedProduct.objects.filter(
+            variant_ref=self.product_type,
+            session__source_batch__batch_id=self.batch_number
+        ).aggregate(total_packets=Count('id'))
+
+        return result['total_packets'] or 0
+
+    @property
+    def packaged_weight_breakdown(self) -> dict:
+        """
+        Inarudisha mchanganuo kamili kwa ajili ya Angular Frontend.
+        Inakwambia kuna pakiti ngapi na zina uzito gani kwa ujumla.
+        """
+        return {
+            "total_weight_on_hand": float(self.quantity_on_hand),
+            "total_packets_count": self.total_packaged_units_count,
+            "unit_of_measure": self.unit_of_measure
+        }
+
+
+
+from decimal import Decimal
+from django.db.models import Count, Sum
+
+
+class ProductStock(BaseEnterpriseAuditModelMixin):
+    # ... fields zako zote za database zibaki hapa ...
+
+    # =========================================================================
+    # 1. LIVE PACKAGING PROPERTIES (Zinazopiga hesabu moja kwa moja kutoka PackagedProduct)
+    # =========================================================================
+
+    @property
+    def total_packaged_units_count(self) -> int:
+        """
+        Inarudisha idadi kamili ya pakiti/mifuko iliyopo ghalani kwa sasa.
+        Inahesabu idadi ya mistari (rows) kwenye table ya PackagedProduct.
+        """
+        from .models import PackagedProduct  # Kuzuia circular import
+
+        result = PackagedProduct.objects.filter(
+            variant_ref=self.product_type,
+            session__source_batch__batch_id=self.batch_number,
+        ).aggregate(total_packets=Count("id"))
+
+        return result["total_packets"] or 0
+
+    @property
+    def total_packaged_weight(self) -> Decimal:
+        """
+        Inapiga hesabu ya jumla ya uzito (KG) wa bidhaa zilizofungashwa pekee.
+        Inajumlisha field ya 'weight' kutoka kwenye kila pakiti husika.
+        """
+        from .models import PackagedProduct
+
+        result = PackagedProduct.objects.filter(
+            variant_ref=self.product_type,
+            session__source_batch__batch_id=self.batch_number,
+        ).aggregate(total_weight=Sum("weight"))
+
+        return result["total_weight"] or Decimal("0.00")
+
+    @property
+    def total_loose_weight(self) -> Decimal:
+        """
+        Inarudisha uzito wa nyama ghafi (bulk/loose) iliyobaki ambayo haijafungwa.
+        Inachukua uzito wote wa stoki ghalani na kutoa ule uzito uliopo kwenye pakiti.
+        """
+        return self.quantity_on_hand - self.total_packaged_weight
+
+    # =========================================================================
+    # 2. ANGULAR FRONTEND DATA BUNDLES (Zinazokusanya data kwa ajili ya Dashboard)
+    # =========================================================================
+
+    @property
+    def stock_analytics_breakdown(self) -> dict:
+        """
+        Inajibu dukuduku lako lote kwa kurudisha mchanganuo ulionyooka wa stoki.
+        Hii ndio JSON nzima inayotakiwa kwenda kwenye dashboard ya Angular.
+        """
+        return {
+            "warehouse_total_weight": float(self.quantity_on_hand),
+            "packaged_stock": {
+                "total_packets_count": self.total_packaged_units_count,
+                "total_weight": float(self.total_packaged_weight),
+            },
+            "loose_stock": {
+                "total_weight": float(self.total_loose_weight),
+            },
+            "unit_of_measure": self.unit_of_measure,
+        }
+
+
+
+from decimal import Decimal
+from django.db.models import Count, Sum
+
+
+@property
+def total_packaged_units_count(self) -> int:
+    """Inarudisha idadi kamili ya pakiti halisi zilizopo ghalani Sasa Hivi."""
+    from .models import PackagedProduct
+
+    result = PackagedProduct.objects.filter(
+        variant_ref=self.product_type,
+        session__source_batch__batch_id=self.batch_number,
+        status="IN_STOCK",  # MABADILIKO: Inachuja zilizopo ghalani tu!
+    ).aggregate(total_packets=Count("id"))
+
+    return result["total_packets"] or 0
+
+
+@property
+def total_packaged_weight(self) -> Decimal:
+    """Inapiga hesabu ya uzito wa pakiti zilizopo ghalani Sasa Hivi."""
+    from .models import PackagedProduct
+
+    result = PackagedProduct.objects.filter(
+        variant_ref=self.product_type,
+        session__source_batch__batch_id=self.batch_number,
+        status="IN_STOCK",  # MABADILIKO: Inajumlisha uzito wa zilizopo ghalani tu!
+    ).aggregate(total_weight=Sum("weight"))
+
+    return result["total_weight"] or Decimal("0.00")
+
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
