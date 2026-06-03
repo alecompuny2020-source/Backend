@@ -26,12 +26,12 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("admin/", admin.site.urls),
     # Including urls for Enterprise apps
-    path("api/auth/", include("core.urls")),
-    path("api/sfap/", include("sfap.urls")),
-    path("api/hrms/", include("hrms.urls")),
-    path("api/fns/", include("fns.urls")),
-    path("api/ppms/", include("ppms.urls")),
-    path("api/wces/", include("wces.urls")),
+    # path("api/auth/", include("core.urls")),
+    # path("api/sfap/", include("sfap.urls")),
+    # path("api/hrms/", include("hrms.urls")),
+    # path("api/fns/", include("fns.urls")),
+    # path("api/ppms/", include("ppms.urls")),
+    # path("api/wces/", include("wces.urls")),
     path("api/ipss/", include("ipss.urls")),
     # path("api/ipms/", include("ipms.urls")),
     # Including urls for API documentation
