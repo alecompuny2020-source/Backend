@@ -1,26 +1,36 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin
-from common.choices import (StockMovementType, UnitOfMeasure, StockReadinessStatus, current_time, now)
-from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
-from django.contrib.postgres.indexes import GinIndex
 import datetime
-from django.db.models import Sum, Count
 from decimal import Decimal
 
+from django.contrib.postgres.indexes import GinIndex
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.db import models, transaction
+from django.db.models import Count, Sum
+from django.utils.translation import gettext_lazy as _
+
+from common.choices import (
+    StockMovementType,
+    StockReadinessStatus,
+    UnitOfMeasure,
+    current_time,
+    now,
+)
+from common.mixins import BaseEnterpriseAuditModelMixin
+
 # Create your models here.
+
 
 class ProductStock(BaseEnterpriseAuditModelMixin):
     """
     Real-time inventory linking Production (Batch) to Sale (Revenue).
     Tracks readiness (Ready vs WIP) and physical storage (Kabati/Shelf).
     """
+
     product_type = models.ForeignKey(
-        'ipss.ProductVariant', on_delete=models.PROTECT, related_name="current_stock"
+        "ipss.ProductVariant", on_delete=models.PROTECT, related_name="current_stock"
     )
     storage_unit = models.ForeignKey(
-        'ipss.StorageUnit', on_delete=models.PROTECT, related_name="stock_items"
+        "ipss.StorageUnit", on_delete=models.PROTECT, related_name="stock_items"
     )
     quantity_on_hand = models.DecimalField(
         _("Quantity on Hand"),
@@ -93,7 +103,6 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
 
         return result["total_packets"] or 0
 
-
     @property
     def total_packaged_weight(self) -> Decimal:
         """Inapiga hesabu ya uzito wa pakiti zilizopo ghalani Sasa Hivi."""
@@ -123,6 +132,7 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
             f"readiness {self.readiness_status}, stored in {self.storage_unit}"
         )
 
+
 class StockMovement(BaseEnterpriseAuditModelMixin):
     """Tracks Every single change in stock: Sales, Restocks, Decay, or Transfers."""
 
@@ -133,7 +143,7 @@ class StockMovement(BaseEnterpriseAuditModelMixin):
     quantity_change = models.DecimalField(max_digits=12, decimal_places=2)
     units_change = models.IntegerField(
         default=0,
-        help_text=_("Idadi ya pakiti zilizopungua au kuongezeka (mf. -1, +10)")
+        help_text=_("Idadi ya pakiti zilizopungua au kuongezeka (mf. -1, +10)"),
     )
     reference_id = models.CharField(max_length=50, blank=True, null=True)
     is_reversible = models.BooleanField(

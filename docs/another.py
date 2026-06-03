@@ -471,8 +471,10 @@ class StockMovement(FarmAuditBaseModel):
         super().save(*args, **kwargs)
 
 
-from django.db.models import Sum, Count
 from decimal import Decimal
+
+from django.db.models import Count, Sum
+
 
 class ProductStock(BaseEnterpriseAuditModelMixin):
     # ... fields zako zote zilizopo ...
@@ -488,10 +490,10 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
         # Tunahesabu idadi ya mifuko/pakiti (Rows zilizopo kwenye PackagedProduct)
         result = PackagedProduct.objects.filter(
             variant_ref=self.product_type,
-            session__source_batch__batch_id=self.batch_number
-        ).aggregate(total_packets=Count('id'))
+            session__source_batch__batch_id=self.batch_number,
+        ).aggregate(total_packets=Count("id"))
 
-        return result['total_packets'] or 0
+        return result["total_packets"] or 0
 
     @property
     def packaged_weight_breakdown(self) -> dict:
@@ -502,12 +504,12 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
         return {
             "total_weight_on_hand": float(self.quantity_on_hand),
             "total_packets_count": self.total_packaged_units_count,
-            "unit_of_measure": self.unit_of_measure
+            "unit_of_measure": self.unit_of_measure,
         }
 
 
-
 from decimal import Decimal
+
 from django.db.models import Count, Sum
 
 
@@ -579,8 +581,8 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
         }
 
 
-
 from decimal import Decimal
+
 from django.db.models import Count, Sum
 
 

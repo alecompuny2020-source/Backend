@@ -1,7 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
+
 from common.choices import StorageUnitType
+from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 

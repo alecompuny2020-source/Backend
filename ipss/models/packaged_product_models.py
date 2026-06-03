@@ -3,8 +3,9 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from common.mixins import BaseEnterpriseAuditModelMixin
+
 from common.choices import PackageStatus
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class PackagedProduct(BaseEnterpriseAuditModelMixin):
     )
 
     variant_ref = models.ForeignKey(
-        'ipss.ProductVariant',
+        "ipss.ProductVariant",
         on_delete=models.CASCADE,
         verbose_name=_("Product Variant Reference"),
         related_name="packages",
@@ -30,10 +31,13 @@ class PackagedProduct(BaseEnterpriseAuditModelMixin):
         help_text=_(
             "Kitambulisho cha mstari wa uzalishaji/usindikaji. "
             "Husaidia kufuatilia ufanisi wa mashine na timu iliyokuwa zamu."
-        )
+        ),
     )
     status = models.CharField(
-        max_length=20, choices=PackageStatus.choices, default=PackageStatus.IN_STOCK, db_index=True
+        max_length=20,
+        choices=PackageStatus.choices,
+        default=PackageStatus.IN_STOCK,
+        db_index=True,
     )
 
     label_code = models.CharField(
