@@ -109,6 +109,13 @@ class EmploymentType(models.TextChoices):
     CASUAL = "CASUAL", _("Casual Laborer")
 
 
+class AddressType(models.TextChoices):
+    SHIPPING = "SHIPPING", _("Shipping")
+    BILLING = "BILLING", _("Billing")
+    HOME = "HOME", _("Home")
+    WORK = "WORK", _("Work")
+
+
 """ LOGISTICS, SHIPPING & INVENTORY """
 
 
@@ -160,12 +167,11 @@ class ItemDisposition(models.TextChoices):
     DAMAGED = "DAMAGED", _("Damaged/Defective (Pre-delivery)")
     REFUND_ISSUED = "REFUND_ISSUED", _("Item Refunded")
 
-
-class AddressType(models.TextChoices):
-    SHIPPING = "SHIPPING", _("Shipping")
-    BILLING = "BILLING", _("Billing")
-    HOME = "HOME", _("Home")
-    WORK = "WORK", _("Work")
+class PackageStatus(models.TextChoices):
+    IN_STOCK = "IN_STOCK", _("Ipo Ghalani")
+    SOLD = "SOLD", _("Imeuzwa")
+    SPOILED = "SPOILED", _("Imeharibika/Imeoza")
+    TRANSFERRED = "TRANSFERRED", _("Imehamishwa Banda/Ghala")
 
 
 """ FARM PRODUCTION & HEALTH """
