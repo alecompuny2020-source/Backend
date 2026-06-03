@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from common.mixins import BaseAddressModelMixin
+from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
+from common.choices import StorageUnitType
 
 # Create your models here.
 
@@ -15,6 +15,7 @@ class WarehouseLocation(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
 
     class Meta:
         db_table = "warehouse_location"
+        verbose_name = _("Warehouse")
 
     def __str__(self):
         return f"{self.name} ({self.code})"
@@ -31,7 +32,7 @@ class WarehouseLocation(BaseAddressModelMixin, BaseEnterpriseAuditModelMixin):
         )
 
 
-class Zone(FarmAuditBaseModel):
+class Zone(BaseEnterpriseAuditModelMixin):
     """Sections like 'Cold Storage', 'Electronics', 'Cold Storage' or 'Loading Dock'."""
 
     warehouse = models.ForeignKey(
@@ -42,6 +43,7 @@ class Zone(FarmAuditBaseModel):
 
     class Meta:
         db_table = "warehouse_zone"
+        verbose_name = _("Zone")
 
     def get_log_message(self, old_data=None):
         if old_data:
@@ -58,7 +60,7 @@ class Zone(FarmAuditBaseModel):
         return f"{self.warehouse.code} - {self.name}"
 
 
-class StorageUnit(FarmAuditBaseModel):
+class StorageUnit(BaseEnterpriseAuditModelMixin):
     """The specific mean: Kabati, Shelf, Clipboard, Drawer, Shelf A1, Freezer 2, or Drawer 10."""
 
     zone = models.ForeignKey(
@@ -76,6 +78,7 @@ class StorageUnit(FarmAuditBaseModel):
     class Meta:
         db_table = "storage_unit"
         unique_together = ("zone", "unit_code")
+        verbose_name = _("Storage Unit")
 
     def __str__(self):
         return f"{self.get_unit_type_display()} {self.unit_code}"
