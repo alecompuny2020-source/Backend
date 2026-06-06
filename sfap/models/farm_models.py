@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
+from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import Avg
@@ -11,6 +12,8 @@ from common.choices import (
     FlockBatchStatus,
     current_time,
     now,
+    SpeciesType,
+    BreedType
 )
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 from ppms.models import ProcessingPlant
@@ -207,7 +210,7 @@ class FarmShed(BaseEnterpriseAuditModelMixin):
 class FarmBlock(BaseEnterpriseAuditModelMixin):
     """
     Vitalu vya Kilimo Ikolojia ndani ya Shamba.
-    Hivi hutumika kwa mzunguko wa kuku (Rotational Grazing).
+    Hivi hutumika kwa mzunguko wa wanyama (Rotational Grazing).
     """
 
     farm = models.ForeignKey(Farm, on_delete=models.CASCADE, related_name="blocks")
@@ -219,6 +222,12 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
         choices=FarmBlockStatus,
         default=FarmBlockStatus.RESTING,
         help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao."),
+    )
+    current_crops = ArrayField(
+        models.CharField(max_length=100, blank=True),
+        blank=True,
+        default=list,
+        help_text="Orodha ya mazao yaliyopo sasa kwenye hili eneo (Kilimo mseto)",
     )
 
     # Data ya IoT
@@ -239,6 +248,8 @@ class Batch(BaseEnterpriseAuditModelMixin):
         FarmBlock, on_delete=models.SET_NULL, null=True, blank=True
     )
     bird_type = models.CharField(_("Bird Type"), max_length=20, choices=BirdType)
+    species = models.CharField(max_length=20, choices=SpeciesType.choices)
+    breed = models.CharField(max_length=30, choices=BreedType.choices)
     initial_count = models.PositiveIntegerField(_("Initial Bird Count"))
     current_count = models.PositiveIntegerField(_("Current Bird Count"))
     expected_depletion_date = models.DateField(
