@@ -198,6 +198,38 @@ class BirdType(models.TextChoices):
     KUROILER = "KUROILER", _("Kuroiler")
 
 
+class SpeciesType(models.TextChoices):
+    CHICKEN = 'CHICKEN', 'Kuku'
+    DUCK = 'DUCK', 'Bata'
+    RABBIT = 'RABBIT', 'Sungura'
+    FISH = 'FISH', 'Samaki'
+
+class BreedType(models.TextChoices):
+    # ------ MBEGU ZA KUKU (CHICKEN) ------
+    KUCHI = 'KUCHI', 'Kuchi'
+    SINGAMAGAZI = 'SINGAMAGAZI', 'Singamagazi'
+    CHINGWEKWE = 'CHINGWEKWE', 'Chingwekwe'
+    KISHINGO = 'KISHINGO', 'Kishingo'
+    MBEYA = 'MBEYA', 'Mbeya'
+    KIBUTU = 'KIBUTU', 'Kibutu'
+
+    # ------ MBEGU ZA BATA (DUCK) ------
+    MZINGA = 'MZINGA', 'Bata Mzinga'
+    BUKINI = 'BUKINI', 'Bata Bukini'
+    MAJI = 'MAJI', 'Bata Maji (Muscovy/Mallard)'
+
+    # ------ MBEGU ZA SUNGURA (RABBIT) ------
+    NZ_WHITE = 'NZ_WHITE', 'New Zealand White'
+    CALIFORNIA = 'CALIFORNIA', 'California White'
+    CHINCHILLA = 'CHINCHILLA', 'Chinchilla'
+    FLEMISH = 'FLEMISH', 'Flemish Giant'
+    S_LOCAL = 'S_LOCAL', 'Sungura wa Kienyeji (Local)'
+
+    # ------ MBEGU ZA SAMAKI (FISH) ------
+    PEREGE = 'PEREGE', 'Perege (Tilapia)'
+    KAMBALE = 'KAMBALE', 'Kambale (Catfish)'
+
+
 class FlockBatchStatus(models.TextChoices):
     ACTIVE = "ACTIVE", _("Active")
     DEPLETED = "DEPLETED", _("Depleted")
