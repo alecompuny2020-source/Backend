@@ -21,4 +21,6 @@ class EnterpriseObjectLevelPermissionMixin:
         Bypasses any public 'AllowAny' logic from the base class
         to guarantee strict object tracking across all methods.
         """
+        # if self.request.method == "POST":
+        #     return [IsAuthenticated()]
         return [permission() for permission in self.permission_classes]

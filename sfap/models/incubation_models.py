@@ -10,7 +10,7 @@ class Incubator(BaseEnterpriseAuditModelMixin):
     name = models.CharField(max_length=255)
     machine_type = models.CharField(
         max_length=20,
-        choices=IncubatorMachineType,
+        choices=IncubatorMachineType.choices,
         default=IncubatorMachineType.COMBINED,
     )
     farm = models.ForeignKey(
@@ -150,7 +150,7 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
     status = models.CharField(
         _("Status"),
         max_length=20,
-        choices=IncubationCycleStatus,
+        choices=IncubationCycleStatus.choices,
         default=IncubationCycleStatus.SETTING,
     )
 

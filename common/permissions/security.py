@@ -9,7 +9,10 @@ User = get_user_model()
 
 
 class EnterpriseEmailOrPhoneAuthBackend(ModelBackend):
-    """An Enterprise authentication backend for Email or Phone."""
+    """
+        An Enterprise authentication backend for Email or Phone.
+        - Runs a dummy check to prevent timing attacks
+    """
 
     def authenticate(self, request, username=None, password=None, **kwargs):
         if username is None:
@@ -20,7 +23,6 @@ class EnterpriseEmailOrPhoneAuthBackend(ModelBackend):
                 Q(email__iexact=username) | Q(phone_number=username)
             )
         except User.DoesNotExist:
-            # Runs a dummy check to prevent timing attacks
             User().set_password(password)
             return None
         except User.MultipleObjectsReturned:

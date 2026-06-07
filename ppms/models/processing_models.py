@@ -13,15 +13,14 @@ class ProcessingPlant(BaseEnterpriseAuditModelMixin):
     """Represents the physical facility or station where processing occurs."""
 
     name = models.CharField(_("Plant Name"), max_length=100, unique=True)
-    location = models.CharField(_("Location Details"), max_length=255)
-    # farm = models.ForeignKey(
-    #     'sfap.Farm',
-    #     on_delete=models.RESTRICT,
-    #     related_name="locations",
-    #     verbose_name=_("Farm to which a plant is"),
-    # )
+    farm = models.ForeignKey(
+        "sfap.Farm",
+        on_delete=models.RESTRICT,
+        related_name="locations",
+        verbose_name=_("Farm to which a plant is"),
+    )
     plant_manager = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        "hrms.Employee",
         on_delete=models.SET_NULL,
         null=True,
         related_name="managed_plants",

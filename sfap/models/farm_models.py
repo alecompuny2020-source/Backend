@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
-from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.db.models import Avg
@@ -8,12 +7,12 @@ from django.utils.translation import gettext_lazy as _
 
 from common.choices import (
     BirdType,
+    BreedType,
     FarmBlockStatus,
     FlockBatchStatus,
+    SpeciesType,
     current_time,
     now,
-    SpeciesType,
-    BreedType
 )
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 from ppms.models import ProcessingPlant
@@ -223,14 +222,8 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
         default=FarmBlockStatus.RESTING,
         help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao."),
     )
-    current_crops = ArrayField(
-        models.CharField(max_length=100, blank=True),
-        blank=True,
-        default=list,
-        help_text="Orodha ya mazao yaliyopo sasa kwenye hili eneo (Kilimo mseto)",
-    )
 
-    # Data ya IoT
+    # Data ya IoT and added crops data "current_crops"
     soil_data = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
@@ -247,7 +240,9 @@ class Batch(BaseEnterpriseAuditModelMixin):
     current_block = models.ForeignKey(
         FarmBlock, on_delete=models.SET_NULL, null=True, blank=True
     )
-    bird_type = models.CharField(_("Bird Type"), max_length=20, choices=BirdType)
+    bird_type = models.CharField(
+        _("Bird Type"), max_length=20, choices=BirdType.choices
+    )
     species = models.CharField(max_length=20, choices=SpeciesType.choices)
     breed = models.CharField(max_length=30, choices=BreedType.choices)
     initial_count = models.PositiveIntegerField(_("Initial Bird Count"))

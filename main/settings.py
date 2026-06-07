@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     "wces",
     "ipss",
     # "ipms",
+    "srs",
+    "ecvs",
+    # "rms",
     # third part packages
     "django.contrib.postgres",
     "rest_framework",

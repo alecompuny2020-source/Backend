@@ -1,16 +1,17 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
-from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
+from django.conf import settings
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from common.choices import current_time, CustomerType
-from django.conf import settings
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from phonenumber_field.modelfields import PhoneNumberField
 
+from common.choices import OrderStatus, current_time
+from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
 
 # Create your models here.
+
 
 class Order(BaseEnterpriseAuditModelMixin):
     """
@@ -22,10 +23,18 @@ class Order(BaseEnterpriseAuditModelMixin):
         _("Order ID"), max_length=50, unique=True, db_index=True
     )
     offline_customer = models.ForeignKey(
-        Customer, on_delete=models.PROTECT, related_name="offline_orders", null=True, blank=True
+        "srs.Customer",
+        on_delete=models.PROTECT,
+        related_name="offline_orders",
+        null=True,
+        blank=True,
     )
     online_customer = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="onlineline_orders", null=True, blank=True
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="onlineline_orders",
+        null=True,
+        blank=True,
     )
     subtotal = MoneyField(
         verbose_name=_("Subtotal"),
@@ -48,7 +57,10 @@ class Order(BaseEnterpriseAuditModelMixin):
     )
 
     status = models.CharField(
-        _("Status"), max_length=20, choices=OrderStatus.choices, default=OrderStatus.PENDING
+        _("Status"),
+        max_length=20,
+        choices=OrderStatus.choices,
+        default=OrderStatus.PENDING,
     )
 
     # Blueprint for order_history (Audit Trail):
@@ -101,10 +113,8 @@ class Order(BaseEnterpriseAuditModelMixin):
             return self.online_customer.get_full_name()
         return _("Unknown Customer")
 
-
     def __str__(self):
         return f"Order {self.order_number} - {self.get_order_owner()}"
-
 
 
 class OrderItem(BaseEnterpriseModelMixin):
@@ -115,10 +125,10 @@ class OrderItem(BaseEnterpriseModelMixin):
 
     order = models.ForeignKey(Order, related_name="items", on_delete=models.RESTRICT)
     product_stock = models.ForeignKey(
-        'ipss.ProductStock', on_delete=models.PROTECT, blank = True
+        "ipss.ProductStock", on_delete=models.PROTECT, blank=True
     )
     packaged_product = models.ForeignKey(
-        'ipss.PackagedProduct', on_delete = models.PROTECT, blank = True
+        "ipss.PackagedProduct", on_delete=models.PROTECT, blank=True
     )
     quantity = models.DecimalField(
         _("Quantity Sold"),

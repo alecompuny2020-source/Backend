@@ -42,14 +42,14 @@ class Employee(BaseEnterpriseModelMixin):
     marital_status = models.CharField(
         _("Marital Status"),
         max_length=20,
-        choices=MaritalStatus,
+        choices=MaritalStatus.choices,
         db_index=True,
         default=MaritalStatus.SINGLE,
     )
     employment_type = models.CharField(
         _("Employment Type"),
         max_length=20,
-        choices=EmploymentType,
+        choices=EmploymentType.choices,
         default=EmploymentType.FULL_TIME,
         help_text=_(
             "Determines benefits eligibility; e.g., Casuals usually don't get housing."
@@ -89,10 +89,14 @@ class Employee(BaseEnterpriseModelMixin):
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
     employee_title = models.CharField(
-        _("Employee Title"), max_length=20, choices=UserTitle, db_index=True, null=True
+        _("Employee Title"),
+        max_length=20,
+        choices=UserTitle.choices,
+        db_index=True,
+        null=True,
     )
     gender = models.CharField(
-        _("Employee Gender"), max_length=20, choices=Gender, null=True
+        _("Employee Gender"), max_length=20, choices=Gender.choices, null=True
     )
 
     hire_date = models.DateField(_("Hire Date"))
@@ -169,38 +173,38 @@ class Employee(BaseEnterpriseModelMixin):
 
         super().save(*args, **kwargs)
 
-    # @property
-    # def current_bird_load(self):
-    #     """Returns total number of live birds in the employee's assigned shed."""
-    #     if self.assigned_shed:
-    #         # Sum current_count of all active batches in that shed
-    #         return (
-    #             self.assigned_shed.batches.filter(status="ACTIVE").aggregate(
-    #                 total=models.Sum("current_count")
-    #             )["total"]
-    #             or 0
-    #         )
-    #     return 0
-    #
-    # @property
-    # def is_health_compliant(self):
-    #     """Checks if the employee's health certificate is still valid."""
-    #     if not self.health_clearance_expiry:
-    #         return False
-    #     return self.health_clearance_expiry >= timezone.now().date()
-    #
-    # def get_log_message(self, old_data=None):
-    #     if old_data:
-    #         return (
-    #             f"Updated Employee '{self.user.get_full_name()}' "
-    #             f"from: {old_data} to: "
-    #             f"{{'employee_number': '{self.employee_number}', 'employment_type': '{self.employment_type}', 'salary': '{self.base_salary}'}}"
-    #         )
-    #     return (
-    #         f"Registered Employee '{self.user.get_full_name()}' "
-    #         f"with number {self.employee_number}, type {self.employment_type}, "
-    #         f"salary {self.base_salary}"
-    #     )
+    @property
+    def current_bird_load(self):
+        """Returns total number of live birds in the employee's assigned shed."""
+        if self.assigned_shed:
+            # Sum current_count of all active batches in that shed
+            return (
+                self.assigned_shed.batches.filter(status="ACTIVE").aggregate(
+                    total=models.Sum("current_count")
+                )["total"]
+                or 0
+            )
+        return 0
+
+    @property
+    def is_health_compliant(self):
+        """Checks if the employee's health certificate is still valid."""
+        if not self.health_clearance_expiry:
+            return False
+        return self.health_clearance_expiry >= timezone.now().date()
+
+    def get_log_message(self, old_data=None):
+        if old_data:
+            return (
+                f"Updated Employee '{self.user.get_full_name()}' "
+                f"from: {old_data} to: "
+                f"{{'employee_number': '{self.employee_number}', 'employment_type': '{self.employment_type}', 'salary': '{self.base_salary}'}}"
+            )
+        return (
+            f"Registered Employee '{self.user.get_full_name()}' "
+            f"with number {self.employee_number}, type {self.employment_type}, "
+            f"salary {self.base_salary}"
+        )
 
     def get_employee_display(self):
         """Returns a formatted string with the employee's title and full name."""

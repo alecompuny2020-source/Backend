@@ -1,22 +1,28 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
-from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from common.choices import current_time, SaleInvoiceStatus, UnitOfMeasure,
-PaymentMethod
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from phonenumber_field.modelfields import PhoneNumberField
 
+from common.choices import (
+    ItemDisposition,
+    PaymentMethod,
+    SaleInvoiceStatus,
+    UnitOfMeasure,
+    current_time,
+)
+from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
 
 # Create your models here.
+
 
 class Sale(BaseEnterpriseAuditModelMixin):
     """The finalized transaction record."""
 
     order = models.OneToOneField(
-        Order,
+        "srs.Order",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -33,7 +39,9 @@ class Sale(BaseEnterpriseAuditModelMixin):
     status = models.CharField(max_length=20, choices=SaleInvoiceStatus.choices)
     payment_method = models.CharField(max_length=20, choices=PaymentMethod.choices)
     payment_status = models.CharField(
-        max_length=20, choices=SaleInvoiceStatus.choices, default=SaleInvoiceStatus.PENDING
+        max_length=20,
+        choices=SaleInvoiceStatus.choices,
+        default=SaleInvoiceStatus.PENDING,
     )
 
     # Metadata includes: {
@@ -51,7 +59,7 @@ class Sale(BaseEnterpriseAuditModelMixin):
         indexes = [
             models.Index(fields=["sales_outlet", "created_on"]),
             models.Index(fields=["created_by"]),
-            GinIndex(fields=["metadata"], name="sales_metadata_gin_idx")
+            GinIndex(fields=["metadata"], name="sales_metadata_gin_idx"),
         ]
 
     @property
@@ -98,20 +106,21 @@ class Sale(BaseEnterpriseAuditModelMixin):
         return f"Sale #{self.id} - {self.sale_date.date()}"
 
 
-
 class SaleItem(BaseEnterpriseModelMixin):
     """Line item detail with automatic total calculation."""
 
     sale = models.ForeignKey(Sale, related_name="items", on_delete=models.CASCADE)
     product_stock = models.ForeignKey(
-        'ipss.ProductStock', on_delete=models.CASCADE, blank = True
+        "ipss.ProductStock", on_delete=models.CASCADE, blank=True, null=True
     )
     packaged_product = models.ForeignKey(
-        'ipss.PackagedProduct', on_delete = models.PROTECT, blank = True
+        "ipss.PackagedProduct", on_delete=models.PROTECT, blank=True, null=True
     )
     quantity = models.PositiveIntegerField()
     unit_price = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
-    unit_measure = models.CharField(max_length=50, default="pc", choices=UnitOfMeasure.choices)
+    unit_measure = models.CharField(
+        max_length=50, default="pc", choices=UnitOfMeasure.choices
+    )
     discount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     line_total = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     item_disposition = models.CharField(
@@ -132,13 +141,23 @@ class SaleItem(BaseEnterpriseModelMixin):
             f"product {self.product}, quantity {self.quantity}, line total {self.line_total}, disposition {self.item_disposition}"
         )
 
+    def clean(self):
+        if not self.product_stock and not self.packaged_product:
+            raise ValidationError(
+                "Lazima uchague bidhaa kutoka kwenye Stoki ya Jumla au Pakiti halisi."
+            )
+
+        if self.product_stock and self.packaged_product:
+            raise ValidationError(
+                "Huwezi kuuza stoki ya jumla na pakiti kwenye mstari mmoja. Tenganisha."
+            )
+
     def save(self, *args, **kwargs):
+        self.clean()
         self.line_total = (self.unit_price * self.quantity) - self.discount
         super().save(*args, **kwargs)
 
     class Meta:
         db_table = "sale_item"
-        unique_together = ("sale", "product")
-        indexes = [
-            GinIndex(fields=["attributes"], name="attributes_gin_idx")
-        ]
+        # unique_together = ("sale", "product")
+        indexes = [GinIndex(fields=["attributes"], name="attributes_gin_idx")]

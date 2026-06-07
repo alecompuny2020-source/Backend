@@ -1,21 +1,24 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin
-from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from common.choices import current_time, CustomerType
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from phonenumber_field.modelfields import PhoneNumberField
 
+from common.choices import ItemDisposition, current_time
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
 
-class ReturnRequest(models.Model):
-    """ Handles item returns. Links back to the original Sale. """
 
-    sale = models.ForeignKey(Sale, on_delete=models.PROTECT, related_name="returns")
-    sale_item = models.ForeignKey(SaleItem, on_delete=models.CASCADE)
+class ReturnRequest(models.Model):
+    """Handles item returns. Links back to the original Sale."""
+
+    sale = models.ForeignKey(
+        "srs.Sale", on_delete=models.PROTECT, related_name="returns"
+    )
+    sale_item = models.ForeignKey("srs.SaleItem", on_delete=models.CASCADE)
     reason = models.TextField()
     status = models.CharField(
         max_length=20,
@@ -82,7 +85,6 @@ class ReturnRequest(models.Model):
         if self.status == "COMPLETED" and not self.processed_at:
             self.processed_at = timezone.now()
         super().save(*args, **kwargs)
-        
 
     def get_log_message(self, old_data=None):
         if old_data:
@@ -96,7 +98,6 @@ class ReturnRequest(models.Model):
         )
 
 
-
 class CreditNote(BaseEnterpriseAuditModelMixin):
     """
     Tracks returns or overpayments that result in store credit.
@@ -104,7 +105,7 @@ class CreditNote(BaseEnterpriseAuditModelMixin):
     """
 
     customer = models.ForeignKey(
-        Customer, on_delete=models.CASCADE, related_name="credit_notes"
+        "srs.Customer", on_delete=models.CASCADE, related_name="credit_notes"
     )
     amount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     reason = models.TextField()
@@ -115,9 +116,7 @@ class CreditNote(BaseEnterpriseAuditModelMixin):
 
     class Meta:
         db_table = "customer_credit_note"
-        indexes = [
-            GinIndex(fields=["metadata"], name="metadata_gin_idx")
-        ]
+        indexes = [GinIndex(fields=["metadata"], name="metadata_gin_idx")]
 
     @classmethod
     @transaction.atomic

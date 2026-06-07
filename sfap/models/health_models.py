@@ -17,7 +17,7 @@ class HealthProtocol(BaseEnterpriseAuditModelMixin):
 
     name = models.CharField(_("Protocol Name"), max_length=255)
     target_bird_type = models.CharField(
-        _("Target Bird Type"), max_length=50, choices=BirdType
+        _("Target Bird Type"), max_length=50, choices=BirdType.choices
     )
 
     # Blueprint for protocol_steps (Schedule):
@@ -70,7 +70,7 @@ class MedicalRecord(BaseEnterpriseAuditModelMixin):
         _("Date of Administration"), db_index=True, default=now
     )
     record_type = models.CharField(
-        _("Record Type"), max_length=20, choices=HealthRecordType
+        _("Record Type"), max_length=20, choices=HealthRecordType.choices
     )
 
     # Blueprint for event_details:
@@ -168,7 +168,7 @@ class DiseaseOutbreak(BaseEnterpriseAuditModelMixin):
     status = models.CharField(
         _("Incident Status"),
         max_length=20,
-        choices=DiseaseOutbreakStatus,
+        choices=DiseaseOutbreakStatus.choices,
         default=DiseaseOutbreakStatus.ACTIVE,
         db_index=True,
     )

@@ -1,15 +1,16 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin
-from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from common.choices import current_time, CustomerType
+from django.db import models, transaction
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from phonenumber_field.modelfields import PhoneNumberField
 
+from common.choices import CustomerType, current_time
+from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
+
 
 class Promotion(BaseEnterpriseAuditModelMixin):
     """
@@ -48,7 +49,6 @@ class Promotion(BaseEnterpriseAuditModelMixin):
         )
 
 
-
 class Customer(BaseEnterpriseAuditModelMixin):
     """
     Manages RETAIL, WHOLESALE (Hotels), and DISTRIBUTOR entities.
@@ -57,7 +57,10 @@ class Customer(BaseEnterpriseAuditModelMixin):
 
     name = models.CharField(_("Customer Name"), max_length=255)
     customer_type = models.CharField(
-        _("Type"), max_length=20, choices=CustomerType.choices, default = CustomerType.RETAIL
+        _("Type"),
+        max_length=20,
+        choices=CustomerType.choices,
+        default=CustomerType.RETAIL,
     )
     contact_phone = PhoneNumberField(_("Contact Phone"))
     email = models.EmailField(_("Email Address"), blank=True)

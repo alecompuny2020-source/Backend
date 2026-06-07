@@ -1,11 +1,15 @@
-from django.db import models
-from common.mixins import BaseEnterpriseModelMixin
+from datetime import timedelta
+
 from django.conf import settings
-from common.choices import now
-from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+
+from common.choices import current_time, now
+from common.mixins import BaseEnterpriseModelMixin
 
 # Create your models here.
+
 
 class ShoppingCart(models.Model):
     """Transient container for items before they become a Sale."""
@@ -30,7 +34,6 @@ class ShoppingCart(models.Model):
         )
 
 
-
 class ShoppingCartItem(models.Model):
     """Individual entries in a cart."""
 
@@ -39,21 +42,21 @@ class ShoppingCartItem(models.Model):
     )
     quantity = models.PositiveIntegerField(default=1)
     product = models.ForeignKey(
-        settings.STOCK_PRODUCT_REFERENCE,
+        "ipss.ProductStock",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="cart_items",
     )
     packaged_product = models.ForeignKey(
-        settings.PACKAGED_PRODUCT_REFERENCE,
+        "ipss.PackagedProduct",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="cart_items",
     )
 
-    reserved_at = models.DateTimeField(default=timezone.now)
+    reserved_at = models.DateTimeField(default=now)
 
     class Meta:
         db_table = "shopping_cart_item"
@@ -83,7 +86,7 @@ class ShoppingCartItem(models.Model):
     @property
     def is_still_reserved(self):
         """Check if the 15-minute 'Soft-Lock' on inventory is still active."""
-        return timezone.now() < self.reserved_at + timedelta(minutes=15)
+        return current_time < self.reserved_at + timedelta(minutes=15)
 
     def get_log_message(self, old_data=None):
         return (

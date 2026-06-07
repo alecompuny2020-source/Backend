@@ -1,21 +1,23 @@
-from django.db import models, transaction
-from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
-from django.utils.translation import gettext_lazy as _
-from djmoney.models.fields import MoneyField
-from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.postgres.indexes import GinIndex
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
-from common.choices import current_time, CustomerType
+from django.db import models
+from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+from phonenumber_field.modelfields import PhoneNumberField
 
+from common.choices import PaymentMethod, now
 
 # Create your models here.
 
-class Payment(BaseEnterpriseModelMixin):
+
+class Payment(models.Model):
     """Records payment events and triggers Sale status updates."""
 
-    sale = models.ForeignKey(Sale, on_delete=models.CASCADE, related_name="payments")
-    date_paid = models.DateTimeField(default=timezone.now)
+    sale = models.ForeignKey(
+        "srs.Sale", on_delete=models.CASCADE, related_name="payments"
+    )
+    date_paid = models.DateTimeField(default=now)
     amount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     method = models.CharField(max_length=20, choices=PaymentMethod.choices)
     transaction_reference = models.CharField(max_length=100, blank=True, null=True)

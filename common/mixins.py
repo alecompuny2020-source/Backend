@@ -54,6 +54,7 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
 class BaseAddressModelMixin(BaseEnterpriseModelMixin):
     """Reusable Base Address Model throughout the Enterprise"""
 
+    country = models.CharField(_("Country"), max_length=100)
     region = models.CharField(max_length=100, db_index=True)
     district = models.CharField(max_length=100, db_index=True)
     ward = models.CharField(max_length=100)

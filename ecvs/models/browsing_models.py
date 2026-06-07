@@ -1,10 +1,12 @@
-from django.db import models
-from common.mixins import BaseEnterpriseModelMixin
 from django.conf import settings
-from common.choices import now
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from common.choices import now
+from common.mixins import BaseEnterpriseModelMixin
+
 # Create your models here.
+
 
 class SearchHistory(BaseEnterpriseModelMixin):
     """
@@ -69,18 +71,18 @@ class Wishlist(BaseEnterpriseModelMixin):
     )
     name = models.CharField(_("Wishlist Name"), max_length=255, default="My Wishlist")
     products = models.ManyToManyField(
-        settings.STOCK_PRODUCT_REFERENCE,
+        "ipss.ProductStock",
         related_name="wishlists",
         blank=True,
     )
     packaged_products = models.ManyToManyField(
-        settings.PACKAGED_PRODUCT_REFERENCE,
+        "ipss.PackagedProduct",
         related_name="packaged_wishlists",
         blank=True,
     )
     is_public = models.BooleanField(_("Publicly Visible"), default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(default=now)
+    updated_at = models.DateTimeField()
 
     class Meta:
         db_table = "user_wishlist"
@@ -102,14 +104,14 @@ class RecentlyViewedItem(BaseEnterpriseModelMixin):
         related_name="recent_views",
     )
     product = models.ForeignKey(
-        settings.STOCK_PRODUCT_REFERENCE,
+        "ipss.ProductStock",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
         related_name="recent_views",
     )
     packaged_product = models.ForeignKey(
-        settings.PACKAGED_PRODUCT_REFERENCE,
+        "ipss.PackagedProduct",
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -122,7 +124,6 @@ class RecentlyViewedItem(BaseEnterpriseModelMixin):
         db_table = "user_recently_viewed"
         ordering = ["-viewed_at"]
 
-
     def clean(self):
         from django.core.exceptions import ValidationError
 
@@ -132,28 +133,27 @@ class RecentlyViewedItem(BaseEnterpriseModelMixin):
             )
 
 
-
 class Review(BaseEnterpriseModelMixin):
     """Stores customer feedback."""
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     stock_reference = models.ForeignKey(
-        settings.STOCK_PRODUCT_REFERENCE,
+        "ipss.ProductStock",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="reviews",
     )
     packaged_product = models.ForeignKey(
-        settings.PACKAGED_PRODUCT_REFERENCE,
+        "ipss.PackagedProduct",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="reviews",
     )
     sale_item = models.ForeignKey(
-        "SaleItem",  # Inalenga mstari wa mauzo uliomfanya aache review
+        "srs.SaleItem",
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -162,8 +162,9 @@ class Review(BaseEnterpriseModelMixin):
 
     comment = models.TextField(_("Comment/Insight"))
     rating = models.IntegerField(_("Rating (1-5)"), null=True, blank=True)
+    # Metadata includes: {'verified_purchase': bool, 'helpful_votes': int, 'attachments': list}
     metadata = models.JSONField(default=dict, blank=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=now)
 
     class Meta:
         db_table = "product_review"

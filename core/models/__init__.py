@@ -1,2 +1,2 @@
-from .otp_model import Otp
-from .user_model import User, UserAddress, UserPreference
+from .otp_models import Otp
+from .user_models import User

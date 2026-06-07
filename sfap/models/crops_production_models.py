@@ -1,3 +1,4 @@
+from django.contrib.postgres.indexes import GinIndex
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
@@ -6,23 +7,47 @@ from common.choices import ProductionStatus, UnitOfMeasure
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 
+class Crop(BaseEnterpriseAuditModelMixin):
+    """Stores data for crops grown"""
+
+    crop_name = models.CharField(max_length=100)  # Mfano: Alizeti, Mtama
+    growth_conditions = models.JSONField(
+        _("Growth conditions for a crop"),
+        default=dict,
+        blank=True,
+        help_text=_("Stores conduncive conditions for succesfullly crop growth."),
+    )
+
+    class Meta:
+        db_table = "crop"
+        verbose_name = _("Crop")
+        verbose_name_plural = _("Crops")
+        ordering = ["crop_name"]
+        indexes = [
+            GinIndex(fields=["growth_conditions"], name="growth_conditions_gin_idx"),
+        ]
+
+
 class CropProduction(BaseEnterpriseAuditModelMixin):
     """
     Inarekodi mazao yanayolimwa ili kulisha kuku au biashara,
     ikitumia mbolea kutoka kwa kuku.
     """
 
-    block = models.ForeignKey("sfap.FarmBlock", on_delete=models.CASCADE)
-    crop_name = models.CharField(max_length=100)  # Mfano: Alizeti, Mtama
+    block = models.ForeignKey(
+        "sfap.FarmBlock", on_delete=models.CASCADE, related_name="crops_block"
+    )
+    crops = models.ManyToManyField(Crop, related_name="crops_grown")
     planting_date = models.DateField()
     harvest_date = models.DateField(null=True, blank=True)
     status = models.CharField(
-        max_length=20, choices=ProductionStatus, default=ProductionStatus.PLANTED
+        max_length=20,
+        choices=ProductionStatus.choices,
+        default=ProductionStatus.PLANTED,
     )
 
     # Mzunguko wa Virutubisho
     manure_used_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
-
     production_metadata = models.JSONField(default=dict, blank=True)
     estimated_yield_kg = models.DecimalField(
         max_digits=10, decimal_places=2, default=0.0
