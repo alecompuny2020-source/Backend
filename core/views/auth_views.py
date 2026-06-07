@@ -10,7 +10,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from common.managers import EnterpriseOTPandLinkManager as OTPManager
+from common.management import EnterpriseNotificationManager as OTPManager
 from core.models import Otp, User
 from core.serializers import (
     ConfirmForgotPasswordSerializer,

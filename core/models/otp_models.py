@@ -6,12 +6,12 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from common.choices import (
+from common.constants import (
     OTP_CODE_LENGTH,
     OTP_EXPIRATION_TIME_MINUTES,
     TokenType,
     current_time,
-    now,
+    now
 )
 from common.mixins import BaseEnterpriseModelMixin
 

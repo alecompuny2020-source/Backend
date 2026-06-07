@@ -6,6 +6,7 @@ def universal_path_generator(instance, filename, folder_base, name_attr="name"):
     """
     ext = filename.split(".")[-1]
 
+
     raw_name = "generic"
 
     for attr in [

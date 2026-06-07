@@ -6,8 +6,6 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
-from common.choices import OTP_CODE_LENGTH, OTP_EXPIRATION_TIME_MINUTES, TokenType
 from common.mixins import BaseEnterpriseModelMixin
 
 
@@ -17,13 +15,8 @@ class UserAddress(BaseEnterpriseModelMixin):
     Essential for checkout flow and regional tax/shipping calculations.
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
-    address_type = models.CharField(
-        _("Address Type"),
-        max_length=20,
-        choices=AddressType.choices,
-        default=AddressType.SHIPPING,
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="addresses")
+    address_type = models.ForeignKey("core.AddressType", on_delete=models.CASCADE, related_name="address_types")
     is_default = models.BooleanField(_("Default Address"), default=False)
     street_address = models.TextField(_("Street Address"))
     city = models.CharField(_("City"), max_length=100)

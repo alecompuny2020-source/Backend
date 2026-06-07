@@ -1,19 +1,9 @@
-import json
-
-# from django.contrib.gis.db import models as coordinates
 import uuid
-
+# from django.contrib.gis.db import models as coordinates
 from django.conf import settings
-from django.contrib.auth.models import PermissionsMixin
-from django.db import connections, models
-from django.forms.models import model_to_dict
-from django.utils.deprecation import MiddlewareMixin
+from django.db import models
 from django.utils.translation import gettext_lazy as _
-from rest_framework import filters, permissions, serializers, status, viewsets
-from rest_framework.response import Response
-
-from common.choices import current_time, now, now_iso
-from common.pagination import GenericEnteprisePaginator
+from common.constants import now
 
 
 class BaseEnterpriseModelMixin(models.Model):
@@ -23,6 +13,32 @@ class BaseEnterpriseModelMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class BaseLookupConfigurationModelMixin(BaseEnterpriseModelMixin):
+    """
+    Abstract structural base model for all enterprise dynamic configurations.
+    Replaces static TextChoices with high-performance real-time relational metadata.
+    """
+    name = models.CharField(max_length=200, unique=True, verbose_name=_("Name"))
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+        db_index=True,
+        verbose_name=_("Unique Immutable Handle Code"),
+        help_text=_("Programmatic slug key used strictly in backend code logic conditions.")
+    )
+    description = models.TextField(blank=True, verbose_name=_("Operational Description/UI Tooltip"))
+    color_hex = models.CharField(max_length=7, default="#7F8C8D", verbose_name=_("Frontend Theme Hex Color"))
+    sort_order = models.PositiveSmallIntegerField(default=0, db_index=True, verbose_name=_("Execution Sequencing Order"))
+    is_active = models.BooleanField(default=True, db_index=True, verbose_name=_("Active State Configuration Visibility"))
+
+    class Meta(BaseEnterpriseModelMixin.Meta):
+        abstract = True
+        ordering = ['sort_order', 'name']
+
+    def __str__(self):
+        return self.name
 
 
 class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
@@ -67,121 +83,6 @@ class BaseAddressModelMixin(BaseEnterpriseModelMixin):
 
     class Meta(BaseEnterpriseModelMixin.Meta):
         abstract = True
-
-
-class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
-    """
-    A dynamic base serializer that automatically exposes audit fields if they
-    exist on the model, using 'created_by' and 'updated_by' for user full names.
-    """
-
-    created_by = serializers.CharField(
-        source="created_by.get_full_name", read_only=True
-    )
-    updated_by = serializers.CharField(
-        source="updated_by.get_full_name", read_only=True
-    )
-    created_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
-    updated_on = serializers.DateTimeField(read_only=True, format="%Y-%m-%dT%H:%M:%S%z")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Check if the model actually has the audit fields
-        model = self.Meta.model
-        audit_fields = ["created_by", "updated_by", "created_on", "updated_on"]
-
-        for field_name in audit_fields:
-            if not hasattr(model, field_name):
-                # Dynamically pop the field out if the model doesn't support it
-                self.fields.pop(field_name, None)
-
-    def to_representation(self, instance):
-        """remove empty audit data from being returned"""
-        data = super().to_representation(instance)
-
-        if data.get("updated_on") is None:
-            data.pop("updated_on", None)
-
-        if data.get("updated_by") is None:
-            data.pop("updated_by", None)
-
-        return data
-
-
-class BaseEnterpriseViewSet(viewsets.ModelViewSet):
-    """
-    A base ViewSet to handle shared configuration and consistent success or error messages.
-    """
-
-    pagination_class = GenericEnteprisePaginator
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    ordering = ["-id"]
-
-    def get_permissions(self):
-        """
-        Default baseline permissions for standard enterprise views.
-        Public can read, authenticated users can write.
-        """
-        if self.action in ["list", "retrieve"]:
-            permission_classes = [permissions.AllowAny]
-        else:
-            permission_classes = [permissions.IsAuthenticated]
-
-        return [permission() for permission in permission_classes]
-
-    # Dynamically resolve model names for precise messages (e.g., "Department" instead of "Record")
-    def get_model_name(self):
-        return self.queryset.model._meta.verbose_name.title()
-
-    def get_success_message(self):
-        model_name = self.get_model_name()
-
-        messages = {
-            "create": f"{model_name} created successfully",
-            "update": f"{model_name} was updated successfully",
-            "partial_update": f"{model_name} was updated successfully",
-            "destroy": f"{model_name} was deleted successfully",
-        }
-        # self.action automatically resolves to 'create', 'update', 'partial_update', or 'destroy'
-        return messages.get(self.action, "Action successful")
-
-    def perform_create(self, serializer):
-        if hasattr(serializer.Meta.model, "created_by"):
-            serializer.save(created_by=self.request.user)
-        else:
-            serializer.save()
-
-    def perform_update(self, serializer):
-        model = serializer.Meta.model
-        save_kwargs = {}
-
-        if hasattr(model, "updated_by") and self.request.user.is_authenticated:
-            save_kwargs["updated_by"] = self.request.user
-
-        if hasattr(model, "updated_on"):
-            save_kwargs["updated_on"] = current_time
-
-        # Single clean save execution for both audited and non-audited models
-        serializer.save(**save_kwargs)
-
-    def create(self, request, *args, **kwargs):
-        response = super().create(request, *args, **kwargs)
-        return Response(
-            {"message": self.get_success_message()}, status=status.HTTP_201_CREATED
-        )
-
-    def update(self, request, *args, **kwargs):
-        response = super().update(request, *args, **kwargs)
-        return Response(
-            {"message": self.get_success_message()}, status=status.HTTP_200_OK
-        )
-
-    def destroy(self, request, *args, **kwargs):
-        super().destroy(request, *args, **kwargs)
-        return Response(
-            {"message": self.get_success_message()}, status=status.HTTP_200_OK
-        )
 
 
 # class ActionTrackingBaseModelMixin(models.Model):

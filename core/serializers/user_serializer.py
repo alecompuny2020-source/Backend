@@ -9,8 +9,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed as af
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from common.choices import TokenType
-from common.managers import EnterpriseOTPandLinkManager as OTPManager
+from common.constants import TokenType
+from common.management import EnterpriseNotificationManager as OTPManager
 from common.utils import enforce_password, validate_user_identifier
 from core.models import Otp, User
 

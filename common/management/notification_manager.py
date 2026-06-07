@@ -1,37 +1,13 @@
-from django.contrib.auth.models import BaseUserManager
 from django.db.models import Q
 from django.utils import timezone
 from phonenumber_field.phonenumber import to_python
 from rest_framework import status
 from rest_framework.response import Response
 
-from .sender.gateway import NotificationSenderGateway as NotificationGateway
+from common.sender import NotificationSenderGateway as NotificationGateway
 
 
-class EnterpriseUserManager(BaseUserManager):
-    def create_user(self, email=None, password=None, **extra_fields):
-        if not email and not extra_fields.get("phone_number"):
-            raise ValueError("Either email or phone number must be set")
-        user = self.model(email=email or None, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault("is_staff", True)
-        extra_fields.setdefault("is_superuser", True)
-        extra_fields.setdefault("is_active", True)
-        extra_fields.setdefault("is_verified", True)
-
-        if extra_fields.get("is_staff") is not True:
-            raise ValueError("Superuser must have is_staff=True.")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True.")
-
-        return self.create_user(email, password, **extra_fields)
-
-
-class EnterpriseOTPandLinkManager:
+class EnterpriseNotificationManager:
     """
     Unified manager for OTP and Link Lifecycle: Generation, Dispatching, and Verification.
     Maintains enterprise-grade security audit logs and routing logic.
@@ -91,6 +67,8 @@ class EnterpriseOTPandLinkManager:
     def verify(cls, identifier: str, code: str, token_type: str):
         """
         Verifies the OTP code, handles expiry, and updates user and otp status.
+        - Finds user first to ensure precise OTP filtering via UUID
+        - Finds most recent unused OTP
         """
         from core.models import Otp, User
 
@@ -98,10 +76,8 @@ class EnterpriseOTPandLinkManager:
         phone = to_python(identifier)
 
         try:
-            # Find user first to ensure precise OTP filtering via UUID
             user = User.objects.get(Q(email__iexact=identifier) | Q(phone_number=phone))
 
-            # Find most recent unused OTP
             otp_entry = Otp.objects.filter(
                 user=user, token_type=token_type, is_used=False
             ).latest("created_at")

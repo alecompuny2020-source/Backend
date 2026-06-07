@@ -7,8 +7,8 @@ from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 
-from common.choices import AddressType, now
-from common.managers import EnterpriseUserManager
+from common.constants import now
+from common.management import EnterpriseUserManager
 from common.mixins import BaseEnterpriseModelMixin
 from common.services import upload_profile_picture
 from common.validators import image_validator, validate_image_mime
