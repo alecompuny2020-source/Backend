@@ -1,5 +1,6 @@
 from django.contrib.auth.models import BaseUserManager
 
+
 class EnterpriseUserManager(BaseUserManager):
     def create_user(self, email=None, password=None, **extra_fields):
         if not email and not extra_fields.get("phone_number"):

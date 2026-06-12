@@ -3,10 +3,30 @@ from django.utils.translation import gettext_lazy as _
 
 LOOKUP_SEED_DATA = {
     "RegistrationStatus": [
-        {"code": "PENDING", "name": "Pending Verification", "color_hex": "#F39C12", "sort_order": 1},
-        {"code": "VERIFIED", "name": "Verified & Approved", "color_hex": "#2ECC71", "sort_order": 2},
-        {"code": "REJECTED", "name": "Rejected/Incomplete", "color_hex": "#E74C3C", "sort_order": 3},
-        {"code": "REVOKED", "name": "Revoked/Terminated", "color_hex": "#7F8C8D", "sort_order": 4},
+        {
+            "code": "PENDING",
+            "name": "Pending Verification",
+            "color_hex": "#F39C12",
+            "sort_order": 1,
+        },
+        {
+            "code": "VERIFIED",
+            "name": "Verified & Approved",
+            "color_hex": "#2ECC71",
+            "sort_order": 2,
+        },
+        {
+            "code": "REJECTED",
+            "name": "Rejected/Incomplete",
+            "color_hex": "#E74C3C",
+            "sort_order": 3,
+        },
+        {
+            "code": "REVOKED",
+            "name": "Revoked/Terminated",
+            "color_hex": "#7F8C8D",
+            "sort_order": 4,
+        },
     ],
     "UserTitle": [
         {"code": "MR", "name": "Mr.", "sort_order": 1},
@@ -43,10 +63,30 @@ LOOKUP_SEED_DATA = {
     ],
     "OrderStatus": [
         {"code": "PENDING", "name": "Pending", "color_hex": "#F1C40F", "sort_order": 1},
-        {"code": "CONFIRMED", "name": "Confirmed", "color_hex": "#3498DB", "sort_order": 2},
-        {"code": "DISPATCHED", "name": "Dispatched", "color_hex": "#9B59B6", "sort_order": 3},
-        {"code": "DELIVERED", "name": "Delivered", "color_hex": "#2ECC71", "sort_order": 4},
-        {"code": "CANCELLED", "name": "Cancelled", "color_hex": "#E74C3C", "sort_order": 5},
+        {
+            "code": "CONFIRMED",
+            "name": "Confirmed",
+            "color_hex": "#3498DB",
+            "sort_order": 2,
+        },
+        {
+            "code": "DISPATCHED",
+            "name": "Dispatched",
+            "color_hex": "#9B59B6",
+            "sort_order": 3,
+        },
+        {
+            "code": "DELIVERED",
+            "name": "Delivered",
+            "color_hex": "#2ECC71",
+            "sort_order": 4,
+        },
+        {
+            "code": "CANCELLED",
+            "name": "Cancelled",
+            "color_hex": "#E74C3C",
+            "sort_order": 5,
+        },
     ],
     "ShippingStatus": [
         {"code": "REQUESTED", "name": "Request Received", "sort_order": 1},
@@ -81,7 +121,11 @@ LOOKUP_SEED_DATA = {
         {"code": "SOLD", "name": "Successfully Sold", "sort_order": 1},
         {"code": "RETURNED", "name": "Returned by Customer", "sort_order": 2},
         {"code": "CHANGED", "name": "Exchanged for Different Product", "sort_order": 3},
-        {"code": "DAMAGED", "name": "Damaged/Defective (Pre-delivery)", "sort_order": 4},
+        {
+            "code": "DAMAGED",
+            "name": "Damaged/Defective (Pre-delivery)",
+            "sort_order": 4,
+        },
         {"code": "REFUND_ISSUED", "name": "Item Refunded", "sort_order": 5},
     ],
     "PackageStatus": [
@@ -91,13 +135,21 @@ LOOKUP_SEED_DATA = {
         {"code": "TRANSFERRED", "name": "Imehamishwa Banda/Ghala", "sort_order": 4},
     ],
     "SourceChoice": [
-        {"code": "FARM_PRODUCED", "name": "Kiasili / Limeshindwa Shambani", "sort_order": 1},
+        {
+            "code": "FARM_PRODUCED",
+            "name": "Kiasili / Limeshindwa Shambani",
+            "sort_order": 1,
+        },
         {"code": "COMMERCIAL", "name": "Kibiashara / Kununuliwa", "sort_order": 2},
     ],
     "ProductCategory": [
         {"code": "EGG", "name": "Eggs", "sort_order": 1},
         {"code": "MEAT", "name": "Meat/Poultry", "sort_order": 2},
-        {"code": "BY_PRODUCT", "name": "By-Products (Manure/Feathers)", "sort_order": 3},
+        {
+            "code": "BY_PRODUCT",
+            "name": "By-Products (Manure/Feathers)",
+            "sort_order": 3,
+        },
         {"code": "EQUIPMENT", "name": "Farm Equipment/Assets", "sort_order": 4},
     ],
     "BirdType": [
@@ -144,7 +196,11 @@ LOOKUP_SEED_DATA = {
     "HealthRecordType": [
         {"code": "VACCINATION", "name": "Vaccination", "sort_order": 1},
         {"code": "MEDICATION", "name": "Medication/Treatment", "sort_order": 2},
-        {"code": "PROCEDURE", "name": "General Procedure (e.g., De-beaking)", "sort_order": 3},
+        {
+            "code": "PROCEDURE",
+            "name": "General Procedure (e.g., De-beaking)",
+            "sort_order": 3,
+        },
         {"code": "LAB_RESULT", "name": "Laboratory Test Result", "sort_order": 4},
     ],
     "DiseaseOutbreakStatus": [
@@ -190,7 +246,11 @@ LOOKUP_SEED_DATA = {
         {"code": "CASH", "name": "Cash", "sort_order": 1},
         {"code": "CREDIT_CARD", "name": "Credit Card", "sort_order": 2},
         {"code": "BANK_TRANSFER", "name": "Bank Transfer", "sort_order": 3},
-        {"code": "MOBILE_MONEY", "name": "Mobile Money (M-Pesa/Tigo/Airtel)", "sort_order": 4},
+        {
+            "code": "MOBILE_MONEY",
+            "name": "Mobile Money (M-Pesa/Tigo/Airtel)",
+            "sort_order": 4,
+        },
         {"code": "ONLINE_WALLET", "name": "Online Wallet", "sort_order": 5},
     ],
     "SaleInvoiceStatus": [
@@ -244,7 +304,7 @@ LOOKUP_SEED_DATA = {
         {"code": "LOW", "name": "Low", "sort_order": 1},
         {"code": "NORMAL", "name": "Normal", "sort_order": 2},
         {"code": "URGENT", "name": "Urgent/Safety", "sort_order": 3},
-    ]
+    ],
 }
 
 # --- SPECIAL SEED LIST FOR DEPENDENT MULTI-RELATIONAL RECORD: BREED TYPES ---
@@ -262,7 +322,11 @@ BREED_SEED_DATA = [
     {"species_code": "RABBIT", "code": "CALIFORNIA", "name": "California White"},
     {"species_code": "RABBIT", "code": "CHINCHILLA", "name": "Chinchilla"},
     {"species_code": "RABBIT", "code": "FLEMISH", "name": "Flemish Giant"},
-    {"species_code": "RABBIT", "code": "S_LOCAL", "name": "Sungura wa Kienyeji (Local)"},
+    {
+        "species_code": "RABBIT",
+        "code": "S_LOCAL",
+        "name": "Sungura wa Kienyeji (Local)",
+    },
     {"species_code": "FISH", "code": "PEREGE", "name": "Perege (Tilapia)"},
     {"species_code": "FISH", "code": "KAMBALE", "name": "Kambale (Catfish)"},
 ]

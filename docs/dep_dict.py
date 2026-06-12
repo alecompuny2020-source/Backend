@@ -114,5 +114,5 @@ DEP_DICT = {
         "code": "EXOF",
         "description": "Exercises master strategy oversight, enterprise P&L clearance, high-value expenditure authorization, and system global control overrides.",
         "is_active": True,
-    }
+    },
 }

@@ -1,4 +1,5 @@
 import logging
+
 from django.apps import apps
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -16,6 +17,7 @@ class EnterpriseGroupCache:
     """
     On-demand runtime cache inayosoma makundi yote kutoka kwenye DB mara moja tu.
     """
+
     _cache = None
 
     @classmethod
@@ -31,7 +33,7 @@ class EnterpriseGroupCache:
 
 def optimized_row_permission_handler(sender, instance, created, **kwargs):
     """
-    Kazi ya 1: Inashughulikia uwekaji wa Row-level permissions kwa kasi kubwa data mpya inapookolewa.
+    Inashughulikia uwekaji wa Row-level permissions kwa kasi kubwa data mpya inapookolewa.
     """
     if not created:
         return
@@ -74,67 +76,8 @@ def optimized_row_permission_handler(sender, instance, created, **kwargs):
         )
 
 
-@receiver(post_migrate)
-def sync_and_create_enterprise_groups(sender, **kwargs):
-    """
-    Kazi ya 2: HII NDIO INAYOTENGENEZA MAKUNDI (GROUPS) YOTE YALIYOPO KWENYE PERM_CONFIG
-    Inakimbia mara moja tu pale amri ya 'migrate' inapopigwa kwenye app ya core.
-    """
-    app_config = sender
-
-    # Inahakikisha inatengeneza makundi pale tu migration ya core inapomalizika
-    if app_config.label != "core":
-        return
-
-    logger.info("🚀 [Security] Inatengeneza makundi yote kutoka kwenye PERM_CONFIG...")
-
-    try:
-        with transaction.atomic():
-            for model_name, roles in PERM_CONFIG.items():
-                try:
-                    model_class = app_config.get_model(model_name)
-                    content_type = ContentType.objects.get_for_model(model_class)
-                except LookupError:
-                    continue
-
-                for role_name, permissions in roles.items():
-                    # HAPA NDIO MAKUNDI YANAPOTENGENEZWA KAMA HAYAPO
-                    group, _ = Group.objects.get_or_create(name=role_name)
-
-                    for perm_codename in permissions:
-                        is_standard = any(
-                            perm_codename.startswith(v)
-                            for v in ["add_", "change_", "delete_", "view_"]
-                        )
-
-                        if not is_standard:
-                            human_name = perm_codename.replace("_", " ").capitalize()
-                            Permission.objects.get_or_create(
-                                codename=perm_codename,
-                                content_type=content_type,
-                                defaults={"name": human_name},
-                            )
-
-                        try:
-                            perm_obj = Permission.objects.get(
-                                codename=perm_codename, content_type=content_type
-                            )
-                            group.permissions.add(perm_obj)
-                        except Permission.DoesNotExist:
-                            pass
-
-        # Safisha cache ili isome makundi mapya yaliyoundwa
-        EnterpriseGroupCache.clear()
-        logger.info("✅ [Security] Makundi yote yametengenezwa na kusawazishwa kikamilifu.")
-
-    except Exception as e:
-        logger.error(f"❌ Hitilafu ya kuunda makundi: {e}")
-
-
 def initialize_security_signals():
-    """
-    Kazi ya 3: Inaunganisha models zote kwenye post_save dynamically.
-    """
+    """Inaunganisha models zote kwenye post_save dynamically."""
     for model_string in PERM_CONFIG.keys():
         for model in apps.get_models():
             if model.__name__ == model_string:

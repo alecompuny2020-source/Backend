@@ -1,8 +1,9 @@
+from django.apps import apps
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
-from django.apps import apps
 
-from .lookup_seed_data import LOOKUP_SEED_DATA, BREED_SEED_DATA
+from .lookup_seed_data import BREED_SEED_DATA, LOOKUP_SEED_DATA
+
 
 @receiver(post_migrate)
 def bootstrap_enterprise_lookups_and_taxonomy(sender, **kwargs):
@@ -33,8 +34,8 @@ def bootstrap_enterprise_lookups_and_taxonomy(sender, **kwargs):
                     "name": record["name"],
                     "color_hex": record.get("color_hex", "#7F8C8D"),
                     "sort_order": record["sort_order"],
-                    "is_active": True
-                }
+                    "is_active": True,
+                },
             )
 
     # 2. Seed Dependent Relational Table: Breed Types
@@ -54,8 +55,8 @@ def bootstrap_enterprise_lookups_and_taxonomy(sender, **kwargs):
                     "name": breed["name"],
                     "species": species_obj,
                     "sort_order": index,
-                    "is_active": True
-                }
+                    "is_active": True,
+                },
             )
     except LookupError:
         pass

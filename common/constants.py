@@ -10,7 +10,6 @@ Responsibility:
 - Define application-wide configuration (OTP, Token Types).
 """
 
-
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
@@ -23,6 +22,7 @@ current_time = timezone.now()
 OTP_CODE_LENGTH = getattr(settings, "OTP_CODE_LENGTH", 6)
 OTP_EXPIRATION_TIME_MINUTES = getattr(settings, "OTP_EXPIRATION_TIME_MINUTES", 5)
 
+
 class TokenType(models.TextChoices):
     REGISTRATION = "REGISTRATION", _("Registration")
     LOGIN = "LOGIN", _("Login")
@@ -34,15 +34,18 @@ class TokenType(models.TextChoices):
     ACCOUNT_DELETION = "ACCOUNT_DELETION", _("Account Deletion Confirmation")
     STAFF_INVITATION = "STAFF_INVITATION", _("Staff Onboarding Invitation")
 
+
 class CommunicationMethod(models.TextChoices):
     EMAIL = "email", _("Email")
     PHONE = "phone", _("Phone")
     BOTH = "both", _("Both")
 
+
 class LanguageChoice(models.TextChoices):
     EN_US = "en-us", _("English (US)")
     EN_GB = "en-gb", _("English (British)")
     SW = "sw", _("Kiswahili")
+
 
 class Gender(models.TextChoices):
     MALE = "MALE", _("Male")
@@ -50,10 +53,12 @@ class Gender(models.TextChoices):
     OTHER = "OTHER", _("Other")
     PREFER_NOT_TO_SAY = "PREFER_NOT_TO_SAY", _("Prefer Not to Say")
 
+
 class MaritalStatus(models.TextChoices):
     SINGLE = "SINGLE", _("Single")
     MARRIED = "MARRIED", _("Married")
     DIVORCED = "DIVORCED", _("Divorced")
+
 
 class RecipientType(models.IntegerChoices):
     USER = 0, _("User")

@@ -10,8 +10,8 @@ User = get_user_model()
 
 class EnterpriseEmailOrPhoneAuthBackend(ModelBackend):
     """
-        An Enterprise authentication backend for Email or Phone.
-        - Runs a dummy check to prevent timing attacks
+    An Enterprise authentication backend for Email or Phone.
+    - Runs a dummy check to prevent timing attacks
     """
 
     def authenticate(self, request, username=None, password=None, **kwargs):

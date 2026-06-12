@@ -40,6 +40,7 @@ class BaseEnterpriseAuditSerializer(serializers.ModelSerializer):
 
         return data
 
+
 # class GeneralAuditFieldsMixin(serializers.ModelSerializer):
 #     """ Enterprise mixin to handle ownership and YES/NO formatting. """
 #     created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)

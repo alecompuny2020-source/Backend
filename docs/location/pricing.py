@@ -1,9 +1,10 @@
 # apps/sales/pricing.py
 
+
 class BoltPricingEngine:
-    BASE_FARE = 1500.00      # Gharama ya kuanzia (Tsh)
-    PER_KM_RATE = 800.00     # Gharama kwa kila Kilomita moja (Tsh)
-    PER_MINUTE_RATE = 150.00 # Gharama kwa kila dakika moja safarini (Tsh)
+    BASE_FARE = 1500.00  # Gharama ya kuanzia (Tsh)
+    PER_KM_RATE = 800.00  # Gharama kwa kila Kilomita moja (Tsh)
+    PER_MINUTE_RATE = 150.00  # Gharama kwa kila dakika moja safarini (Tsh)
 
     @classmethod
     def calculate_estimated_fare(cls, distance_meters, duration_seconds):

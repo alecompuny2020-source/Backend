@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 OTP_CODE_LENGTH = getattr(settings, "OTP_CODE_LENGTH", 6)
 OTP_EXPIRATION_TIME_MINUTES = getattr(settings, "OTP_EXPIRATION_TIME_MINUTES", 5)
 
+
 # --- INVARIANT STATIC ENUMS ---
 class TokenType(models.TextChoices):
     REGISTRATION = "REGISTRATION", _("Registration")
@@ -19,15 +20,18 @@ class TokenType(models.TextChoices):
     ACCOUNT_DELETION = "ACCOUNT_DELETION", _("Account Deletion Confirmation")
     STAFF_INVITATION = "STAFF_INVITATION", _("Staff Onboarding Invitation")
 
+
 class CommunicationMethod(models.TextChoices):
     EMAIL = "email", _("Email")
     PHONE = "phone", _("Phone")
     BOTH = "both", _("Both")
 
+
 class LanguageChoice(models.TextChoices):
     EN_US = "en-us", _("English (US)")
     EN_GB = "en-gb", _("English (British)")
     SW = "sw", _("Kiswahili")
+
 
 class Gender(models.TextChoices):
     MALE = "MALE", _("Male")
@@ -35,10 +39,12 @@ class Gender(models.TextChoices):
     OTHER = "OTHER", _("Other")
     PREFER_NOT_TO_SAY = "PREFER_NOT_TO_SAY", _("Prefer Not to Say")
 
+
 class MaritalStatus(models.TextChoices):
     SINGLE = "SINGLE", _("Single")
     MARRIED = "MARRIED", _("Married")
     DIVORCED = "DIVORCED", _("Divorced")
+
 
 class RecipientType(models.IntegerChoices):
     USER = 0, _("User")

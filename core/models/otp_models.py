@@ -11,7 +11,7 @@ from common.constants import (
     OTP_EXPIRATION_TIME_MINUTES,
     TokenType,
     current_time,
-    now
+    now,
 )
 from common.mixins import BaseEnterpriseModelMixin
 

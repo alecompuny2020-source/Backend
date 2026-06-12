@@ -1,23 +1,23 @@
+from .profile_serializer import (
+    ProfilePictureSerializer,
+    UserAccountStatusSerializer,
+    UserAddressSerializer,
+    UserContactInfoSerializer,
+    UserPersonalInfoSerializer,
+    UserPreferenceSerializer,
+    UserProfileDetailSerializer,
+)
 from .user_serializer import (
-    RegistrationSerializer,
+    ConfirmForgotPasswordSerializer,
+    ConfirmPasswordResetSerializer,
     ConfirmRegistrationSerializer,
-    RequestLoginOTPSerializer,
     LoginConfirmOTPSerializer,
+    RegistrationSerializer,
+    RequestForgotPasswordSerializer,
+    RequestLoginOTPSerializer,
+    RequestOTPSerializer,
     UserDetailsSerializer,
     UserTokenObtainPairSerializer,
-    RequestOTPSerializer,
-    ConfirmPasswordResetSerializer,
-    RequestForgotPasswordSerializer,
-    ConfirmForgotPasswordSerializer
-)
-from .profile_serializer import (
-    UserPersonalInfoSerializer,
-    UserAccountStatusSerializer,
-    UserContactInfoSerializer,
-    ProfilePictureSerializer,
-    UserAddressSerializer,
-    UserPreferenceSerializer,
-    UserProfileDetailSerializer
 )
 
 __all__ = [
@@ -37,5 +37,5 @@ __all__ = [
     "ProfilePictureSerializer",
     "UserAddressSerializer",
     "UserPreferenceSerializer",
-    "UserProfileDetailSerializer"
+    "UserProfileDetailSerializer",
 ]

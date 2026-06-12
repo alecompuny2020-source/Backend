@@ -2,6 +2,7 @@
 import requests
 from django.conf import settings
 
+
 def get_distance_and_time(origin_lat, origin_lng, dest_lat, dest_lng):
     """
     Inavuta umbali (mita) na muda (sekunde) halisi wa barabarani kutoka Google Maps
@@ -17,11 +18,15 @@ def get_distance_and_time(origin_lat, origin_lng, dest_lat, dest_lng):
 
     response = requests.get(url).json()
 
-    if response['status'] == 'OK':
-        element = response['rows'][0]['elements'][0]
-        if element['status'] == 'OK':
-            distance_meters = element['distance']['value'] # Mfano: 5000 (mita 5000 = km 5)
-            duration_seconds = element['duration']['value'] # Mfano: 1200 (sekunde 1200 = dk 20)
+    if response["status"] == "OK":
+        element = response["rows"][0]["elements"][0]
+        if element["status"] == "OK":
+            distance_meters = element["distance"][
+                "value"
+            ]  # Mfano: 5000 (mita 5000 = km 5)
+            duration_seconds = element["duration"][
+                "value"
+            ]  # Mfano: 1200 (sekunde 1200 = dk 20)
             return distance_meters, duration_seconds
 
     return None, None

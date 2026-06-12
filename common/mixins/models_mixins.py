@@ -1,8 +1,10 @@
 import uuid
+
 # from django.contrib.gis.db import models as coordinates
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from common.constants import now
 
 
@@ -20,22 +22,35 @@ class BaseLookupConfigurationModelMixin(BaseEnterpriseModelMixin):
     Abstract structural base model for all enterprise dynamic configurations.
     Replaces static TextChoices with high-performance real-time relational metadata.
     """
+
     name = models.CharField(max_length=200, unique=True, verbose_name=_("Name"))
     code = models.CharField(
         max_length=50,
         unique=True,
         db_index=True,
         verbose_name=_("Unique Immutable Handle Code"),
-        help_text=_("Programmatic slug key used strictly in backend code logic conditions.")
+        help_text=_(
+            "Programmatic slug key used strictly in backend code logic conditions."
+        ),
     )
-    description = models.TextField(blank=True, verbose_name=_("Operational Description/UI Tooltip"))
-    color_hex = models.CharField(max_length=7, default="#7F8C8D", verbose_name=_("Frontend Theme Hex Color"))
-    sort_order = models.PositiveSmallIntegerField(default=0, db_index=True, verbose_name=_("Execution Sequencing Order"))
-    is_active = models.BooleanField(default=True, db_index=True, verbose_name=_("Active State Configuration Visibility"))
+    description = models.TextField(
+        blank=True, verbose_name=_("Operational Description/UI Tooltip")
+    )
+    color_hex = models.CharField(
+        max_length=7, default="#7F8C8D", verbose_name=_("Frontend Theme Hex Color")
+    )
+    sort_order = models.PositiveSmallIntegerField(
+        default=0, db_index=True, verbose_name=_("Execution Sequencing Order")
+    )
+    is_active = models.BooleanField(
+        default=True,
+        db_index=True,
+        verbose_name=_("Active State Configuration Visibility"),
+    )
 
     class Meta(BaseEnterpriseModelMixin.Meta):
         abstract = True
-        ordering = ['sort_order', 'name']
+        ordering = ["sort_order", "name"]
 
     def __str__(self):
         return self.name
