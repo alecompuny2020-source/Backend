@@ -5,7 +5,7 @@ from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import BirdType, DiseaseOutbreakStatus, HealthRecordType, now
+from common.constants import now
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 
@@ -16,9 +16,7 @@ class HealthProtocol(BaseEnterpriseAuditModelMixin):
     """
 
     name = models.CharField(_("Protocol Name"), max_length=255)
-    target_bird_type = models.CharField(
-        _("Target Bird Type"), max_length=50, choices=BirdType.choices
-    )
+    target_bird_type = models.ForeignKey("core.BirdType", on_delete=models.RESTRICT)
 
     # Blueprint for protocol_steps (Schedule):
     # [
@@ -69,9 +67,7 @@ class MedicalRecord(BaseEnterpriseAuditModelMixin):
     date_of_administration = models.DateField(
         _("Date of Administration"), db_index=True, default=now
     )
-    record_type = models.CharField(
-        _("Record Type"), max_length=20, choices=HealthRecordType.choices
-    )
+    status = models.ForeignKey("core.HealthRecordType", on_delete=models.RESTRICT)
 
     # Blueprint for event_details:
     # {
@@ -165,13 +161,7 @@ class DiseaseOutbreak(BaseEnterpriseAuditModelMixin):
         default=dict,
         help_text=_("Detailed symptoms, lab results, and containment measures."),
     )
-    status = models.CharField(
-        _("Incident Status"),
-        max_length=20,
-        choices=DiseaseOutbreakStatus.choices,
-        default=DiseaseOutbreakStatus.ACTIVE,
-        db_index=True,
-    )
+    status = models.ForeignKey("core.DiseaseOutbreakStatus", on_delete=models.RESTRICT)
 
     class Meta:
         db_table = "disease_outbreak"

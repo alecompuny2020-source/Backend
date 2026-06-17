@@ -6,7 +6,6 @@ from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import SourceChoices
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -22,12 +21,7 @@ class FeedType(BaseEnterpriseAuditModelMixin):
         blank=True,
         help_text=_("Acha wazi kama limetengenezwa shambani."),
     )
-    feed_source = models.CharField(
-        _("Feed Source"),
-        max_length=20,
-        choices=SourceChoices.choices,
-        default=SourceChoices.FARM_PRODUCED,
-    )
+    feed_source = models.ForeignKey("core.FeedSourceChoices", on_delete=models.RESTRICT)
 
     # Blueprint for composition (Nutritional specs):
     # {

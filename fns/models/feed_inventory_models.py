@@ -6,7 +6,6 @@ from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import SourceChoices
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.

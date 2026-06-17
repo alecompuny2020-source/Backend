@@ -1,7 +1,7 @@
 from django.db.models.signals import post_migrate
 from django.dispatch import receiver
 
-from .dep_dict import DEP_DICT
+from common.seeds.dep_dict import DEP_DICT
 
 
 @receiver(post_migrate)
@@ -19,8 +19,11 @@ def provision_enterprise_departments(sender, **kwargs):
         return
 
     Department = app_config.get_model("Department")
+    created_count = 0
+    existing_count = 0
+
     for key, data in DEP_DICT.items():
-        Department.objects.get_or_create(
+        obj, created = Department.objects.get_or_create(
             code=data["code"],
             defaults={
                 "name": data["name"],
@@ -28,3 +31,14 @@ def provision_enterprise_departments(sender, **kwargs):
                 "is_active": data["is_active"],
             },
         )
+
+        if created:
+            created_count += 1
+        else:
+            existing_count += 1
+
+    print("\n" + "=" * 60)
+    print(f" SUCCESS: HRMS Departments Provisioning Completed!")
+    print(f" - Idara Mpya Zilizowekwa (Created): {created_count}")
+    print(f" - Idara Zilizokuwepo Tayari (Skipped): {existing_count}")
+    print("=" * 60 + "\n")

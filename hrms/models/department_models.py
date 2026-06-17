@@ -65,7 +65,7 @@ class EmployeeIDSequence(models.Model):
         verbose_name_plural = _("Employee ID Sequences")
 
     def clean(self):
-        # Force uniform consistency in the database layer
+        """Force uniform consistency in the database layer"""
         if self.prefix:
             self.prefix = self.prefix.strip().upper()
 

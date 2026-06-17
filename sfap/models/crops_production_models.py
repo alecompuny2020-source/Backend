@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import ProductionStatus, UnitOfMeasure
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 
@@ -40,11 +39,7 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     crops = models.ManyToManyField(Crop, related_name="crops_grown")
     planting_date = models.DateField()
     harvest_date = models.DateField(null=True, blank=True)
-    status = models.CharField(
-        max_length=20,
-        choices=ProductionStatus.choices,
-        default=ProductionStatus.PLANTED,
-    )
+    status = models.ForeignKey("core.ProductionStatus", on_delete=models.RESTRICT)
 
     # Mzunguko wa Virutubisho
     manure_used_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -68,9 +63,7 @@ class EcologicalInput(BaseEnterpriseAuditModelMixin):
 
     input_name = models.CharField(max_length=100)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.CharField(
-        max_length=10, choices=UnitOfMeasure.choices, default=UnitOfMeasure.KG
-    )
+    unit = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
     estimated_cost = MoneyField(
         max_digits=14,
         decimal_places=2,

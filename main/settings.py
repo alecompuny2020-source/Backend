@@ -41,19 +41,22 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+
     # Enterprise Apps
     "core",
-    # "hrms",
-    # # "lrh",
-    # "sfap",
-    # "ppms",
-    # "fns",
+    "hrms",
+    # "lrh",
+    "sfap",
+    "ppms",
+    "fns",
     # "wces",
     # "ipss",
     # # "ipms",
     # "srs",
     # "ecvs",
     # "rms",
+
     # third part packages
     "django.contrib.postgres",
     "rest_framework",

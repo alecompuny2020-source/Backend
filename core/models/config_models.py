@@ -267,6 +267,22 @@ class UnitOfMeasure(BaseLookupConfigurationModelMixin):
         verbose_name_plural = _("Inventory Standardized Units of Measure (UOM)")
 
 
+
+class FarmVehicleType(BaseLookupConfigurationModelMixin):
+    class Meta(BaseLookupConfigurationModelMixin.Meta):
+        db_table = "farm_vehicle_type"
+        verbose_name = _("Farm Vehicle Type")
+        verbose_name_plural = _("Farm Vehicle Types")
+
+
+class FeedSourceChoices(BaseLookupConfigurationModelMixin):
+    class Meta(BaseLookupConfigurationModelMixin.Meta):
+        db_table = "feed_source"
+        verbose_name = _("Feed Source")
+        verbose_name_plural = _("Feed Sources")
+
+
+
 class RateType(BaseLookupConfigurationModelMixin):
     class Meta(BaseLookupConfigurationModelMixin.Meta):
         db_table = "rate_type"

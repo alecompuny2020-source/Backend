@@ -40,6 +40,8 @@ from .config_models import (
     UnitOfMeasure,
     UserTitle,
     WasteDisposalMethod,
+    FarmVehicleType,
+    FeedSourceChoices,
 )
 from .otp_models import Otp
 from .user_models import User, UserPreference
@@ -89,4 +91,6 @@ __all__ = [
     "RateType",
     "TicketStatus",
     "TaskPriority",
+    "FarmVehicleType",
+    "FeedSourceChoices",
 ]

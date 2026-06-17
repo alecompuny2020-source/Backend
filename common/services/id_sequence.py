@@ -7,6 +7,8 @@ def generate_secure_employee_number(prefix_code: str, padding_length: int = 5) -
     Example output: HR-00123, MFG-00456
     """
 
+    from hrms.models import EmployeeIDSequence
+
     prefix = prefix_code.strip().upper()
 
     with transaction.atomic():

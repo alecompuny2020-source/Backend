@@ -3,6 +3,7 @@ import uuid
 # from django.contrib.gis.db import models as coordinates
 from django.conf import settings
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from common.constants import now
@@ -63,6 +64,7 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
         settings.AUTH_USER_MODEL,
         on_delete=models.RESTRICT,
         related_name="%(app_label)s_%(class)s_created",
+        blank=True
     )
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -75,11 +77,30 @@ class BaseEnterpriseAuditModelMixin(BaseEnterpriseModelMixin):
     created_on = models.DateTimeField(_("Created On"), db_index=True, default=now)
 
     updated_on = models.DateTimeField(
-        _("Updated On"), auto_now=False, db_index=True, null=True
+        _("Updated On"), auto_now=True, db_index=True, null=True
     )
 
     class Meta(BaseEnterpriseModelMixin.Meta):
         abstract = True
+
+    def save(self, *args, **kwargs):
+        if not hasattr(self, "created_by") or self.created_by is None:
+
+            from core.models import User
+
+            system_email = "system@enterprise.local"
+
+            system_user, _ = User.objects.get_or_create(
+                email=system_email,
+                defaults={
+                    "is_active": False,  # Hawezi kulogin
+                    "first_name": "SYSTEM",
+                    "last_name": "BOT",
+                },
+            )
+            self.created_by = system_user
+
+        super().save(*args, **kwargs)
 
 
 class BaseAddressModelMixin(BaseEnterpriseModelMixin):

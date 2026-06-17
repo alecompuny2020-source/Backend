@@ -4,7 +4,7 @@ from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import EmploymentType, Gender, MaritalStatus, UserTitle
+from common.constants import Gender, MaritalStatus
 from common.mixins import BaseEnterpriseModelMixin
 from common.services import generate_secure_employee_number
 
@@ -46,54 +46,57 @@ class Employee(BaseEnterpriseModelMixin):
         db_index=True,
         default=MaritalStatus.SINGLE,
     )
-    employment_type = models.CharField(
-        _("Employment Type"),
-        max_length=20,
-        choices=EmploymentType.choices,
-        default=EmploymentType.FULL_TIME,
+    employment_type = models.ForeignKey(
+        "core.EmploymentType",
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        related_name="employee_type",
+        verbose_name=_("Employement Type"),
         help_text=_(
             "Determines benefits eligibility; e.g., Casuals usually don't get housing."
         ),
     )
 
-    assigned_shed = models.ForeignKey(
-        "sfap.FarmShed",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="assigned_workers",
-        verbose_name=_("Assigned Shed"),
-    )
-
-    assigned_block = models.ForeignKey(
-        "sfap.FarmBlock",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="assigned_block",
-        verbose_name=_("Assigned Block"),
-    )
-
-    assigned_plant = models.ForeignKey(
-        "ppms.ProcessingPlant",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="assigned_workers",
-        verbose_name=_("Assigned Processing Plant"),
-    )
+    # assigned_shed = models.ForeignKey(
+    #     "sfap.FarmShed",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name="assigned_workers",
+    #     verbose_name=_("Assigned Shed"),
+    # )
+    #
+    # assigned_block = models.ForeignKey(
+    #     "sfap.FarmBlock",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name="assigned_block",
+    #     verbose_name=_("Assigned Block"),
+    # )
+    #
+    # assigned_plant = models.ForeignKey(
+    #     "ppms.ProcessingPlant",
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    #     related_name="assigned_workers",
+    #     verbose_name=_("Assigned Processing Plant"),
+    # )
     health_clearance_expiry = models.DateField(
         _("Health Clearance Expiry"),
         null=True,
         blank=True,
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
-    employee_title = models.CharField(
-        _("Employee Title"),
-        max_length=20,
-        choices=UserTitle.choices,
-        db_index=True,
+    employee_title = models.ForeignKey(
+        "core.UserTitle",
+        on_delete=models.RESTRICT,
         null=True,
+        blank=True,
+        related_name="status",
+        verbose_name=_("Employee Title"),
     )
     gender = models.CharField(
         _("Employee Gender"), max_length=20, choices=Gender.choices, null=True
