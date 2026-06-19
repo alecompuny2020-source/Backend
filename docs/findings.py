@@ -87,6 +87,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         # Keeps your original verification logic unchanged
         return OTPManager.verify(identifier, code, token_type)
 
+
     @action(
         detail=False,
         methods=["post"],
@@ -132,6 +133,8 @@ class AuthViewSet(viewsets.GenericViewSet):
             )
             return self._get_auth_response(user, otp_response.data.get("message"))
         return otp_response
+
+
 
 
 status = models.ForeignKey(

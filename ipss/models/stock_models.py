@@ -8,13 +8,7 @@ from django.db import models, transaction
 from django.db.models import Count, Sum
 from django.utils.translation import gettext_lazy as _
 
-from common.choices import (
-    StockMovementType,
-    StockReadinessStatus,
-    UnitOfMeasure,
-    current_time,
-    now,
-)
+from common.constants import current_time, now
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -48,14 +42,9 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
         null=True,
         blank=True,
     )
-    unit_of_measure = models.CharField(
-        _("Unit Of Measure"), max_length=20, choices=UnitOfMeasure.choices
-    )
-    readiness_status = models.CharField(
-        _("Readiness"),
-        max_length=20,
-        choices=StockReadinessStatus.choices,
-        default=StockReadinessStatus.READY,
+    unit_of_measure = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
+    readiness_status = models.ForeignKey(
+        "core.StockReadinessStatus", on_delete=models.RESTRICT
     )
     batch_number = models.CharField(
         _("Batch Number"), max_length=100, unique=True, db_index=True
@@ -139,7 +128,7 @@ class StockMovement(BaseEnterpriseAuditModelMixin):
     stock = models.ForeignKey(
         ProductStock, on_delete=models.CASCADE, related_name="movements"
     )
-    movement_type = models.CharField(max_length=30, choices=StockMovementType.choices)
+    status = models.ForeignKey("core.StockMovementType", on_delete=models.RESTRICT)
     quantity_change = models.DecimalField(max_digits=12, decimal_places=2)
     units_change = models.IntegerField(
         default=0,

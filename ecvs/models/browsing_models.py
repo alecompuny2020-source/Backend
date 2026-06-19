@@ -3,12 +3,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from common.choices import now
-from common.mixins import BaseEnterpriseModelMixin
 
 # Create your models here.
 
 
-class SearchHistory(BaseEnterpriseModelMixin):
+class SearchHistory(models.Model):
     """
     Logs user search queries to power 'Recent Searches' and
     provide data for recommendation engines.
@@ -28,7 +27,7 @@ class SearchHistory(BaseEnterpriseModelMixin):
         verbose_name = _("Search History")
 
 
-class UserInterest(BaseEnterpriseModelMixin):
+class UserInterest(models.Model):
     """
     Tracks frequency interaction with specific categories (e.g., 'Electronics').
     Used to personalize the homepage 'Inspired by your shopping trends'.
@@ -60,7 +59,7 @@ class UserInterest(BaseEnterpriseModelMixin):
         )
 
 
-class Wishlist(BaseEnterpriseModelMixin):
+class Wishlist(models.Model):
     """
     Allows users to save products for future purchase.
     Supports multiple named lists.
@@ -95,7 +94,7 @@ class Wishlist(BaseEnterpriseModelMixin):
         )
 
 
-class RecentlyViewedItem(BaseEnterpriseModelMixin):
+class RecentlyViewedItem(models.Model):
     """Tracks products or specific packages a user has clicked on."""
 
     user = models.ForeignKey(
@@ -133,7 +132,7 @@ class RecentlyViewedItem(BaseEnterpriseModelMixin):
             )
 
 
-class Review(BaseEnterpriseModelMixin):
+class Review(models.Model):
     """Stores customer feedback."""
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

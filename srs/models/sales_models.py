@@ -6,13 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from phonenumber_field.modelfields import PhoneNumberField
 
-from common.choices import (
-    ItemDisposition,
-    PaymentMethod,
-    SaleInvoiceStatus,
-    UnitOfMeasure,
-    current_time,
-)
+from common.choices import current_time
 from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
 
 # Create your models here.
@@ -36,13 +30,13 @@ class Sale(BaseEnterpriseAuditModelMixin):
         null=True,
         related_name="office_sales",
     )
-    status = models.CharField(max_length=20, choices=SaleInvoiceStatus.choices)
-    payment_method = models.CharField(max_length=20, choices=PaymentMethod.choices)
-    payment_status = models.CharField(
-        max_length=20,
-        choices=SaleInvoiceStatus.choices,
-        default=SaleInvoiceStatus.PENDING,
-    )
+    status = models.ForeignKey("core.SaleInvoiceStatus", on_delete=models.RESTRICT)
+    # payment_method = models.ForeignKey(
+    #     "core.PaymentMethod", on_delete = models.RESTRICT
+    # )
+    # payment_status = models.ForeignKey(
+    #     "core.SaleInvoiceStatus", on_delete = models.RESTRICT
+    # )
 
     # Metadata includes: {
     #     'tax_breakdown': {'vat': 18.00, 'levy': 2.00},
@@ -118,13 +112,11 @@ class SaleItem(BaseEnterpriseModelMixin):
     )
     quantity = models.PositiveIntegerField()
     unit_price = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
-    unit_measure = models.CharField(
-        max_length=50, default="pc", choices=UnitOfMeasure.choices
-    )
+    unit_measure = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
     discount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     line_total = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
-    item_disposition = models.CharField(
-        max_length=20, choices=ItemDisposition.choices, default=ItemDisposition.SOLD
+    item_disposition = models.ForeignKey(
+        "core.ItemDisposition", on_delete=models.RESTRICT
     )
     attributes = models.JSONField(
         _("Product Attributes at Sale"), default=dict, blank=True

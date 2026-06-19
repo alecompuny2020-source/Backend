@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from common.choices import StorageUnitType
 from common.mixins import BaseAddressModelMixin, BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -68,12 +67,7 @@ class StorageUnit(BaseEnterpriseAuditModelMixin):
         Zone, on_delete=models.CASCADE, related_name="storage_units"
     )
     unit_code = models.CharField(_("Unit Code"), max_length=20)
-    unit_type = models.CharField(
-        _("Storage Mean"),
-        max_length=20,
-        choices=StorageUnitType.choices,
-        default=StorageUnitType.SHELF,
-    )
+    unit_type = models.ForeignKey("core.StorageUnitType", on_delete=models.RESTRICT)
     max_capacity = models.IntegerField(_("Max Capacity"), default=0)
 
     class Meta:

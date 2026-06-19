@@ -50,11 +50,11 @@ INSTALLED_APPS = [
     "sfap",
     "ppms",
     "fns",
-    # "wces",
-    # "ipss",
+    "wces",
+    "ipss",
     # # "ipms",
-    # "srs",
-    # "ecvs",
+    "srs",
+    "ecvs",
     # "rms",
 
     # third part packages

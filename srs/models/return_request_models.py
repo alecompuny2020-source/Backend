@@ -28,8 +28,8 @@ class ReturnRequest(models.Model):
             ("COMPLETED", "Completed"),
         ],
     )
-    disposition = models.CharField(
-        max_length=20, choices=ItemDisposition.choices
+    disposition = models.ForeignKey(
+        "core.ItemDisposition", on_delete=models.RESTRICT
     )  # e.g., 'DAMAGED'
     processed_at = models.DateTimeField()
 

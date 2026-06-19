@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from phonenumber_field.modelfields import PhoneNumberField
 
-from common.choices import CustomerType, current_time
+from common.choices import current_time
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -56,12 +56,7 @@ class Customer(BaseEnterpriseAuditModelMixin):
     """
 
     name = models.CharField(_("Customer Name"), max_length=255)
-    customer_type = models.CharField(
-        _("Type"),
-        max_length=20,
-        choices=CustomerType.choices,
-        default=CustomerType.RETAIL,
-    )
+    status = models.ForeignKey("core.CustomerType", on_delete=models.RESTRICT)
     contact_phone = PhoneNumberField(_("Contact Phone"))
     email = models.EmailField(_("Email Address"), blank=True)
 

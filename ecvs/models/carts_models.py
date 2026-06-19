@@ -6,7 +6,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from common.choices import current_time, now
-from common.mixins import BaseEnterpriseModelMixin
 
 # Create your models here.
 

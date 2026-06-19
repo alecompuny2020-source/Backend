@@ -4,7 +4,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from common.choices import PackageStatus
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -33,12 +32,7 @@ class PackagedProduct(BaseEnterpriseAuditModelMixin):
             "Husaidia kufuatilia ufanisi wa mashine na timu iliyokuwa zamu."
         ),
     )
-    status = models.CharField(
-        max_length=20,
-        choices=PackageStatus.choices,
-        default=PackageStatus.IN_STOCK,
-        db_index=True,
-    )
+    status = models.ForeignKey("core.PackageStatus", on_delete=models.RESTRICT)
 
     label_code = models.CharField(
         _("QR/Barcode"), max_length=100, unique=True, db_index=True

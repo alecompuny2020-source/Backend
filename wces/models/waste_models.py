@@ -2,7 +2,6 @@ from django.contrib.postgres.indexes import GinIndex
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from common.choices import WasteDisposalMethod
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -15,11 +14,8 @@ class WasteCategory(BaseEnterpriseAuditModelMixin):
     """
 
     name = models.CharField(_("Waste Type Name"), max_length=100, unique=True)
-    disposal_method = models.CharField(
-        _("Primary Disposal Method"),
-        max_length=50,
-        choices=WasteDisposalMethod.choices,
-        default=WasteDisposalMethod.RECYCLE,
+    disposal_method = models.ForeignKey(
+        "core.WasteDisposalMethod", on_delete=models.RESTRICT
     )
 
     # Blueprint for financial_logic:
@@ -71,6 +67,23 @@ class WasteCategory(BaseEnterpriseAuditModelMixin):
         return self.name
 
 
+class WasteCollectionSource(models.Model):
+    source_shed = models.ForeignKey(
+        "sfap.FarmShed",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="waste_produced",
+    )
+    source_block = models.ForeignKey(
+        "sfap.FarmBlock",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="waste_produced_per_block",
+    )
+
+
 class WasteCollection(BaseEnterpriseAuditModelMixin):
     """
     Daily Kiosk Log: Records waste generation at the source (Sheds or Rental Units).
@@ -78,16 +91,14 @@ class WasteCollection(BaseEnterpriseAuditModelMixin):
     """
 
     location = models.ForeignKey(
-        "sfap.Farm",
-        on_delete=models.CASCADE,
+        WasteCollectionSource,
+        on_delete=models.RESTRICT,
         related_name="waste_collections",
         verbose_name=_("Farm Location"),
     )
     category = models.ForeignKey(
         WasteCategory, on_delete=models.PROTECT, verbose_name=_("Waste Category")
     )
-
-    # Source identification using string references to prevent circular imports
     source_batch = models.ForeignKey(
         "sfap.Batch",
         on_delete=models.SET_NULL,

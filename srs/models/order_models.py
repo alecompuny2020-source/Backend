@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from phonenumber_field.modelfields import PhoneNumberField
 
-from common.choices import OrderStatus, current_time
+from common.choices import current_time
 from common.mixins import BaseEnterpriseAuditModelMixin, BaseEnterpriseModelMixin
 
 # Create your models here.
@@ -55,13 +55,7 @@ class Order(BaseEnterpriseAuditModelMixin):
         decimal_places=2,
         default_currency="TZS",
     )
-
-    status = models.CharField(
-        _("Status"),
-        max_length=20,
-        choices=OrderStatus.choices,
-        default=OrderStatus.PENDING,
-    )
+    status = models.ForeignKey("core.OrderStatus", on_delete=models.RESTRICT)
 
     # Blueprint for order_history (Audit Trail):
     # [{"status": "Confirmed", "time": "2026-02-24T10:00Z", "user_id": 4, "note": "Payment verified"}]

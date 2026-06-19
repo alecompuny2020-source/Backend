@@ -9,7 +9,6 @@ from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 
-from common.choices import FatLevel, MeatCutType, ProductCategory, StorageState
 from common.mixins import BaseEnterpriseAuditModelMixin
 
 # Create your models here.
@@ -19,9 +18,7 @@ class Product(BaseEnterpriseAuditModelMixin):
     """Defines the global catalog (e.g., Broiler Meat, Organic Eggs)."""
 
     name = models.CharField(_("Product Name"), max_length=100, unique=True)
-    category = models.CharField(
-        _("Category"), max_length=50, choices=ProductCategory.choices
-    )
+    category = models.ForeignKey("core.ProductCategory", on_delete=models.RESTRICT)
     # Stores grading, packaging, and specific storage requirements.
     # Blueprint for specs:
     # {
@@ -61,25 +58,9 @@ class ProductVariant(BaseEnterpriseAuditModelMixin):
         related_name="variants",
         verbose_name=_("Parent Product"),
     )
-
-    cut_type = models.CharField(
-        _("Cut Type"),
-        max_length=20,
-        choices=MeatCutType.choices,
-        default=MeatCutType.WHOLE,
-    )
-    storage_state = models.CharField(
-        _("Storage State"),
-        max_length=20,
-        choices=StorageState.choices,
-        default=StorageState.FRESH,
-    )
-    fat_level = models.CharField(
-        _("Fat Content"),
-        max_length=20,
-        choices=FatLevel.choices,
-        default=FatLevel.MEDIUM,
-    )
+    cut_type = models.ForeignKey("core.MeatCutType", on_delete=models.RESTRICT)
+    storage_state = models.ForeignKey("core.StorageState", on_delete=models.RESTRICT)
+    fat_level = models.ForeignKey("core.FatLevel", on_delete=models.RESTRICT)
 
     sku = models.CharField(
         _("SKU / Item Code"), max_length=100, unique=True, db_index=True
