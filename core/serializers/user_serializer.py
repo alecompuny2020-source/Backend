@@ -5,86 +5,64 @@ from django.contrib.auth import authenticate
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.phonenumber import to_python
+from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed as af
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from common.constants import TokenType
 from common.management import EnterpriseNotificationManager as OTPManager
+from common.mixins import BaseRegistrationSerializer
 from common.utils import enforce_password, validate_user_identifier
 from core.models import Otp, User
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
-    """Performs self-user registration (for customers) and generates the initial OTP."""
+class UsingEmailRegistration(BaseRegistrationSerializer):
+    """Performs self-user registration using email"""
 
-    identifier = serializers.CharField()
+    email = serializers.EmailField()
 
     class Meta:
         model = User
-        fields = ["identifier", "password", "first_name", "last_name"]
-        extra_kwargs = {
-            "password": {"write_only": True},
-        }
+        fields = ["email", "password", "first_name", "last_name"]
 
     def validate(self, attrs):
-        identifier = attrs.get("identifier")
-        first_name = attrs.get("first_name", "").strip()
-        last_name = attrs.get("last_name", "").strip()
+        username = attrs.get("email")
 
-        if not identifier:
+        if username and self.Meta.model.objects.filter(email__iexact=username).exists():
+
             raise serializers.ValidationError(
                 {
-                    "identifier": _(
-                        "Either a valid email or phone number must be provided."
-                    )
+                    "email": _("A user with that email address already exists."),
                 }
             )
 
-        if not first_name or not last_name:
+        return username
+
+
+class UsingPhoneNumberRegistration(BaseRegistrationSerializer):
+    """Performs self-user registration using phone number"""
+
+    phone_number = PhoneNumberField()
+
+    class Meta:
+        model = User
+        fields = ["phone_number", "password", "first_name", "last_name"]
+
+    def validate(self, attrs):
+        username = attrs.get("phone_number")
+
+        if (
+            username
+            and self.Meta.model.objects.filter(phone_number__iexact=username).exists()
+        ):
+
             raise serializers.ValidationError(
-                {"names": _("Both first name and last name are required.")}
+                {
+                    "email": _("A user with that phone number already exists."),
+                }
             )
-
-        if not first_name.isalpha() or not last_name.isalpha():
-            raise serializers.ValidationError(
-                {"names": _("Names must contain only letters.")}
-            )
-
-        return attrs
-
-    def validate_password(self, value):
-        """Enforces password Policy"""
-        return enforce_password(value)
-
-    def validate_identifier(self, value):
-        """Ensure identifier is a valid email or phone number."""
-        return validate_user_identifier(value)
-
-    def create(self, validated_data):
-        """Perform create and trigger the new OTP Manager logic."""
-        identifier = validated_data.pop("identifier")
-        password = validated_data.pop("password")
-
-        # Determine identifier type
-        email = identifier if "@" in identifier else None
-        phone_number = to_python(identifier) if not email else None
-
-        user = User.objects.create_user(
-            email=email, phone_number=phone_number, password=password, **validated_data
-        )
-
-        try:
-            otp_entry = OTPManager.generate_and_send(
-                identifier=identifier,
-                token_type=TokenType.REGISTRATION,
-            )
-
-        except Exception as e:
-            user.delete()
-            raise serializers.ValidationError({"otp_error": str(e)})
-
-        return user
+        return username
 
 
 class ConfirmRegistrationSerializer(serializers.Serializer):
@@ -179,7 +157,6 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
     """SimpleJWT Serializer for direct login or post-OTP token issuance."""
 
-    # SimpleJWT defaults to 'username'. now it set to flexible.
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields[self.username_field] = serializers.CharField()

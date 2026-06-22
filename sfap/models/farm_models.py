@@ -207,7 +207,7 @@ class FarmBlock(BaseEnterpriseAuditModelMixin):
     name = models.CharField(max_length=100)
     size_acres = models.DecimalField(max_digits=5, decimal_places=2)
     status = models.ForeignKey(
-        "core.FarmBlockStatus",
+        "config.FarmBlockStatus",
         on_delete=models.RESTRICT,
         help_text=_("Inatusaidia kuratibu mzunguko wa ikolojia kati ya kuku na mazao."),
     )
@@ -229,9 +229,9 @@ class Batch(BaseEnterpriseAuditModelMixin):
     current_block = models.ForeignKey(
         FarmBlock, on_delete=models.SET_NULL, null=True, blank=True
     )
-    bird_type = models.ForeignKey("core.BirdType", on_delete=models.RESTRICT)
-    species = models.ForeignKey("core.SpeciesType", on_delete=models.RESTRICT)
-    breed = models.ForeignKey("core.BreedType", on_delete=models.RESTRICT)
+    bird_type = models.ForeignKey("config.BirdType", on_delete=models.RESTRICT)
+    species = models.ForeignKey("config.SpeciesType", on_delete=models.RESTRICT)
+    breed = models.ForeignKey("config.BreedType", on_delete=models.RESTRICT)
     initial_count = models.PositiveIntegerField(_("Initial Bird Count"))
     current_count = models.PositiveIntegerField(_("Current Bird Count"))
     expected_depletion_date = models.DateField(
@@ -247,7 +247,7 @@ class Batch(BaseEnterpriseAuditModelMixin):
     #   "initial_weight_avg": 0.45
     # }
     batch_details = models.JSONField(_("Batch Details"), default=dict, blank=True)
-    status = models.ForeignKey("core.FlockBatchStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.FlockBatchStatus", on_delete=models.RESTRICT)
 
     class Meta:
         db_table = "batch"

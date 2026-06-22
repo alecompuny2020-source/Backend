@@ -19,7 +19,7 @@ class Payment(models.Model):
     )
     date_paid = models.DateTimeField(default=now)
     amount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
-    method = models.ForeignKey("core.PaymentMethod", on_delete=models.RESTRICT)
+    method = models.ForeignKey("config.PaymentMethod", on_delete=models.RESTRICT)
     transaction_reference = models.CharField(max_length=100, blank=True, null=True)
     metadata = models.JSONField(default=dict, blank=True)
 

@@ -18,7 +18,7 @@ def bootstrap_enterprise_lookups_and_taxonomy(sender, **kwargs):
     """
     app_config = sender
 
-    if app_config.label != "core":
+    if app_config.label != "config":
         return
 
     logger.info("Initializing Enterprise Workflow Lookup Matrix Provisioning...")

@@ -10,6 +10,7 @@ from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from common.constants import TokenType
 from common.management import EnterpriseNotificationManager as OTPManager
 from core.models import Otp, User
 from core.serializers import (
@@ -17,10 +18,11 @@ from core.serializers import (
     ConfirmPasswordResetSerializer,
     ConfirmRegistrationSerializer,
     LoginConfirmOTPSerializer,
-    RegistrationSerializer,
     RequestLoginOTPSerializer,
     RequestOTPSerializer,
     UserTokenObtainPairSerializer,
+    UsingEmailRegistration,
+    UsingPhoneNumberRegistration,
 )
 
 
@@ -30,8 +32,27 @@ class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
 
+    def _handle_self_registration(self, request, token_type):
+        """A method for attaining self registration using email or phone number"""
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            email = serializer.validated_data["email"]
+            phone_number = serializer.validated_data["phone_number"]
+            user = serializer.save()
+
+            customer_group, created = Group.objects.filter(
+                Q(name="Customer"),
+            ).get_or_create(name="Customer")
+            user.groups.add(customer_group)
+
+        return OTPManager.generate_and_send(
+            identifier=email if email else phone_number,
+            token_type=token_type,
+        )
+        # return Response(_("Registration success. OTP sent for verification."))
+
     def _get_auth_response(self, user, message):
-        # Issue tokens using your custom Base64-encoding serializer
+        """Issue tokens using custom Base64-encoding serializer"""
         token_serializer = UserTokenObtainPairSerializer()
         refresh = token_serializer.get_token(user)
         return Response(
@@ -54,21 +75,22 @@ class AuthViewSet(viewsets.GenericViewSet):
     @action(
         detail=False,
         methods=["post"],
-        serializer_class=RegistrationSerializer,
-        url_path="initiate-registration",
+        serializer_class=UsingEmailRegistration,
+        url_path="registration-with-email",
     )
-    def initiate_registration(self, request):
-        """Attains self user registration"""
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.save()
+    def sign_up_with_email(self, request):
+        """Attains self user registration with email"""
+        return self._handle_self_registration(request, TokenType.REGISTRATION)
 
-            customer_group, created = Group.objects.filter(
-                Q(name="Customer"),
-            ).get_or_create(name="Customer")
-            user.groups.add(customer_group)
-
-        return Response(_("Registration success. OTP sent for verification."))
+    @action(
+        detail=False,
+        methods=["post"],
+        serializer_class=UsingPhoneNumberRegistration,
+        url_path="registration-with-phone",
+    )
+    def sign_up_with_phone(self, request):
+        """Attains self user registration with email"""
+        return self._handle_self_registration(request, TokenType.REGISTRATION)
 
     @action(
         detail=False,
@@ -125,6 +147,16 @@ class AuthViewSet(viewsets.GenericViewSet):
             )
             return self._get_auth_response(user, otp_response.data.get("message"))
         return otp_response
+
+    # @action(
+    #     details = False,
+    #     methods = ["get"],
+    #     url_path = "logout",
+    # )
+    #
+    # def user_logout(self, request):
+    #     from django.contrib.auth import logout
+    #     return logout()
 
     @action(
         detail=False,

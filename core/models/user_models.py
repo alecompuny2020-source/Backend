@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.postgres.indexes import GinIndex
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
@@ -17,11 +18,29 @@ from common.validators import image_validator, validate_image_mime
 class User(BaseEnterpriseModelMixin, AbstractBaseUser, PermissionsMixin):
     """Core Enterprise Identity Model."""
 
+    username_validator = UnicodeUsernameValidator()
+
     email = models.EmailField(
-        _("Email Address"), unique=True, db_index=True, null=True, blank=True
+        _("Email Address"),
+        unique=True,
+        db_index=True,
+        null=True,
+        blank=True,
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that email address already exists."),
+        },
     )
     phone_number = PhoneNumberField(
-        _("Phone Number"), null=True, unique=True, db_index=True, blank=True
+        _("Phone Number"),
+        null=True,
+        unique=True,
+        db_index=True,
+        blank=True,
+        validators=[username_validator],
+        error_messages={
+            "unique": _("A user with that phone number already exists."),
+        },
     )
     first_name = models.CharField(_("First Name"), max_length=30, blank=True)
     middle_name = models.CharField(_("Middle Name"), max_length=100, blank=True)

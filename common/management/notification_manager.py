@@ -4,6 +4,7 @@ from phonenumber_field.phonenumber import to_python
 from rest_framework import status
 from rest_framework.response import Response
 
+from common.constants import TokenType
 from common.sender import NotificationSenderGateway as NotificationGateway
 
 
@@ -27,7 +28,7 @@ class EnterpriseNotificationManager:
             if phone and phone.is_valid():
                 query |= Q(phone_number=phone)
 
-            if token_type == Otp.TOKEN_TYPE_REGISTRATION:
+            if token_type == TokenType.REGISTRATION:
                 user = User.objects.get(query)
             else:
                 user = User.objects.get(query, is_verified=True)

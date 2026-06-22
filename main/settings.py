@@ -41,9 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-
     # Enterprise Apps
+    "config",
     "core",
     "hrms",
     # "lrh",
@@ -56,7 +55,6 @@ INSTALLED_APPS = [
     "srs",
     "ecvs",
     # "rms",
-
     # third part packages
     "django.contrib.postgres",
     "rest_framework",
@@ -117,25 +115,24 @@ WSGI_APPLICATION = "main.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-#
-
-
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "triple",
-        "PORT": "5432",
-        "HOST": "127.0.0.1",
-        "USER": "postgres",
-        "PASSWORD": "@le.com1234",
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "triple",
+#         "PORT": "5432",
+#         "HOST": "127.0.0.1",
+#         "USER": "postgres",
+#         "PASSWORD": "@le.com1234",
+#     }
+# }
 
 
 # Password validation
@@ -251,6 +248,7 @@ REST_FRAMEWORK = {
         "otp_attempt": "3/minute",
     },
 }
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),

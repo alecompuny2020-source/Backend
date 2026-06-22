@@ -1,1 +1,5 @@
-from .department_serializers import *
+from .department_serializers import DepartmentSerializer
+
+__all__ = [
+    "DepartmentSerializer",
+]

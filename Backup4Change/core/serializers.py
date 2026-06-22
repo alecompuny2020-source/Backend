@@ -12,7 +12,6 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from lrh.models import EmployeeRegistrationHistory
 from phonenumber_field.phonenumber import to_python
 from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers, status
@@ -31,6 +30,7 @@ from utils.services import (
 
 from hrms.models import Department, Employee, NextOfKin, UserIdentity
 from hrms.serializers import NextOfKinSerializer, UserIdentitySerializer
+from lrh.models import EmployeeRegistrationHistory
 
 from .models import Otp, UserAddress, UserPreference
 

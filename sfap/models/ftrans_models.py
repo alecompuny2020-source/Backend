@@ -13,7 +13,9 @@ class FarmVehicle(BaseEnterpriseAuditModelMixin):
     """
 
     plate_number = models.CharField(_("Plate Number"), max_length=20, unique=True)
-    vehicle_type = models.ForeignKey("core.FarmVehicleType", on_delete=models.RESTRICT)
+    vehicle_type = models.ForeignKey(
+        "config.FarmVehicleType", on_delete=models.RESTRICT
+    )
     # vehicle_type = models.CharField(
     #     _("Type"), max_length=50
     # )  # e.g., Refrigerated Truck, Feed Loader

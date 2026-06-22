@@ -61,11 +61,7 @@ LOOKUP_SEED_DATA = {
         {"code": "WORK", "name": "Work", "sort_order": 4},
     ],
     "OrderStatus": [
-        {
-            "code": "PENDING",
-            "name": "Pending",
-            "color_hex": "#F1C40F",
-            "sort_order": 1},
+        {"code": "PENDING", "name": "Pending", "color_hex": "#F1C40F", "sort_order": 1},
         {
             "code": "CONFIRMED",
             "name": "Confirmed",

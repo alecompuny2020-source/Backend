@@ -32,7 +32,7 @@ class PackagedProduct(BaseEnterpriseAuditModelMixin):
             "Husaidia kufuatilia ufanisi wa mashine na timu iliyokuwa zamu."
         ),
     )
-    status = models.ForeignKey("core.PackageStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.PackageStatus", on_delete=models.RESTRICT)
 
     label_code = models.CharField(
         _("QR/Barcode"), max_length=100, unique=True, db_index=True

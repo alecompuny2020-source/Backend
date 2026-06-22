@@ -16,7 +16,7 @@ class HealthProtocol(BaseEnterpriseAuditModelMixin):
     """
 
     name = models.CharField(_("Protocol Name"), max_length=255)
-    target_bird_type = models.ForeignKey("core.BirdType", on_delete=models.RESTRICT)
+    target_bird_type = models.ForeignKey("config.BirdType", on_delete=models.RESTRICT)
 
     # Blueprint for protocol_steps (Schedule):
     # [
@@ -67,7 +67,7 @@ class MedicalRecord(BaseEnterpriseAuditModelMixin):
     date_of_administration = models.DateField(
         _("Date of Administration"), db_index=True, default=now
     )
-    status = models.ForeignKey("core.HealthRecordType", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.HealthRecordType", on_delete=models.RESTRICT)
 
     # Blueprint for event_details:
     # {
@@ -161,7 +161,9 @@ class DiseaseOutbreak(BaseEnterpriseAuditModelMixin):
         default=dict,
         help_text=_("Detailed symptoms, lab results, and containment measures."),
     )
-    status = models.ForeignKey("core.DiseaseOutbreakStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey(
+        "config.DiseaseOutbreakStatus", on_delete=models.RESTRICT
+    )
 
     class Meta:
         db_table = "disease_outbreak"

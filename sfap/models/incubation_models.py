@@ -8,7 +8,7 @@ from common.mixins import BaseEnterpriseAuditModelMixin
 
 class Incubator(BaseEnterpriseAuditModelMixin):
     name = models.CharField(max_length=255)
-    status = models.ForeignKey("core.IncubatorMachineType", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.IncubatorMachineType", on_delete=models.RESTRICT)
     farm = models.ForeignKey(
         "sfap.Farm",
         on_delete=models.CASCADE,
@@ -143,7 +143,9 @@ class IncubationCycle(BaseEnterpriseAuditModelMixin):
         ),
     )
     actual_hatch_date = models.DateTimeField(null=True, blank=True)
-    status = models.ForeignKey("core.IncubationCycleStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey(
+        "config.IncubationCycleStatus", on_delete=models.RESTRICT
+    )
 
     class Meta:
         db_table = "incubation_cycle"

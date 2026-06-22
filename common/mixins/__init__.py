@@ -4,7 +4,10 @@ from .models_mixins import (
     BaseEnterpriseModelMixin,
     BaseLookupConfigurationModelMixin,
 )
-from .serializers_mixins import BaseEnterpriseAuditSerializer
+from .serializers_mixins import (
+    BaseEnterpriseAuditSerializer,
+    BaseRegistrationSerializer,
+)
 from .views_mixins import BaseEnterpriseViewSet
 
 __all__ = [
@@ -12,6 +15,7 @@ __all__ = [
     "BaseLookupConfigurationModelMixin",
     "BaseEnterpriseAuditModelMixin",
     "BaseAddressModelMixin",
+    "BaseRegistrationSerializer",
     "BaseEnterpriseAuditSerializer",
     "BaseEnterpriseViewSet",
 ]

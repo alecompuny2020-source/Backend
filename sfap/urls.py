@@ -5,6 +5,7 @@ from . import views as v
 
 router = DefaultRouter()
 
+
 router.register(r"farms", v.FarmViewSet)
 router.register(r"manager-history", v.FarmManagerHistoryViewSet, basename="manager")
 router.register(r"farm-sheds", v.FarmShedViewSet, basename="shed")

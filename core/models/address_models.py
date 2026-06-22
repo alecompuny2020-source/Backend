@@ -20,7 +20,7 @@ class UserAddress(BaseEnterpriseModelMixin):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="addresses"
     )
     address_type = models.ForeignKey(
-        "core.AddressType", on_delete=models.CASCADE, related_name="address_types"
+        "config.AddressType", on_delete=models.CASCADE, related_name="address_types"
     )
     is_default = models.BooleanField(_("Default Address"), default=False)
     street_address = models.TextField(_("Street Address"))

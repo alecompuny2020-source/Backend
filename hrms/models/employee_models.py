@@ -47,7 +47,7 @@ class Employee(BaseEnterpriseModelMixin):
         default=MaritalStatus.SINGLE,
     )
     employment_type = models.ForeignKey(
-        "core.EmploymentType",
+        "config.EmploymentType",
         on_delete=models.RESTRICT,
         null=True,
         blank=True,
@@ -91,7 +91,7 @@ class Employee(BaseEnterpriseModelMixin):
         help_text=_("Required for Processing Plant staff. Must be renewed annually."),
     )
     employee_title = models.ForeignKey(
-        "core.UserTitle",
+        "config.UserTitle",
         on_delete=models.RESTRICT,
         null=True,
         blank=True,

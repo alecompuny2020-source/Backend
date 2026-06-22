@@ -56,7 +56,7 @@ class Customer(BaseEnterpriseAuditModelMixin):
     """
 
     name = models.CharField(_("Customer Name"), max_length=255)
-    status = models.ForeignKey("core.CustomerType", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.CustomerType", on_delete=models.RESTRICT)
     contact_phone = PhoneNumberField(_("Contact Phone"))
     email = models.EmailField(_("Email Address"), blank=True)
 

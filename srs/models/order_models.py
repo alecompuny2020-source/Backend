@@ -55,7 +55,7 @@ class Order(BaseEnterpriseAuditModelMixin):
         decimal_places=2,
         default_currency="TZS",
     )
-    status = models.ForeignKey("core.OrderStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.OrderStatus", on_delete=models.RESTRICT)
 
     # Blueprint for order_history (Audit Trail):
     # [{"status": "Confirmed", "time": "2026-02-24T10:00Z", "user_id": 4, "note": "Payment verified"}]

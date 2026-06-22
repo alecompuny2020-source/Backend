@@ -12,16 +12,18 @@ from .user_serializer import (
     ConfirmPasswordResetSerializer,
     ConfirmRegistrationSerializer,
     LoginConfirmOTPSerializer,
-    RegistrationSerializer,
     RequestForgotPasswordSerializer,
     RequestLoginOTPSerializer,
     RequestOTPSerializer,
     UserDetailsSerializer,
     UserTokenObtainPairSerializer,
+    UsingEmailRegistration,
+    UsingPhoneNumberRegistration,
 )
 
 __all__ = [
-    "RegistrationSerializer",
+    "UsingEmailRegistration",
+    "UsingPhoneNumberRegistration",
     "ConfirmRegistrationSerializer",
     "RequestLoginOTPSerializer",
     "LoginConfirmOTPSerializer",

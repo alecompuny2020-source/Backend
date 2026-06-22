@@ -42,9 +42,11 @@ class ProductStock(BaseEnterpriseAuditModelMixin):
         null=True,
         blank=True,
     )
-    unit_of_measure = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
+    unit_of_measure = models.ForeignKey(
+        "config.UnitOfMeasure", on_delete=models.RESTRICT
+    )
     readiness_status = models.ForeignKey(
-        "core.StockReadinessStatus", on_delete=models.RESTRICT
+        "config.StockReadinessStatus", on_delete=models.RESTRICT
     )
     batch_number = models.CharField(
         _("Batch Number"), max_length=100, unique=True, db_index=True
@@ -128,7 +130,7 @@ class StockMovement(BaseEnterpriseAuditModelMixin):
     stock = models.ForeignKey(
         ProductStock, on_delete=models.CASCADE, related_name="movements"
     )
-    status = models.ForeignKey("core.StockMovementType", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.StockMovementType", on_delete=models.RESTRICT)
     quantity_change = models.DecimalField(max_digits=12, decimal_places=2)
     units_change = models.IntegerField(
         default=0,

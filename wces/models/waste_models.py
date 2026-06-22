@@ -15,7 +15,7 @@ class WasteCategory(BaseEnterpriseAuditModelMixin):
 
     name = models.CharField(_("Waste Type Name"), max_length=100, unique=True)
     disposal_method = models.ForeignKey(
-        "core.WasteDisposalMethod", on_delete=models.RESTRICT
+        "config.WasteDisposalMethod", on_delete=models.RESTRICT
     )
 
     # Blueprint for financial_logic:
@@ -107,7 +107,7 @@ class WasteCollection(BaseEnterpriseAuditModelMixin):
         related_name="waste_produced",
     )
     # source_unit = models.ForeignKey(
-    #     "core.RentalUnit",
+    #     "config.RentalUnit",
     #     on_delete=models.SET_NULL,
     #     null=True,
     #     blank=True,

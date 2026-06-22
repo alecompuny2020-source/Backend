@@ -18,7 +18,7 @@ class Product(BaseEnterpriseAuditModelMixin):
     """Defines the global catalog (e.g., Broiler Meat, Organic Eggs)."""
 
     name = models.CharField(_("Product Name"), max_length=100, unique=True)
-    category = models.ForeignKey("core.ProductCategory", on_delete=models.RESTRICT)
+    category = models.ForeignKey("config.ProductCategory", on_delete=models.RESTRICT)
     # Stores grading, packaging, and specific storage requirements.
     # Blueprint for specs:
     # {
@@ -58,9 +58,9 @@ class ProductVariant(BaseEnterpriseAuditModelMixin):
         related_name="variants",
         verbose_name=_("Parent Product"),
     )
-    cut_type = models.ForeignKey("core.MeatCutType", on_delete=models.RESTRICT)
-    storage_state = models.ForeignKey("core.StorageState", on_delete=models.RESTRICT)
-    fat_level = models.ForeignKey("core.FatLevel", on_delete=models.RESTRICT)
+    cut_type = models.ForeignKey("config.MeatCutType", on_delete=models.RESTRICT)
+    storage_state = models.ForeignKey("config.StorageState", on_delete=models.RESTRICT)
+    fat_level = models.ForeignKey("config.FatLevel", on_delete=models.RESTRICT)
 
     sku = models.CharField(
         _("SKU / Item Code"), max_length=100, unique=True, db_index=True

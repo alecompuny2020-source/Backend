@@ -67,7 +67,7 @@ class StorageUnit(BaseEnterpriseAuditModelMixin):
         Zone, on_delete=models.CASCADE, related_name="storage_units"
     )
     unit_code = models.CharField(_("Unit Code"), max_length=20)
-    unit_type = models.ForeignKey("core.StorageUnitType", on_delete=models.RESTRICT)
+    unit_type = models.ForeignKey("config.StorageUnitType", on_delete=models.RESTRICT)
     max_capacity = models.IntegerField(_("Max Capacity"), default=0)
 
     class Meta:

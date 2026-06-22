@@ -30,12 +30,12 @@ class Sale(BaseEnterpriseAuditModelMixin):
         null=True,
         related_name="office_sales",
     )
-    status = models.ForeignKey("core.SaleInvoiceStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.SaleInvoiceStatus", on_delete=models.RESTRICT)
     # payment_method = models.ForeignKey(
-    #     "core.PaymentMethod", on_delete = models.RESTRICT
+    #     "config.PaymentMethod", on_delete = models.RESTRICT
     # )
     # payment_status = models.ForeignKey(
-    #     "core.SaleInvoiceStatus", on_delete = models.RESTRICT
+    #     "config.SaleInvoiceStatus", on_delete = models.RESTRICT
     # )
 
     # Metadata includes: {
@@ -112,11 +112,11 @@ class SaleItem(BaseEnterpriseModelMixin):
     )
     quantity = models.PositiveIntegerField()
     unit_price = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
-    unit_measure = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
+    unit_measure = models.ForeignKey("config.UnitOfMeasure", on_delete=models.RESTRICT)
     discount = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     line_total = MoneyField(max_digits=15, decimal_places=2, default_currency="TZS")
     item_disposition = models.ForeignKey(
-        "core.ItemDisposition", on_delete=models.RESTRICT
+        "config.ItemDisposition", on_delete=models.RESTRICT
     )
     attributes = models.JSONField(
         _("Product Attributes at Sale"), default=dict, blank=True

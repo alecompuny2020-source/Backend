@@ -21,7 +21,9 @@ class FeedType(BaseEnterpriseAuditModelMixin):
         blank=True,
         help_text=_("Acha wazi kama limetengenezwa shambani."),
     )
-    feed_source = models.ForeignKey("core.FeedSourceChoices", on_delete=models.RESTRICT)
+    feed_source = models.ForeignKey(
+        "config.FeedSourceChoices", on_delete=models.RESTRICT
+    )
 
     # Blueprint for composition (Nutritional specs):
     # {

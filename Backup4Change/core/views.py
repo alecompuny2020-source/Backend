@@ -9,7 +9,6 @@ from django.utils import timezone
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
-from lrh.models import EmployeeRegistrationHistory
 from phonenumber_field.phonenumber import to_python
 from rest_framework import generics, permissions, serializers, status, viewsets
 from rest_framework.decorators import action
@@ -23,6 +22,8 @@ from utils.services import (
     send_otp_email,
     verify_otp,
 )
+
+from lrh.models import EmployeeRegistrationHistory
 
 from .models import Otp
 from .serializers import (

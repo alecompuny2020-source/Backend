@@ -1,31 +1,34 @@
 # views.py
-from django.db.models import Q
-from django.contrib.auth.models import Group
 from django.contrib.auth import get_user_model
-from rest_framework import viewsets, permissions, status, response
+from django.contrib.auth.models import Group
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+from rest_framework import permissions, response, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.utils.translation import gettext_lazy as _
 
 # Import your existing utilities/serializers
 from .models import Otp
 from .serializers import (
-    RegistrationSerializer,
     ConfirmRegistrationSerializer,
-    RequestLoginOTPSerializer,
     LoginConfirmOTPSerializer,
-    UserTokenObtainPairSerializer
+    RegistrationSerializer,
+    RequestLoginOTPSerializer,
+    UserTokenObtainPairSerializer,
 )
+
 # Assuming to_python comes from your phone number utility package
 # from phonenumber_field.phonenumber import to_python
 
 User = get_user_model()
+
 
 class AuthViewSet(viewsets.GenericViewSet):
     """
     A view that consolidates authentication flows.
     Registration OTPs are completely handled automatically via background signals.
     """
+
     permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
 
@@ -67,7 +70,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         # 3. Respond instantly back to the user client (Sub-100ms response time!)
         return Response(
             {"detail": _("Registration success. OTP sent for verification.")},
-            status=status.HTTP_201_CREATED
+            status=status.HTTP_201_CREATED,
         )
 
     @action(
@@ -86,7 +89,6 @@ class AuthViewSet(viewsets.GenericViewSet):
 
         # Keeps your original verification logic unchanged
         return OTPManager.verify(identifier, code, token_type)
-
 
     @action(
         detail=False,
@@ -109,7 +111,6 @@ class AuthViewSet(viewsets.GenericViewSet):
         # Note: If OTPManager.generate_and_send internally triggers your
         # background celery task for login codes, this view remains incredibly fast too!
         return OTPManager.generate_and_send(identifier, token_type)
-
 
     @action(
         detail=False,
@@ -135,8 +136,4 @@ class AuthViewSet(viewsets.GenericViewSet):
         return otp_response
 
 
-
-
-status = models.ForeignKey(
-    "core.ProductionStatus", on_delete = models.RESTRICT
-)
+status = models.ForeignKey("core.ProductionStatus", on_delete=models.RESTRICT)

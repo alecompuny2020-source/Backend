@@ -29,7 +29,7 @@ class ReturnRequest(models.Model):
         ],
     )
     disposition = models.ForeignKey(
-        "core.ItemDisposition", on_delete=models.RESTRICT
+        "config.ItemDisposition", on_delete=models.RESTRICT
     )  # e.g., 'DAMAGED'
     processed_at = models.DateTimeField()
 

@@ -39,7 +39,7 @@ class CropProduction(BaseEnterpriseAuditModelMixin):
     crops = models.ManyToManyField(Crop, related_name="crops_grown")
     planting_date = models.DateField()
     harvest_date = models.DateField(null=True, blank=True)
-    status = models.ForeignKey("core.ProductionStatus", on_delete=models.RESTRICT)
+    status = models.ForeignKey("config.ProductionStatus", on_delete=models.RESTRICT)
 
     # Mzunguko wa Virutubisho
     manure_used_kg = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
@@ -63,7 +63,7 @@ class EcologicalInput(BaseEnterpriseAuditModelMixin):
 
     input_name = models.CharField(max_length=100)
     quantity = models.DecimalField(max_digits=10, decimal_places=2)
-    unit = models.ForeignKey("core.UnitOfMeasure", on_delete=models.RESTRICT)
+    unit = models.ForeignKey("config.UnitOfMeasure", on_delete=models.RESTRICT)
     estimated_cost = MoneyField(
         max_digits=14,
         decimal_places=2,
