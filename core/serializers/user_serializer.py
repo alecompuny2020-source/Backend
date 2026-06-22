@@ -27,17 +27,16 @@ class UsingEmailRegistration(BaseRegistrationSerializer):
         fields = ["email", "password", "first_name", "last_name"]
 
     def validate(self, attrs):
-        username = attrs.get("email")
+        # Always invoke super().validate(attrs) first to preserve parent validation logic!
+        attrs = super().validate(attrs)
+        email = attrs.get("email")
 
-        if username and self.Meta.model.objects.filter(email__iexact=username).exists():
-
+        if email and self.Meta.model.objects.filter(email__iexact=email).exists():
             raise serializers.ValidationError(
-                {
-                    "email": _("A user with that email address already exists."),
-                }
+                {"email": _("A user with that email address already exists.")}
             )
 
-        return username
+        return attrs
 
 
 class UsingPhoneNumberRegistration(BaseRegistrationSerializer):
@@ -50,20 +49,15 @@ class UsingPhoneNumberRegistration(BaseRegistrationSerializer):
         fields = ["phone_number", "password", "first_name", "last_name"]
 
     def validate(self, attrs):
-        username = attrs.get("phone_number")
+        attrs = super().validate(attrs)
+        phone_number = attrs.get("phone_number")
 
-        if (
-            username
-            and self.Meta.model.objects.filter(phone_number__iexact=username).exists()
-        ):
-
+        if phone_number and self.Meta.model.objects.filter(phone_number=phone_number).exists():
             raise serializers.ValidationError(
-                {
-                    "email": _("A user with that phone number already exists."),
-                }
+                {"phone_number": _("A user with that phone number already exists.")}
             )
-        return username
 
+        return attrs
 
 class ConfirmRegistrationSerializer(serializers.Serializer):
     identifier = serializers.CharField()

@@ -35,21 +35,17 @@ class AuthViewSet(viewsets.GenericViewSet):
     def _handle_self_registration(self, request, token_type):
         """A method for attaining self registration using email or phone number"""
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            email = serializer.validated_data["email"]
-            phone_number = serializer.validated_data["phone_number"]
-            user = serializer.save()
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data.get("email")
+        phone_number = serializer.validated_data.get("phone_number")
+        user = serializer.save()
+        user._dynamic_token_type = token_type
+        user.save()
 
-            customer_group, created = Group.objects.filter(
-                Q(name="Customer"),
-            ).get_or_create(name="Customer")
-            user.groups.add(customer_group)
+        customer_group, created = Group.objects.get_or_create(name="Customer")
+        user.groups.add(customer_group)
 
-        return OTPManager.generate_and_send(
-            identifier=email if email else phone_number,
-            token_type=token_type,
-        )
-        # return Response(_("Registration success. OTP sent for verification."))
+        return Response(_("Registration success. OTP sent for verification."))
 
     def _get_auth_response(self, user, message):
         """Issue tokens using custom Base64-encoding serializer"""
@@ -76,7 +72,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         detail=False,
         methods=["post"],
         serializer_class=UsingEmailRegistration,
-        url_path="registration-with-email",
+        url_path="registration-using-email",
     )
     def sign_up_with_email(self, request):
         """Attains self user registration with email"""
@@ -86,7 +82,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         detail=False,
         methods=["post"],
         serializer_class=UsingPhoneNumberRegistration,
-        url_path="registration-with-phone",
+        url_path="registration-using-phone",
     )
     def sign_up_with_phone(self, request):
         """Attains self user registration with email"""

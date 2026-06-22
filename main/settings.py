@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from datetime import timedelta
 from pathlib import Path
+import os
 
 from decouple import config
 from django.utils.translation import gettext_lazy as _
@@ -51,7 +52,7 @@ INSTALLED_APPS = [
     "fns",
     "wces",
     "ipss",
-    # # "ipms",
+    # "ipms",
     "srs",
     "ecvs",
     # "rms",
@@ -278,3 +279,17 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS")
 EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 DEFAULT_FROM_EMAIL = "Ilagavye Enterprise <ale.compuny2020@gmail.com>"
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+
+
+
+# Enterprise Celery Configuration
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['json']
+
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000
+CELERY_TASK_ACKS_LATE = True

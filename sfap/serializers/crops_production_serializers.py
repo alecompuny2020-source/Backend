@@ -11,7 +11,7 @@ class CropProductionSerializer(BaseEnterpriseAuditSerializer):
         fields = [
             "id",
             "block",
-            "crop_name",
+            # "crop_name",
             "planting_date",
             "harvest_date",
             "status",

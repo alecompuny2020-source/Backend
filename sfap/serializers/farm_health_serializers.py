@@ -27,7 +27,7 @@ class MedicalRecordSerializer(BaseEnterpriseAuditSerializer):
             "id",
             "batch",
             "date_of_administration",
-            "record_type",
+            # "record_type",
             "event_details",
             "cost",
             "notes",
